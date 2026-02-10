@@ -93,6 +93,34 @@ export default function Appointments() {
       toast({ title: "Error", description: "Failed to book appointment. Please try again.", variant: "destructive" });
     } else {
       toast({ title: "Appointment booked!", description: "You will receive a confirmation soon." });
+
+      // Send SMS reminder if user has a phone number
+      try {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("phone_number, first_name")
+          .eq("user_id", user.id)
+          .single();
+
+        if (profile?.phone_number) {
+          const selectedClinic = clinics.find((c) => c.id === clinicId);
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session?.access_token && selectedClinic) {
+            await supabase.functions.invoke("send-appointment-reminder", {
+              body: {
+                phoneNumber: profile.phone_number,
+                patientName: profile.first_name || "",
+                clinicName: selectedClinic.name,
+                appointmentDate: date,
+                appointmentTime: time,
+              },
+            });
+          }
+        }
+      } catch (smsError) {
+        console.warn("SMS reminder failed (non-blocking):", smsError);
+      }
+
       setShowForm(false);
       setClinicId("");
       setDate("");
