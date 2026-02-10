@@ -3,7 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 import AppHeader from "@/components/AppHeader";
 import BottomNav from "@/components/BottomNav";
 import ClinicCard from "@/components/ClinicCard";
-import { Search, Loader2, MapPin } from "lucide-react";
+import ClinicMap from "@/components/ClinicMap";
+import { Search, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 
@@ -50,11 +51,18 @@ export default function Clinics() {
 
       <main className="px-4 pt-4 max-w-lg mx-auto space-y-4">
         {/* Map placeholder */}
-        <div className="h-40 rounded-2xl bg-secondary/50 border border-border/50 flex items-center justify-center overflow-hidden">
-          <div className="text-center">
-            <MapPin className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-            <p className="text-xs text-muted-foreground">Google Maps integration coming soon</p>
-          </div>
+        <div className="h-48 rounded-2xl overflow-hidden border border-border/50">
+          {loading ? (
+            <div className="h-full flex items-center justify-center bg-secondary/50">
+              <Loader2 className="w-6 h-6 animate-spin text-primary" />
+            </div>
+          ) : (
+            <ClinicMap
+              clinics={clinics.filter(
+                (c) => c.latitude != null && c.longitude != null
+              ) as { id: string; name: string; address: string; latitude: number; longitude: number }[]}
+            />
+          )}
         </div>
 
         {/* Search */}
