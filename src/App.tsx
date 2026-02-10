@@ -11,6 +11,7 @@ import SymptomChecker from "./pages/SymptomChecker";
 import Clinics from "./pages/Clinics";
 import Appointments from "./pages/Appointments";
 import Admin from "./pages/Admin";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/clinics" element={<Clinics />} />
             <Route path="/appointments" element={<Appointments />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
