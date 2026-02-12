@@ -146,155 +146,160 @@ export default function Appointments() {
   const today = new Date().toISOString().split("T")[0];
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background pb-20 md:pb-8">
       <AppHeader title="Appointments" />
 
-      <main className="px-4 pt-4 max-w-lg mx-auto space-y-4">
-        {/* Book button */}
-        <Button
-          onClick={() => setShowForm(!showForm)}
-          className="w-full h-12 rounded-xl font-semibold"
-          variant={showForm ? "outline" : "default"}
-        >
-          {showForm ? (
-            <>
-              <X className="w-4 h-4 mr-2" /> Cancel
-            </>
-          ) : (
-            <>
-              <Plus className="w-4 h-4 mr-2" /> Book Appointment
-            </>
-          )}
-        </Button>
-
-        {/* Booking form */}
-        <AnimatePresence>
-          {showForm && (
-            <motion.form
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              onSubmit={handleSubmit}
-              className="elevated-card rounded-2xl p-4 space-y-4 overflow-hidden"
+      <main className="px-4 pt-4 max-w-lg md:max-w-4xl mx-auto space-y-4">
+        <div className="md:flex md:gap-6">
+          {/* Booking column */}
+          <div className="md:w-1/2 space-y-4">
+            {/* Book button */}
+            <Button
+              onClick={() => setShowForm(!showForm)}
+              className="w-full md:w-auto h-12 rounded-xl font-semibold"
+              variant={showForm ? "outline" : "default"}
             >
-              <div className="space-y-1.5">
-                <Label className="text-xs font-medium">Clinic</Label>
-                <Select value={clinicId} onValueChange={setClinicId}>
-                  <SelectTrigger className="rounded-xl h-11">
-                    <SelectValue placeholder="Select a clinic" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {clinics.map((c) => (
-                      <SelectItem key={c.id} value={c.id}>
-                        {c.name} — {c.city}
-                      </SelectItem>
-                    ))}
-                    {clinics.length === 0 && (
-                      <div className="px-3 py-2 text-sm text-muted-foreground">No verified clinics available</div>
-                    )}
-                  </SelectContent>
-                </Select>
+              {showForm ? (
+                <>
+                  <X className="w-4 h-4 mr-2" /> Cancel
+                </>
+              ) : (
+                <>
+                  <Plus className="w-4 h-4 mr-2" /> Book Appointment
+                </>
+              )}
+            </Button>
+
+            {/* Booking form */}
+            <AnimatePresence>
+              {showForm && (
+                <motion.form
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  onSubmit={handleSubmit}
+                  className="elevated-card rounded-2xl p-4 space-y-4 overflow-hidden"
+                >
+                  <div className="space-y-1.5">
+                    <Label className="text-xs font-medium">Clinic</Label>
+                    <Select value={clinicId} onValueChange={setClinicId}>
+                      <SelectTrigger className="rounded-xl h-11">
+                        <SelectValue placeholder="Select a clinic" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {clinics.map((c) => (
+                          <SelectItem key={c.id} value={c.id}>
+                            {c.name} — {c.city}
+                          </SelectItem>
+                        ))}
+                        {clinics.length === 0 && (
+                          <div className="px-3 py-2 text-sm text-muted-foreground">No verified clinics available</div>
+                        )}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-1.5">
+                      <Label className="text-xs font-medium">Date</Label>
+                      <Input
+                        type="date"
+                        value={date}
+                        min={today}
+                        onChange={(e) => setDate(e.target.value)}
+                        className="rounded-xl h-11"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label className="text-xs font-medium">Time</Label>
+                      <Input
+                        type="time"
+                        value={time}
+                        onChange={(e) => setTime(e.target.value)}
+                        className="rounded-xl h-11"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <Label className="text-xs font-medium">Notes (optional)</Label>
+                    <Textarea
+                      value={notes}
+                      onChange={(e) => setNotes(e.target.value)}
+                      placeholder="Any specific concerns..."
+                      className="rounded-xl resize-none min-h-[60px]"
+                    />
+                  </div>
+
+                  <Button type="submit" disabled={submitting || !clinicId || !date || !time} className="w-full h-11 rounded-xl font-semibold">
+                    {submitting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                    Confirm Booking
+                  </Button>
+                </motion.form>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Appointments list */}
+          <div className="mt-4 md:mt-0 md:flex-1">
+            <h3 className="font-display font-semibold text-sm text-muted-foreground uppercase tracking-wider mb-3">
+              Your Appointments
+            </h3>
+
+            {loading ? (
+              <div className="flex justify-center py-12">
+                <Loader2 className="w-6 h-6 animate-spin text-primary" />
               </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1.5">
-                  <Label className="text-xs font-medium">Date</Label>
-                  <Input
-                    type="date"
-                    value={date}
-                    min={today}
-                    onChange={(e) => setDate(e.target.value)}
-                    className="rounded-xl h-11"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-xs font-medium">Time</Label>
-                  <Input
-                    type="time"
-                    value={time}
-                    onChange={(e) => setTime(e.target.value)}
-                    className="rounded-xl h-11"
-                  />
-                </div>
+            ) : appointments.length === 0 ? (
+              <div className="text-center py-12 elevated-card rounded-2xl">
+                <Calendar className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
+                <p className="text-sm text-muted-foreground">No appointments yet</p>
+                <p className="text-xs text-muted-foreground mt-1">Book your first visit above</p>
               </div>
-
-              <div className="space-y-1.5">
-                <Label className="text-xs font-medium">Notes (optional)</Label>
-                <Textarea
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Any specific concerns..."
-                  className="rounded-xl resize-none min-h-[60px]"
-                />
-              </div>
-
-              <Button type="submit" disabled={submitting || !clinicId || !date || !time} className="w-full h-11 rounded-xl font-semibold">
-                {submitting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-                Confirm Booking
-              </Button>
-            </motion.form>
-          )}
-        </AnimatePresence>
-
-        {/* Appointments list */}
-        <div>
-          <h3 className="font-display font-semibold text-sm text-muted-foreground uppercase tracking-wider mb-3">
-            Your Appointments
-          </h3>
-
-          {loading ? (
-            <div className="flex justify-center py-12">
-              <Loader2 className="w-6 h-6 animate-spin text-primary" />
-            </div>
-          ) : appointments.length === 0 ? (
-            <div className="text-center py-12 elevated-card rounded-2xl">
-              <Calendar className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
-              <p className="text-sm text-muted-foreground">No appointments yet</p>
-              <p className="text-xs text-muted-foreground mt-1">Book your first visit above</p>
-            </div>
-          ) : (
-            <motion.div className="space-y-3" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              {appointments.map((apt) => (
-                <div key={apt.id} className="elevated-card rounded-2xl p-4">
-                  <div className="flex items-start justify-between mb-2">
-                    <div>
-                      <h4 className="font-display font-semibold text-sm text-card-foreground">
-                        {apt.clinics?.name || "Unknown Clinic"}
-                      </h4>
-                      <div className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
-                        <MapPin className="w-3 h-3" />
-                        <span>{apt.clinics?.address}, {apt.clinics?.city}</span>
+            ) : (
+              <motion.div className="space-y-3" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                {appointments.map((apt) => (
+                  <div key={apt.id} className="elevated-card rounded-2xl p-4">
+                    <div className="flex items-start justify-between mb-2">
+                      <div>
+                        <h4 className="font-display font-semibold text-sm text-card-foreground">
+                          {apt.clinics?.name || "Unknown Clinic"}
+                        </h4>
+                        <div className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
+                          <MapPin className="w-3 h-3" />
+                          <span>{apt.clinics?.address}, {apt.clinics?.city}</span>
+                        </div>
+                      </div>
+                      <Badge variant="outline" className={`text-[10px] ${statusColors[apt.status] || ""}`}>
+                        {apt.status}
+                      </Badge>
+                    </div>
+                    <div className="flex items-center gap-4 text-xs text-muted-foreground mt-3">
+                      <div className="flex items-center gap-1">
+                        <Calendar className="w-3 h-3" />
+                        <span>{new Date(apt.appointment_date).toLocaleDateString("en-KE", { month: "short", day: "numeric", year: "numeric" })}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        <span>{apt.appointment_time}</span>
                       </div>
                     </div>
-                    <Badge variant="outline" className={`text-[10px] ${statusColors[apt.status] || ""}`}>
-                      {apt.status}
-                    </Badge>
+                    {apt.notes && <p className="text-xs text-muted-foreground mt-2 italic">{apt.notes}</p>}
+                    {apt.status === "pending" && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="mt-3 text-destructive text-xs rounded-lg h-8"
+                        onClick={() => handleCancel(apt.id)}
+                      >
+                        Cancel Appointment
+                      </Button>
+                    )}
                   </div>
-                  <div className="flex items-center gap-4 text-xs text-muted-foreground mt-3">
-                    <div className="flex items-center gap-1">
-                      <Calendar className="w-3 h-3" />
-                      <span>{new Date(apt.appointment_date).toLocaleDateString("en-KE", { month: "short", day: "numeric", year: "numeric" })}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
-                      <span>{apt.appointment_time}</span>
-                    </div>
-                  </div>
-                  {apt.notes && <p className="text-xs text-muted-foreground mt-2 italic">{apt.notes}</p>}
-                  {apt.status === "pending" && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="mt-3 text-destructive text-xs rounded-lg h-8"
-                      onClick={() => handleCancel(apt.id)}
-                    >
-                      Cancel Appointment
-                    </Button>
-                  )}
-                </div>
-              ))}
-            </motion.div>
-          )}
+                ))}
+              </motion.div>
+            )}
+          </div>
         </div>
       </main>
 

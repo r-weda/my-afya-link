@@ -36,18 +36,18 @@ export default function Index() {
   const firstName = user.user_metadata?.first_name || "there";
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background pb-20 md:pb-8">
       <AppHeader />
 
       <motion.main
-        className="px-4 pt-4 max-w-lg mx-auto space-y-6"
+        className="px-4 pt-4 max-w-lg md:max-w-4xl lg:max-w-6xl mx-auto space-y-6"
         variants={container}
         initial="hidden"
         animate="show"
       >
         {/* Greeting */}
         <motion.div variants={item}>
-          <h2 className="font-display font-bold text-2xl text-foreground">
+          <h2 className="font-display font-bold text-2xl md:text-3xl text-foreground">
             Habari, {firstName} 👋
           </h2>
           <p className="text-sm text-muted-foreground mt-1">How are you feeling today?</p>
@@ -58,7 +58,7 @@ export default function Index() {
           <h3 className="font-display font-semibold text-sm text-muted-foreground uppercase tracking-wider mb-3">
             Quick Actions
           </h3>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <QuickActionCard
               icon={Stethoscope}
               label="Check Symptoms"
@@ -91,7 +91,7 @@ export default function Index() {
         </motion.div>
 
         {/* Medical Disclaimer */}
-        <motion.div variants={item}>
+        <motion.div variants={item} className="md:max-w-2xl">
           <MedicalDisclaimer compact />
         </motion.div>
       </motion.main>
@@ -105,23 +105,24 @@ function LandingPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col md:flex-row">
       {/* Hero */}
-      <div className="relative h-[45vh] min-h-[300px] overflow-hidden">
+      <div className="relative h-[45vh] min-h-[300px] md:h-auto md:w-1/2 lg:w-3/5 overflow-hidden">
         <img src={heroImage} alt="Healthcare" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-transparent to-background" />
+        <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-background/20 via-transparent to-background" />
       </div>
 
-      <div className="flex-1 px-6 -mt-8 relative z-10 max-w-md mx-auto w-full">
+      <div className="flex-1 px-6 -mt-8 md:mt-0 relative z-10 max-w-md mx-auto md:max-w-none md:mx-0 md:flex md:items-center md:justify-center w-full">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
+          className="md:max-w-md md:px-8 lg:px-12"
         >
           <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center mb-4 shadow-lg">
             <span className="text-primary-foreground font-display font-bold text-xl">A</span>
           </div>
-          <h1 className="font-display font-extrabold text-3xl text-foreground leading-tight mb-2">
+          <h1 className="font-display font-extrabold text-3xl md:text-4xl text-foreground leading-tight mb-2">
             AfyaConnect
           </h1>
           <p className="text-base text-muted-foreground leading-relaxed mb-8">
@@ -132,23 +133,23 @@ function LandingPage() {
           <div className="space-y-3">
             <button
               onClick={() => navigate("/auth")}
-              className="w-full h-13 rounded-2xl bg-primary text-primary-foreground font-semibold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity py-3.5"
+              className="w-full h-13 rounded-2xl bg-primary text-primary-foreground font-semibold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity py-3.5 md:max-w-xs"
             >
               Get Started
               <ArrowRight className="w-4 h-4" />
             </button>
             <button
               onClick={() => navigate("/auth")}
-              className="w-full h-12 rounded-2xl bg-secondary text-secondary-foreground font-semibold text-sm hover:opacity-80 transition-opacity"
+              className="w-full h-12 rounded-2xl bg-secondary text-secondary-foreground font-semibold text-sm hover:opacity-80 transition-opacity md:max-w-xs"
             >
               I already have an account
             </button>
           </div>
-        </motion.div>
 
-        <div className="mt-8 pb-8">
-          <MedicalDisclaimer compact />
-        </div>
+          <div className="mt-8 pb-8">
+            <MedicalDisclaimer compact />
+          </div>
+        </motion.div>
       </div>
     </div>
   );

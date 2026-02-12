@@ -43,12 +43,12 @@ export default function Articles() {
   );
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background pb-20 md:pb-8">
       <AppHeader title="Health Articles" />
 
-      <main className="px-4 pt-4 max-w-lg mx-auto space-y-4">
+      <main className="px-4 pt-4 max-w-lg md:max-w-4xl lg:max-w-6xl mx-auto space-y-4">
         {/* Search */}
-        <div className="relative">
+        <div className="relative md:max-w-md">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
             placeholder="Search articles..."
@@ -58,7 +58,9 @@ export default function Articles() {
           />
         </div>
 
-        <MedicalDisclaimer compact />
+        <div className="md:max-w-2xl">
+          <MedicalDisclaimer compact />
+        </div>
 
         {/* Articles */}
         {loading ? (
@@ -79,7 +81,7 @@ export default function Articles() {
           </motion.div>
         ) : (
           <motion.div
-            className="space-y-3"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >

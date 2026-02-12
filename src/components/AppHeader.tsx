@@ -1,6 +1,6 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { Bell, Settings, LogOut, Shield } from "lucide-react";
+import { Bell, Settings, LogOut, Shield, Home, FileText, Stethoscope, MapPin, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,6 +11,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
+const desktopNavItems = [
+  { path: "/", icon: Home, label: "Home" },
+  { path: "/articles", icon: FileText, label: "Articles" },
+  { path: "/symptom-checker", icon: Stethoscope, label: "Symptoms" },
+  { path: "/clinics", icon: MapPin, label: "Clinics" },
+  { path: "/appointments", icon: Calendar, label: "Bookings" },
+];
+
 interface AppHeaderProps {
   title?: string;
   showBack?: boolean;
@@ -19,14 +27,18 @@ interface AppHeaderProps {
 export default function AppHeader({ title }: AppHeaderProps) {
   const { user, isAdmin, signOut } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const initials = user?.user_metadata?.first_name
     ? `${user.user_metadata.first_name[0]}${user.user_metadata.last_name?.[0] || ""}`
     : user?.email?.[0]?.toUpperCase() || "U";
 
+  const showDesktopNav =
+    location.pathname !== "/auth" && !location.pathname.startsWith("/admin");
+
   return (
     <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-xl border-b border-border/50 safe-top">
-      <div className="flex items-center justify-between px-4 py-3 max-w-lg mx-auto">
+      <div className="flex items-center justify-between px-4 py-3 max-w-lg md:max-w-4xl lg:max-w-6xl mx-auto">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center">
             <span className="text-primary-foreground font-display font-bold text-sm">A</span>
@@ -35,6 +47,29 @@ export default function AppHeader({ title }: AppHeaderProps) {
             {title || "AfyaConnect"}
           </h1>
         </div>
+
+        {/* Desktop navigation links */}
+        {showDesktopNav && (
+          <nav className="hidden md:flex items-center gap-1">
+            {desktopNavItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <button
+                  key={item.path}
+                  onClick={() => navigate(item.path)}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
+                    isActive
+                      ? "bg-primary/10 text-primary"
+                      : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                  }`}
+                >
+                  <item.icon className="w-4 h-4" />
+                  {item.label}
+                </button>
+              );
+            })}
+          </nav>
+        )}
 
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="icon" className="w-9 h-9 rounded-xl">
