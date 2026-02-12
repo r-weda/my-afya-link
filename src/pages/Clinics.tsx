@@ -45,66 +45,74 @@ export default function Clinics() {
       c.city.toLowerCase().includes(search.toLowerCase())
   );
 
+  const mapClinics = clinics.filter(
+    (c) => c.latitude != null && c.longitude != null
+  ) as { id: string; name: string; address: string; latitude: number; longitude: number }[];
+
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background pb-20 md:pb-8">
       <AppHeader title="Find Clinics" />
 
-      <main className="px-4 pt-4 max-w-lg mx-auto space-y-4">
-        {/* Map placeholder */}
-        <div className="h-48 rounded-2xl overflow-hidden border border-border/50">
-          {loading ? (
-            <div className="h-full flex items-center justify-center bg-secondary/50">
-              <Loader2 className="w-6 h-6 animate-spin text-primary" />
+      <main className="px-4 pt-4 max-w-lg md:max-w-4xl lg:max-w-6xl mx-auto space-y-4">
+        {/* Desktop: side-by-side map + list. Mobile: stacked */}
+        <div className="md:flex md:gap-6">
+          {/* Map + search column */}
+          <div className="md:w-1/2 lg:w-2/5 space-y-4 md:sticky md:top-20 md:self-start">
+            {/* Map */}
+            <div className="h-48 md:h-72 lg:h-96 rounded-2xl overflow-hidden border border-border/50">
+              {loading ? (
+                <div className="h-full flex items-center justify-center bg-secondary/50">
+                  <Loader2 className="w-6 h-6 animate-spin text-primary" />
+                </div>
+              ) : (
+                <ClinicMap clinics={mapClinics} />
+              )}
             </div>
-          ) : (
-            <ClinicMap
-              clinics={clinics.filter(
-                (c) => c.latitude != null && c.longitude != null
-              ) as { id: string; name: string; address: string; latitude: number; longitude: number }[]}
-            />
-          )}
-        </div>
 
-        {/* Search */}
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input
-            placeholder="Search clinics, hospitals..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-10 rounded-xl h-11 bg-secondary/50 border-0"
-          />
-        </div>
-
-        {/* Clinic list */}
-        {loading ? (
-          <div className="flex justify-center py-12">
-            <Loader2 className="w-6 h-6 animate-spin text-primary" />
-          </div>
-        ) : filtered.length === 0 ? (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-12">
-            <p className="text-muted-foreground text-sm">
-              {clinics.length === 0
-                ? "No clinics registered yet."
-                : "No clinics match your search."}
-            </p>
-          </motion.div>
-        ) : (
-          <motion.div className="space-y-3" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            {filtered.map((clinic) => (
-              <ClinicCard
-                key={clinic.id}
-                name={clinic.name}
-                address={clinic.address}
-                city={clinic.city}
-                phone={clinic.phone_number || undefined}
-                operatingHours={clinic.operating_hours || undefined}
-                services={clinic.services || undefined}
-                isVerified={clinic.is_verified}
+            {/* Search */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Input
+                placeholder="Search clinics, hospitals..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="pl-10 rounded-xl h-11 bg-secondary/50 border-0"
               />
-            ))}
-          </motion.div>
-        )}
+            </div>
+          </div>
+
+          {/* Clinic list */}
+          <div className="mt-4 md:mt-0 md:flex-1">
+            {loading ? (
+              <div className="flex justify-center py-12">
+                <Loader2 className="w-6 h-6 animate-spin text-primary" />
+              </div>
+            ) : filtered.length === 0 ? (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-12">
+                <p className="text-muted-foreground text-sm">
+                  {clinics.length === 0
+                    ? "No clinics registered yet."
+                    : "No clinics match your search."}
+                </p>
+              </motion.div>
+            ) : (
+              <motion.div className="space-y-3" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                {filtered.map((clinic) => (
+                  <ClinicCard
+                    key={clinic.id}
+                    name={clinic.name}
+                    address={clinic.address}
+                    city={clinic.city}
+                    phone={clinic.phone_number || undefined}
+                    operatingHours={clinic.operating_hours || undefined}
+                    services={clinic.services || undefined}
+                    isVerified={clinic.is_verified}
+                  />
+                ))}
+              </motion.div>
+            )}
+          </div>
+        </div>
       </main>
 
       <BottomNav />

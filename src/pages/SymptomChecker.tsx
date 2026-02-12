@@ -83,10 +83,10 @@ export default function SymptomChecker() {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background pb-20 md:pb-8">
       <AppHeader title="Symptom Checker" />
 
-      <main className="px-4 pt-4 max-w-lg mx-auto space-y-5">
+      <main className="px-4 pt-4 max-w-lg md:max-w-2xl mx-auto space-y-5">
         <MedicalDisclaimer compact />
 
         <AnimatePresence mode="wait">
@@ -143,7 +143,7 @@ export default function SymptomChecker() {
               <Button
                 onClick={handleCheck}
                 disabled={selected.length === 0}
-                className="w-full h-12 rounded-xl font-semibold"
+                className="w-full md:w-auto h-12 rounded-xl font-semibold"
               >
                 Check Symptoms
                 <ChevronRight className="w-4 h-4 ml-1" />
@@ -167,7 +167,7 @@ export default function SymptomChecker() {
                 </div>
                 <h3 className="font-display font-bold text-xl text-foreground mb-2">{result.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed mb-4">{result.description}</p>
-                <Button variant="outline" className="rounded-xl w-full" onClick={() => {}}>
+                <Button variant="outline" className="rounded-xl w-full md:w-auto" onClick={() => {}}>
                   {result.action}
                 </Button>
               </div>
@@ -187,7 +187,7 @@ export default function SymptomChecker() {
               <Button
                 variant="outline"
                 onClick={handleReset}
-                className="w-full h-11 rounded-xl"
+                className="w-full md:w-auto h-11 rounded-xl"
               >
                 <RotateCcw className="w-4 h-4 mr-2" />
                 Start Over

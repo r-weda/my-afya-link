@@ -34,7 +34,7 @@ const statusColors: Record<string, string> = {
   completed: "bg-primary/10 text-primary border-primary/20",
 };
 
-export default function Profile() {
+export default function ProfilePage() {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -106,16 +106,16 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background pb-20 md:pb-8">
       <AppHeader title="Profile" />
 
       <motion.main
-        className="px-4 pt-4 max-w-lg mx-auto space-y-6"
+        className="px-4 pt-4 max-w-lg md:max-w-4xl mx-auto md:flex md:gap-6 space-y-6 md:space-y-0"
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
       >
         {/* Profile Info */}
-        <section className="elevated-card rounded-2xl p-5 space-y-4">
+        <section className="elevated-card rounded-2xl p-5 space-y-4 md:w-1/2 md:self-start md:sticky md:top-20">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
               <User className="w-5 h-5 text-primary" />
@@ -174,7 +174,7 @@ export default function Profile() {
         </section>
 
         {/* Appointment History */}
-        <section>
+        <section className="md:flex-1">
           <h3 className="font-display font-semibold text-sm text-muted-foreground uppercase tracking-wider mb-3">
             Appointment History
           </h3>
