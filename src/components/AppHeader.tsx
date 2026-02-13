@@ -43,7 +43,7 @@ export default function AppHeader({ title }: AppHeaderProps) {
           <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center">
             <span className="text-primary-foreground font-display font-bold text-sm">A</span>
           </div>
-          <h1 className="font-display font-bold text-lg text-foreground">
+          <h1 className="font-display font-bold text-lg md:text-xl text-foreground">
             {title || "AfyaConnect"}
           </h1>
         </div>

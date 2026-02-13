@@ -4,6 +4,7 @@ import AppHeader from "@/components/AppHeader";
 import BottomNav from "@/components/BottomNav";
 import QuickActionCard from "@/components/QuickActionCard";
 import MedicalDisclaimer from "@/components/MedicalDisclaimer";
+import Footer from "@/components/Footer";
 import { FileText, Stethoscope, MapPin, Calendar, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import heroImage from "@/assets/hero-health.jpg";
@@ -47,10 +48,10 @@ export default function Index() {
       >
         {/* Greeting */}
         <motion.div variants={item}>
-          <h2 className="font-display font-bold text-2xl md:text-3xl text-foreground">
+          <h2 className="font-display font-bold text-2xl md:text-3xl lg:text-4xl text-foreground">
             Habari, {firstName} 👋
           </h2>
-          <p className="text-sm text-muted-foreground mt-1">How are you feeling today?</p>
+          <p className="text-sm md:text-base text-muted-foreground mt-1">How are you feeling today?</p>
         </motion.div>
 
         {/* Quick Actions */}
@@ -96,6 +97,7 @@ export default function Index() {
         </motion.div>
       </motion.main>
 
+      <Footer />
       <BottomNav />
     </div>
   );
@@ -122,10 +124,10 @@ function LandingPage() {
           <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center mb-4 shadow-lg">
             <span className="text-primary-foreground font-display font-bold text-xl">A</span>
           </div>
-          <h1 className="font-display font-extrabold text-3xl md:text-4xl text-foreground leading-tight mb-2">
+          <h1 className="font-display font-extrabold text-3xl md:text-4xl lg:text-5xl text-foreground leading-tight mb-2">
             AfyaConnect
           </h1>
-          <p className="text-base text-muted-foreground leading-relaxed mb-8">
+          <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-8">
             Your trusted health companion. Access verified health information, find nearby clinics,
             and book appointments — all in one place.
           </p>

@@ -6,6 +6,7 @@ import ArticleCard from "@/components/ArticleCard";
 import MedicalDisclaimer from "@/components/MedicalDisclaimer";
 import { Search, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 
 interface Article {
@@ -106,6 +107,7 @@ export default function Articles() {
         )}
       </main>
 
+      <Footer />
       <BottomNav />
     </div>
   );
