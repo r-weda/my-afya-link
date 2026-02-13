@@ -132,11 +132,3 @@ For commercial use, please contact the project team.
 To become Kenya’s leading digital health connection platform by making healthcare access simple, secure, and location-aware.
 
 
----
-
-If you want, I can now generate:
-
-- A **professional GitHub repository description (short version)**
-- A **README with badges (production-level open source style)**
-- A **technical documentation version for marking**
-- Or a **deployment & architecture diagram section** for higher academic grading**
