@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import AppHeader from "@/components/AppHeader";
 import BottomNav from "@/components/BottomNav";
@@ -12,6 +13,7 @@ import { motion } from "framer-motion";
 interface Article {
   id: string;
   title: string;
+  slug: string;
   summary: string | null;
   content: string;
   source: string | null;
@@ -20,6 +22,7 @@ interface Article {
 }
 
 export default function Articles() {
+  const navigate = useNavigate();
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -28,7 +31,7 @@ export default function Articles() {
     const fetchArticles = async () => {
       const { data } = await supabase
         .from("health_articles")
-        .select("id, title, summary, content, source, image_url, published_at")
+        .select("id, title, slug, summary, content, source, image_url, published_at")
         .eq("is_published", true)
         .order("published_at", { ascending: false });
       setArticles(data || []);
@@ -88,6 +91,7 @@ export default function Articles() {
           >
             {filtered.map((article) => (
               <ArticleCard
+                onClick={() => navigate(`/articles/${article.slug}`)}
                 key={article.id}
                 title={article.title}
                 summary={article.summary || ""}

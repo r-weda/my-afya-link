@@ -7,6 +7,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Articles from "./pages/Articles";
+import ArticleDetail from "./pages/ArticleDetail";
 import SymptomChecker from "./pages/SymptomChecker";
 import Clinics from "./pages/Clinics";
 import Appointments from "./pages/Appointments";
@@ -27,6 +28,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/articles" element={<Articles />} />
+            <Route path="/articles/:slug" element={<ArticleDetail />} />
             <Route path="/symptom-checker" element={<SymptomChecker />} />
             <Route path="/clinics" element={<Clinics />} />
             <Route path="/appointments" element={<Appointments />} />
