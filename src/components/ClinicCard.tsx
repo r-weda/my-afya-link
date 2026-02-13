@@ -32,7 +32,7 @@ export default function ClinicCard({
       <div className="flex items-start justify-between mb-2">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="font-display font-semibold text-base text-card-foreground truncate">
+            <h3 className="font-display font-semibold text-base md:text-lg text-card-foreground truncate">
               {name}
             </h3>
             {isVerified && (

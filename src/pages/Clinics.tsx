@@ -6,6 +6,7 @@ import ClinicCard from "@/components/ClinicCard";
 import ClinicMap from "@/components/ClinicMap";
 import { Search, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 
 interface Clinic {
@@ -115,6 +116,7 @@ export default function Clinics() {
         </div>
       </main>
 
+      <Footer />
       <BottomNav />
     </div>
   );

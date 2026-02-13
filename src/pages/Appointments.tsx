@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
+import Footer from "@/components/Footer";
 import { Calendar, Clock, MapPin, Plus, Loader2, X } from "lucide-react";
 
 interface Clinic {
@@ -303,6 +304,7 @@ export default function Appointments() {
         </div>
       </main>
 
+      <Footer />
       <BottomNav />
     </div>
   );

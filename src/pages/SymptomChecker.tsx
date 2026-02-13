@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { motion, AnimatePresence } from "framer-motion";
+import Footer from "@/components/Footer";
 import { Stethoscope, AlertTriangle, ChevronRight, RotateCcw } from "lucide-react";
 
 const commonSymptoms = [
@@ -104,7 +105,7 @@ export default function SymptomChecker() {
                   <Stethoscope className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <h2 className="font-display font-semibold text-lg text-foreground">
+                  <h2 className="font-display font-semibold text-lg md:text-xl text-foreground">
                     What symptoms do you have?
                   </h2>
                   <p className="text-xs text-muted-foreground">Select all that apply</p>
@@ -199,6 +200,7 @@ export default function SymptomChecker() {
         </AnimatePresence>
       </main>
 
+      <Footer />
       <BottomNav />
     </div>
   );
