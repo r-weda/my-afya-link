@@ -95,8 +95,10 @@ function AdminArticles() {
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+    const slug = title.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
     const { error } = await supabase.from("health_articles").insert({
       title,
+      slug,
       summary,
       content,
       source: source || "AfyaConnect",

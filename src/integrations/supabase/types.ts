@@ -151,6 +151,7 @@ export type Database = {
           image_url: string | null
           is_published: boolean
           published_at: string | null
+          slug: string
           source: string | null
           source_url: string | null
           summary: string | null
@@ -165,6 +166,7 @@ export type Database = {
           image_url?: string | null
           is_published?: boolean
           published_at?: string | null
+          slug: string
           source?: string | null
           source_url?: string | null
           summary?: string | null
@@ -179,6 +181,7 @@ export type Database = {
           image_url?: string | null
           is_published?: boolean
           published_at?: string | null
+          slug?: string
           source?: string | null
           source_url?: string | null
           summary?: string | null
