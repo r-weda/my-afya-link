@@ -1,73 +1,142 @@
-# Welcome to your Lovable project
+# 🏥 Afyaconnect (My Afya Link)
 
-## Project info
+🌐 **Live Application:** https://my-afya-link.vercel.app/
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+Afyaconnect (My Afya Link) is a digital health platform developed to improve healthcare accessibility in Kenya by connecting patients with nearby clinics through a mobile-first web application.
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## 📌 Project Overview
 
-**Use Lovable**
+Access to reliable healthcare services remains a challenge in many regions. Patients often struggle to:
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+- Locate nearby clinics
+- Verify clinic services
+- Access contact information
+- Make secure digital payments
 
-Changes made via Lovable will be committed automatically to this repo.
+**Afyaconnect provides a technological solution by offering:**
 
-**Use your preferred IDE**
+- 📍 Location-based clinic discovery
+- 🏥 Verified clinic listings
+- 🗺 Interactive map integration
+- 💳 M-Pesa payment support (Daraja API ready)
+- 📱 Mobile-first responsive design
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+---
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 🎯 Project Objectives
 
-Follow these steps:
+1. Improve healthcare accessibility through digital clinic discovery.
+2. Provide structured and verified clinic information.
+3. Enable secure digital payments via M-Pesa.
+4. Create a scalable health-tech solution for Kenya.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+---
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## 🛠 Tech Stack
 
-# Step 3: Install the necessary dependencies.
-npm i
+- **Frontend:** Lovable (Mobile-first web app)
+- **Backend:** Supabase
+- **Database:** PostgreSQL (via Supabase)
+- **Maps:** OpenStreetMap
+- **Payments:** Safaricom Daraja API (M-Pesa)
+- **Hosting:** Vercel
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+---
+
+## 🔥 Core Features
+
+### 📍 Clinic Discovery
+- Search for nearby clinics
+- View clinic details
+- Access contact information
+
+### 🗺 Map Integration
+- OpenStreetMap integration
+- Location-based clinic display
+- Navigation support
+
+### 💳 Digital Payments
+- M-Pesa STK Push integration (Daraja API)
+- Secure transaction logging
+- Payment verification system
+
+### 🔐 Authentication & Data Management
+- Secure user authentication
+- Role-based access control
+- Cloud-based database storage
+
+### 📱 Mobile-First Design
+- Optimized for smartphones
+- Fully responsive on tablets and desktops
+- Lightweight and fast-loading interface
+
+---
+
+## 🏗 System Architecture
+
+User (Browser)  
+→ Frontend (Lovable)  
+→ Supabase (Authentication & Database)  
+→ External APIs  
+&nbsp;&nbsp;&nbsp;&nbsp;• OpenStreetMap  
+&nbsp;&nbsp;&nbsp;&nbsp;• Safaricom Daraja API  
+
+---
+
+## ⚙️ Local Development Setup
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/your-username/afyaconnect.git
+cd afyaconnect
+2. Install Dependencies
+npm install
+3. Configure Environment Variables
+Create a .env file:
+
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_key
+DARJA_CONSUMER_KEY=your_daraja_key
+DARJA_CONSUMER_SECRET=your_daraja_secret
+4. Run Development Server
 npm run dev
-```
+🚀 Future Enhancements
+Real-time clinic availability
 
-**Edit a file directly in GitHub**
+Appointment booking system
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Telemedicine integration
 
-**Use GitHub Codespaces**
+Digital medical records
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Admin analytics dashboard
 
-## What technologies are used for this project?
+AI-powered clinic recommendations
 
-This project is built with:
+👨‍💻 Contributors
+Robert Weda – System Design & Development
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+IT Group Members – Research, Testing & Documentation
 
-## How can I deploy this project?
+📖 Academic Context
+This system was developed as an Information Technology group project aimed at solving healthcare accessibility challenges in Kenya using scalable digital technologies.
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+📜 License
+This project is developed for academic purposes.
+For commercial use, please contact the project team.
 
-## Can I connect a custom domain to my Lovable project?
+🌍 Vision
+To become Kenya’s leading digital health connection platform by making healthcare access simple, secure, and location-aware.
 
-Yes, you can!
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+---
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+If you want, I can now generate:
+
+- A **professional GitHub repository description (short version)**
+- A **README with badges (production-level open source style)**
+- A **technical documentation version for marking**
+- Or a **deployment & architecture diagram section** for higher academic grading**
