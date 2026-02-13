@@ -45,9 +45,9 @@
     --info: 200 80% 55%;
     --info-foreground: 0 0% 100%;
 
-    --shadow-card: 0 2px 16px -2px hsl(210 30% 80% / 0.4);
-    --shadow-elevated: 0 8px 32px -4px hsl(210 30% 70% / 0.3);
-    --shadow-bottom-nav: 0 -4px 24px -2px hsl(210 30% 80% / 0.3);
+    --shadow-card: 0 4px 20px -2px hsl(210 30% 65% / 0.5);
+    --shadow-elevated: 0 10px 40px -4px hsl(210 30% 55% / 0.4);
+    --shadow-bottom-nav: 0 -6px 28px -2px hsl(210 30% 65% / 0.4);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
