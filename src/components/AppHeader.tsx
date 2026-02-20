@@ -38,12 +38,12 @@ export default function AppHeader({ title }: AppHeaderProps) {
 
   return (
     <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-xl border-b border-border/50 safe-top">
-      <div className="flex items-center justify-between px-4 py-3 max-w-lg md:max-w-4xl lg:max-w-6xl mx-auto">
+      <div className="flex items-center justify-between px-4 md:px-6 py-3 md:py-3.5 max-w-lg md:max-w-4xl lg:max-w-6xl mx-auto">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center">
+          <div className="w-8 h-8 md:w-9 md:h-9 rounded-xl bg-primary flex items-center justify-center">
             <span className="text-primary-foreground font-display font-bold text-sm">A</span>
           </div>
-          <h1 className="font-display font-bold text-lg md:text-xl text-foreground">
+          <h1 className="font-display font-bold text-lg md:text-xl lg:text-2xl text-foreground">
             {title || "AfyaConnect"}
           </h1>
         </div>
@@ -51,20 +51,20 @@ export default function AppHeader({ title }: AppHeaderProps) {
         {/* Desktop navigation links */}
         {showDesktopNav && (
           <nav className="hidden md:flex items-center gap-1">
-            {desktopNavItems.map((item) => {
-              const isActive = location.pathname === item.path;
+            {desktopNavItems.map((navItem) => {
+              const isActive = location.pathname === navItem.path;
               return (
                 <button
-                  key={item.path}
-                  onClick={() => navigate(item.path)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
+                  key={navItem.path}
+                  onClick={() => navigate(navItem.path)}
+                  className={`flex items-center gap-2 px-3 lg:px-4 py-2 rounded-xl text-sm lg:text-base font-medium transition-colors ${
                     isActive
                       ? "bg-primary/10 text-primary"
                       : "text-muted-foreground hover:bg-secondary hover:text-foreground"
                   }`}
                 >
-                  <item.icon className="w-4 h-4" />
-                  {item.label}
+                  <navItem.icon className="w-4 h-4" />
+                  {navItem.label}
                 </button>
               );
             })}
