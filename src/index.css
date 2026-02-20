@@ -139,6 +139,12 @@
   .elevated-card {
     @apply bg-card border border-border/30;
     box-shadow: var(--shadow-elevated);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .elevated-card:hover {
+    box-shadow: 0 16px 48px -6px hsl(210 30% 45% / 0.55);
+    transform: translateY(-2px);
   }
 
   .bottom-nav-shadow {

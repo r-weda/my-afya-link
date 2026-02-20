@@ -41,17 +41,35 @@ export default function Index() {
       <AppHeader />
 
       <motion.main
-        className="px-4 pt-6 max-w-lg md:max-w-4xl lg:max-w-6xl mx-auto space-y-8"
+        className="px-4 md:px-6 pt-6 max-w-lg md:max-w-4xl lg:max-w-[1400px] mx-auto space-y-8"
         variants={container}
         initial="hidden"
         animate="show"
       >
-        {/* Greeting */}
-        <motion.div variants={item}>
-          <h2 className="font-display font-bold text-2xl md:text-3xl lg:text-4xl text-foreground">
-            Habari, {firstName} 👋
-          </h2>
-          <p className="text-sm md:text-base lg:text-lg text-muted-foreground mt-1">How are you feeling today?</p>
+        {/* Greeting + Primary CTA */}
+        <motion.div variants={item} className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+          <div>
+            <h2 className="font-display font-bold text-2xl md:text-3xl lg:text-4xl text-foreground">
+              Habari, {firstName} 👋
+            </h2>
+            <p className="text-sm md:text-base lg:text-lg text-muted-foreground mt-1">How are you feeling today?</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigate("/symptom-checker")}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-primary text-primary-foreground font-semibold text-sm hover:opacity-90 transition-opacity shadow-md shrink-0"
+            >
+              <Stethoscope className="w-4 h-4" />
+              Check Symptoms Now
+            </button>
+            <button
+              onClick={() => navigate("/appointments")}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-secondary text-secondary-foreground font-semibold text-sm hover:opacity-80 transition-opacity shrink-0"
+            >
+              <Calendar className="w-4 h-4" />
+              Book Appointment
+            </button>
+          </div>
         </motion.div>
 
         {/* Quick Actions */}
@@ -66,6 +84,7 @@ export default function Index() {
               description="Describe what you feel"
               color="bg-primary/10 text-primary"
               onClick={() => navigate("/symptom-checker")}
+              prominent
             />
             <QuickActionCard
               icon={Calendar}
@@ -92,7 +111,7 @@ export default function Index() {
         </motion.div>
 
         {/* Medical Disclaimer */}
-        <motion.div variants={item} className="md:max-w-2xl">
+        <motion.div variants={item} className="md:max-w-xl">
           <MedicalDisclaimer compact />
         </motion.div>
       </motion.main>
