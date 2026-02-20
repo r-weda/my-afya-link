@@ -65,6 +65,30 @@ serve(async (req: Request) => {
       appointmentTime,
     }: ReminderRequest = await req.json();
 
+    // Verify ownership: if appointmentId is provided, confirm the authenticated user owns it
+    if (appointmentId) {
+      const authenticatedUserId = claimsData.claims.sub;
+      const { data: appointment, error: apptError } = await supabase
+        .from("appointments")
+        .select("user_id")
+        .eq("id", appointmentId)
+        .single();
+
+      if (apptError || !appointment) {
+        return new Response(JSON.stringify({ error: "Appointment not found" }), {
+          status: 404,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      if (appointment.user_id !== authenticatedUserId) {
+        return new Response(JSON.stringify({ error: "Forbidden: you do not own this appointment" }), {
+          status: 403,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+    }
+
     if (!phoneNumber || !clinicName || !appointmentDate || !appointmentTime) {
       return new Response(
         JSON.stringify({ error: "Missing required fields: phoneNumber, clinicName, appointmentDate, appointmentTime" }),
