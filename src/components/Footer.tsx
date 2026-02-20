@@ -19,32 +19,34 @@ export default function Footer() {
 
   return (
     <footer className="hidden md:block border-t border-border/50 bg-card/50 mt-12">
-      <div className="max-w-7xl mx-auto px-6 py-7">
-        <div className="grid grid-cols-3 gap-8">
+      <div className="max-w-lg md:max-w-4xl lg:max-w-[1400px] mx-auto px-4 md:px-6 py-8">
+        <div className="grid grid-cols-3 gap-10">
           {/* Brand */}
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-xs">A</span>
+          <div className="space-y-3">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center shrink-0">
+                <span className="text-primary-foreground font-display font-bold text-sm">A</span>
               </div>
               <span className="font-display font-bold text-base text-foreground">AfyaConnect</span>
             </div>
-            <p className="text-xs text-muted-foreground leading-relaxed">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               Your trusted health companion. Access verified health information, find nearby clinics, and book appointments.
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-display font-semibold text-xs text-foreground mb-3 uppercase tracking-wide">Quick Links</h4>
-            <ul className="space-y-1.5">
+            <h4 className="font-display font-semibold text-xs text-muted-foreground uppercase tracking-wider mb-4">
+              Quick Links
+            </h4>
+            <ul className="space-y-2">
               {footerLinks.map((link) => (
                 <li key={link.path}>
                   <button
                     onClick={() => navigate(link.path)}
-                    className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5"
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
                   >
-                    <link.icon className="w-3 h-3" />
+                    <link.icon className="w-3.5 h-3.5 text-primary/60" />
                     {link.label}
                   </button>
                 </li>
@@ -54,8 +56,10 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="font-display font-semibold text-xs text-foreground mb-3 uppercase tracking-wide">Support</h4>
-            <ul className="space-y-1.5 text-xs text-muted-foreground">
+            <h4 className="font-display font-semibold text-xs text-muted-foreground uppercase tracking-wider mb-4">
+              Support
+            </h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
               <li>support@afyaconnect.co.ke</li>
               <li>+254 700 000 000</li>
               <li>Nairobi, Kenya</li>
@@ -63,7 +67,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-border/50 mt-6 pt-4 flex items-center justify-between text-[11px] text-muted-foreground/70">
+        <div className="border-t border-border/50 mt-7 pt-5 flex items-center justify-between text-xs text-muted-foreground/70">
           <span>© {new Date().getFullYear()} AfyaConnect. All rights reserved.</span>
           <span>Not a substitute for professional medical advice.</span>
         </div>
