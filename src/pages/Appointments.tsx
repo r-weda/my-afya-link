@@ -147,7 +147,7 @@ export default function Appointments() {
   const today = new Date().toISOString().split("T")[0];
 
   return (
-    <div className="min-h-screen bg-background pb-20 md:pb-8">
+    <div className="min-h-screen bg-background pb-20 md:pb-8 flex flex-col">
       <AppHeader title="Appointments" />
 
       <main className="px-4 pt-4 max-w-lg md:max-w-4xl mx-auto space-y-4">
@@ -304,6 +304,7 @@ export default function Appointments() {
         </div>
       </main>
 
+      <div className="flex-1" />
       <Footer />
       <BottomNav />
     </div>
