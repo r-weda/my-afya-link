@@ -84,7 +84,7 @@ export default function SymptomChecker() {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-20 md:pb-8">
+    <div className="min-h-screen bg-background pb-20 md:pb-8 flex flex-col">
       <AppHeader title="Symptom Checker" />
 
       <main className="px-4 pt-4 max-w-lg md:max-w-2xl mx-auto space-y-5">
@@ -200,6 +200,7 @@ export default function SymptomChecker() {
         </AnimatePresence>
       </main>
 
+      <div className="flex-1" />
       <Footer />
       <BottomNav />
     </div>
