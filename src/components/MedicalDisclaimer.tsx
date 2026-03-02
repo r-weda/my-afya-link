@@ -10,7 +10,7 @@ export default function MedicalDisclaimer({ compact = false }: MedicalDisclaimer
       <div className="flex items-start gap-2 p-2.5 rounded-xl bg-[hsl(45,100%,90%)] border border-[hsl(40,100%,50%)]">
         <AlertTriangle className="w-3.5 h-3.5 text-destructive shrink-0 mt-0.5" />
         <p className="text-xs text-[hsl(0,70%,30%)] leading-relaxed">
-          <span className="font-bold text-destructive">⚠ Disclaimer:</span> For educational purposes only.
+          <span className="font-bold text-destructive">Disclaimer:</span> For educational purposes only.
           Not a substitute for professional medical advice.
         </p>
       </div>
@@ -21,7 +21,7 @@ export default function MedicalDisclaimer({ compact = false }: MedicalDisclaimer
     <div className="p-4 rounded-2xl bg-[hsl(45,100%,90%)] border-2 border-[hsl(40,100%,50%)]">
       <div className="flex items-center gap-2 mb-2">
         <AlertTriangle className="w-4 h-4 text-destructive" />
-        <h4 className="font-display font-bold text-xs text-destructive uppercase tracking-wide">⚠ Medical Disclaimer</h4>
+        <h4 className="font-display font-bold text-xs text-destructive uppercase tracking-wide">Medical Disclaimer</h4>
       </div>
       <p className="text-xs text-[hsl(0,70%,30%)] leading-relaxed">
         The health information provided on AfyaConnect is for general educational and informational
