@@ -51,7 +51,7 @@ export default function Clinics() {
   ) as { id: string; name: string; address: string; latitude: number; longitude: number }[];
 
   return (
-    <div className="min-h-screen bg-background pb-20 md:pb-8">
+    <div className="min-h-screen bg-background pb-20 md:pb-8 flex flex-col">
       <AppHeader title="Find Clinics" />
 
       <main className="px-4 pt-4 max-w-lg md:max-w-4xl lg:max-w-6xl mx-auto space-y-4">
@@ -116,6 +116,7 @@ export default function Clinics() {
         </div>
       </main>
 
+      <div className="flex-1" />
       <Footer />
       <BottomNav />
     </div>
