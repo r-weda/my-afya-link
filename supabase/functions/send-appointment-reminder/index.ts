@@ -24,12 +24,20 @@ serve(async (req: Request) => {
   try {
     const apiKey = Deno.env.get("AFRICASTALKING_API_KEY");
     if (!apiKey) {
-      throw new Error("AFRICASTALKING_API_KEY is not configured");
+      console.error("AFRICASTALKING_API_KEY is not configured");
+      return new Response(JSON.stringify({ success: false, error: "SMS service is currently unavailable. Please try again later." }), {
+        status: 503,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     const username = Deno.env.get("AFRICASTALKING_USERNAME");
     if (!username) {
-      throw new Error("AFRICASTALKING_USERNAME is not configured");
+      console.error("AFRICASTALKING_USERNAME is not configured");
+      return new Response(JSON.stringify({ success: false, error: "SMS service is currently unavailable. Please try again later." }), {
+        status: 503,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     // Authenticate the request
@@ -124,7 +132,8 @@ serve(async (req: Request) => {
     const smsResult = await smsResponse.json();
 
     if (!smsResponse.ok) {
-      throw new Error(`Africa's Talking API error [${smsResponse.status}]: ${JSON.stringify(smsResult)}`);
+      console.error(`Africa's Talking API error [${smsResponse.status}]:`, smsResult);
+      throw new Error("SMS delivery failed");
     }
 
     // Mark reminder as sent if appointmentId is provided
@@ -143,8 +152,7 @@ serve(async (req: Request) => {
     });
   } catch (error: unknown) {
     console.error("Error sending SMS reminder:", error);
-    const errorMessage = error instanceof Error ? error.message : "Unknown error";
-    return new Response(JSON.stringify({ success: false, error: errorMessage }), {
+    return new Response(JSON.stringify({ success: false, error: "Unable to send SMS reminder. Please try again later." }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
