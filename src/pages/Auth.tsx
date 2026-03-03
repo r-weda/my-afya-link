@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, ArrowLeft, Eye, EyeOff, Loader2 } from "lucide-react";
+import { HeartPulse, ArrowLeft, Eye, EyeOff, Loader2, Shield, Clock, Users } from "lucide-react";
 import { z } from "zod";
 
 const loginSchema = z.object({
@@ -85,6 +85,130 @@ export default function Auth() {
     setIsLoading(false);
   };
 
+  const formContent = (
+    <>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-8 text-center md:text-left"
+      >
+        <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto md:mx-0 mb-4">
+          <HeartPulse className="w-8 h-8 text-primary" />
+        </div>
+        <h1 className="font-display font-bold text-2xl text-foreground mb-1">
+          {isLogin ? "Welcome back" : "Create account"}
+        </h1>
+        <p className="text-sm text-muted-foreground">
+          {isLogin ? "Sign in to continue to AfyaConnect" : "Join AfyaConnect for better health"}
+        </p>
+      </motion.div>
+
+      <AnimatePresence mode="wait">
+        <motion.form
+          key={isLogin ? "login" : "signup"}
+          initial={{ opacity: 0, x: isLogin ? -20 : 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: isLogin ? 20 : -20 }}
+          transition={{ duration: 0.2 }}
+          onSubmit={handleSubmit}
+          className="space-y-4"
+        >
+          {!isLogin && (
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label htmlFor="firstName" className="text-xs font-medium">First Name</Label>
+                <Input
+                  id="firstName"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  placeholder="John"
+                  className="rounded-xl h-11"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="lastName" className="text-xs font-medium">Last Name</Label>
+                <Input
+                  id="lastName"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  placeholder="Doe"
+                  className="rounded-xl h-11"
+                />
+              </div>
+            </div>
+          )}
+
+          <div className="space-y-1.5">
+            <Label htmlFor="email" className="text-xs font-medium">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              className="rounded-xl h-11"
+              autoComplete="email"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="password" className="text-xs font-medium">Password</Label>
+            <div className="relative">
+              <Input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="rounded-xl h-11 pr-10"
+                autoComplete={isLogin ? "current-password" : "new-password"}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+          </div>
+
+          {!isLogin && (
+            <div className="space-y-1.5">
+              <Label htmlFor="confirmPassword" className="text-xs font-medium">Confirm Password</Label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="••••••••"
+                className="rounded-xl h-11"
+                autoComplete="new-password"
+              />
+            </div>
+          )}
+
+          <Button type="submit" className="w-full h-12 rounded-xl font-semibold text-sm" disabled={isLoading}>
+            {isLoading ? (
+              <Loader2 className="w-4 h-4 animate-spin mr-2" />
+            ) : null}
+            {isLogin ? "Sign In" : "Create Account"}
+          </Button>
+        </motion.form>
+      </AnimatePresence>
+
+      <p className="text-center md:text-left text-sm text-muted-foreground mt-6">
+        {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+        <button
+          onClick={() => setIsLogin(!isLogin)}
+          className="text-primary font-semibold hover:underline"
+        >
+          {isLogin ? "Sign Up" : "Sign In"}
+        </button>
+      </p>
+    </>
+  );
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <div className="px-4 pt-4 safe-top">
@@ -93,126 +217,44 @@ export default function Auth() {
         </Button>
       </div>
 
-      <div className="flex-1 flex flex-col justify-center px-6 pb-8 max-w-md mx-auto w-full">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8 text-center"
-        >
-          <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
-            <Heart className="w-8 h-8 text-primary" />
+      {/* Mobile: centered single column */}
+      <div className="flex-1 flex md:hidden flex-col justify-center px-6 pb-8 max-w-md mx-auto w-full">
+        {formContent}
+      </div>
+
+      {/* Desktop: split screen */}
+      <div className="hidden md:flex flex-1">
+        {/* Left branding panel */}
+        <div className="w-[45%] lg:w-[50%] bg-primary flex items-center justify-center p-12">
+          <div className="max-w-sm text-primary-foreground">
+            <HeartPulse className="w-14 h-14 mb-6" />
+            <h2 className="font-display font-extrabold text-3xl lg:text-4xl mb-4 leading-tight">
+              Your health, simplified.
+            </h2>
+            <p className="text-primary-foreground/80 text-base lg:text-lg leading-relaxed mb-8">
+              Access verified health information, find nearby clinics, and book appointments — all in one place.
+            </p>
+            <div className="space-y-4">
+              {[
+                { icon: Shield, text: "Verified medical information" },
+                { icon: Clock, text: "24/7 symptom checking" },
+                { icon: Users, text: "Trusted by 10,000+ Kenyans" },
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-3 text-primary-foreground/90">
+                  <item.icon className="w-5 h-5 shrink-0" />
+                  <span className="text-sm font-medium">{item.text}</span>
+                </div>
+              ))}
+            </div>
           </div>
-          <h1 className="font-display font-bold text-2xl text-foreground mb-1">
-            {isLogin ? "Welcome back" : "Create account"}
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            {isLogin ? "Sign in to continue to AfyaConnect" : "Join AfyaConnect for better health"}
-          </p>
-        </motion.div>
+        </div>
 
-        <AnimatePresence mode="wait">
-          <motion.form
-            key={isLogin ? "login" : "signup"}
-            initial={{ opacity: 0, x: isLogin ? -20 : 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: isLogin ? 20 : -20 }}
-            transition={{ duration: 0.2 }}
-            onSubmit={handleSubmit}
-            className="space-y-4"
-          >
-            {!isLogin && (
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1.5">
-                  <Label htmlFor="firstName" className="text-xs font-medium">First Name</Label>
-                  <Input
-                    id="firstName"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    placeholder="John"
-                    className="rounded-xl h-11"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="lastName" className="text-xs font-medium">Last Name</Label>
-                  <Input
-                    id="lastName"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    placeholder="Doe"
-                    className="rounded-xl h-11"
-                  />
-                </div>
-              </div>
-            )}
-
-            <div className="space-y-1.5">
-              <Label htmlFor="email" className="text-xs font-medium">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
-                className="rounded-xl h-11"
-                autoComplete="email"
-              />
-            </div>
-
-            <div className="space-y-1.5">
-              <Label htmlFor="password" className="text-xs font-medium">Password</Label>
-              <div className="relative">
-                <Input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="rounded-xl h-11 pr-10"
-                  autoComplete={isLogin ? "current-password" : "new-password"}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-                >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-            </div>
-
-            {!isLogin && (
-              <div className="space-y-1.5">
-                <Label htmlFor="confirmPassword" className="text-xs font-medium">Confirm Password</Label>
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="rounded-xl h-11"
-                  autoComplete="new-password"
-                />
-              </div>
-            )}
-
-            <Button type="submit" className="w-full h-12 rounded-xl font-semibold text-sm" disabled={isLoading}>
-              {isLoading ? (
-                <Loader2 className="w-4 h-4 animate-spin mr-2" />
-              ) : null}
-              {isLogin ? "Sign In" : "Create Account"}
-            </Button>
-          </motion.form>
-        </AnimatePresence>
-
-        <p className="text-center text-sm text-muted-foreground mt-6">
-          {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
-          <button
-            onClick={() => setIsLogin(!isLogin)}
-            className="text-primary font-semibold hover:underline"
-          >
-            {isLogin ? "Sign Up" : "Sign In"}
-          </button>
-        </p>
+        {/* Right form panel */}
+        <div className="flex-1 flex items-center justify-center px-8 lg:px-16">
+          <div className="w-full max-w-md">
+            {formContent}
+          </div>
+        </div>
       </div>
     </div>
   );

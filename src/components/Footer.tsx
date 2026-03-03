@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { FileText, Stethoscope, MapPin, Calendar, Home } from "lucide-react";
+import { FileText, Stethoscope, MapPin, Calendar, Home, HeartPulse } from "lucide-react";
 
 const footerLinks = [
   { path: "/", icon: Home, label: "Home" },
@@ -23,10 +23,8 @@ export default function Footer() {
         <div className="grid grid-cols-3 gap-10">
           {/* Brand */}
           <div className="space-y-3">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center shrink-0">
-                <span className="text-primary-foreground font-display font-bold text-sm">A</span>
-              </div>
+            <div className="flex items-center gap-2">
+              <HeartPulse className="w-6 h-6 text-primary shrink-0" />
               <span className="font-display font-bold text-base text-foreground">AfyaConnect</span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">

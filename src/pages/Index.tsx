@@ -3,9 +3,9 @@ import { useAuth } from "@/hooks/useAuth";
 import AppHeader from "@/components/AppHeader";
 import BottomNav from "@/components/BottomNav";
 import QuickActionCard from "@/components/QuickActionCard";
-import MedicalDisclaimer from "@/components/MedicalDisclaimer";
+import FeedbackForm from "@/components/FeedbackForm";
 import Footer from "@/components/Footer";
-import { FileText, Stethoscope, MapPin, Calendar, ArrowRight, Shield, Clock, Users } from "lucide-react";
+import { FileText, Stethoscope, MapPin, Calendar, ArrowRight, Shield, Clock, Users, HeartPulse } from "lucide-react";
 import { motion } from "framer-motion";
 import heroImage from "@/assets/hero-health.jpg";
 
@@ -47,28 +47,33 @@ export default function Index() {
         animate="show"
       >
         {/* Greeting + Primary CTA */}
-        <motion.div variants={item} className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-          <div>
-            <h2 className="font-display font-bold text-2xl md:text-3xl lg:text-4xl text-foreground">
-              Habari, {firstName} 👋
-            </h2>
-            <p className="text-sm md:text-base lg:text-lg text-muted-foreground mt-1">How are you feeling today?</p>
-          </div>
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => navigate("/symptom-checker")}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-primary text-primary-foreground font-semibold text-sm hover:opacity-90 transition-opacity shadow-md shrink-0"
-            >
-              <Stethoscope className="w-4 h-4" />
-              Check Symptoms Now
-            </button>
-            <button
-              onClick={() => navigate("/appointments")}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-secondary text-secondary-foreground font-semibold text-sm hover:opacity-80 transition-opacity shrink-0"
-            >
-              <Calendar className="w-4 h-4" />
-              Book Appointment
-            </button>
+        <motion.div variants={item}>
+          {/* Teal gradient strip behind greeting on mobile */}
+          <div className="rounded-2xl bg-gradient-to-r from-primary/10 via-primary/5 to-transparent p-4 md:p-0 md:bg-none">
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+              <div>
+                <h2 className="font-display font-bold text-2xl md:text-3xl lg:text-4xl text-foreground">
+                  Habari, {firstName} 👋
+                </h2>
+                <p className="text-sm md:text-base lg:text-lg text-muted-foreground mt-1">How are you feeling today?</p>
+              </div>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => navigate("/symptom-checker")}
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-primary text-primary-foreground font-semibold text-sm hover:opacity-90 transition-opacity shadow-md shrink-0"
+                >
+                  <Stethoscope className="w-4 h-4" />
+                  Check Symptoms Now
+                </button>
+                <button
+                  onClick={() => navigate("/appointments")}
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-secondary text-secondary-foreground font-semibold text-sm hover:opacity-80 transition-opacity shrink-0"
+                >
+                  <Calendar className="w-4 h-4" />
+                  Book Appointment
+                </button>
+              </div>
+            </div>
           </div>
         </motion.div>
 
@@ -109,11 +114,6 @@ export default function Index() {
             />
           </div>
         </motion.div>
-
-        {/* Medical Disclaimer */}
-        <motion.div variants={item} className="md:max-w-xl">
-          <MedicalDisclaimer compact />
-        </motion.div>
       </motion.main>
 
       <div className="flex-1" />
@@ -140,6 +140,23 @@ const features = [
     title: "Community Trusted",
     description: "Serving thousands of users across Kenya with reliable healthcare guidance.",
   },
+  {
+    icon: Calendar,
+    title: "Easy Booking",
+    description: "Schedule clinic visits in minutes from your phone.",
+  },
+];
+
+const trustBadges = [
+  { emoji: "🔒", text: "Secure & Private" },
+  { emoji: "✅", text: "KMDB Verified" },
+  { emoji: "📍", text: "Kenya-based" },
+];
+
+const stats = [
+  { value: "10,000+", label: "Users" },
+  { value: "50+", label: "Clinics" },
+  { value: "5", label: "Counties" },
 ];
 
 function LandingPage() {
@@ -156,9 +173,11 @@ function LandingPage() {
             alt="Healthcare professionals"
             className="w-full h-full object-cover object-center"
           />
-          {/* overlay fades into bg on the right edge (desktop) and bottom edge (mobile) */}
-          <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-transparent via-transparent to-background" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent md:hidden" />
+          {/* Smooth gradient overlays - no hard cutoff */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background md:hidden" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent md:hidden" style={{ top: '60%' }} />
+          <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-background" />
+          <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-transparent to-background" style={{ left: '60%' }} />
         </div>
 
         {/* Content column */}
@@ -170,19 +189,20 @@ function LandingPage() {
             className="w-full max-w-sm md:max-w-md lg:max-w-lg"
           >
             {/* Logo mark */}
-            <div className="w-14 h-14 lg:w-16 lg:h-16 rounded-2xl bg-primary flex items-center justify-center mb-6 shadow-lg">
-              <span className="text-primary-foreground font-display font-bold text-xl lg:text-2xl">A</span>
+            <div className="flex items-center gap-2.5 mb-6">
+              <HeartPulse className="w-10 h-10 lg:w-12 lg:h-12 text-primary" />
+              <span className="font-display font-extrabold text-2xl lg:text-3xl text-foreground">AfyaConnect</span>
             </div>
 
-            <h1 className="font-display font-extrabold text-4xl md:text-5xl lg:text-6xl text-foreground leading-[1.1] mb-4">
-              AfyaConnect
+            <h1 className="font-display font-extrabold text-3xl md:text-4xl lg:text-5xl text-foreground leading-[1.1] mb-4">
+              Your trusted health companion
             </h1>
-            <p className="text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed mb-10 max-w-md">
-              Your trusted health companion. Access verified health information, find nearby clinics,
+            <p className="text-base md:text-lg lg:text-xl text-muted-foreground font-medium leading-relaxed mb-8 max-w-md">
+              Access verified health information, find nearby clinics,
               and book appointments — all in one place.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3 mb-10">
+            <div className="flex flex-col sm:flex-row gap-3 mb-6">
               <button
                 onClick={() => navigate("/auth")}
                 className="flex-1 sm:flex-none sm:min-w-[160px] h-13 rounded-2xl bg-primary text-primary-foreground font-semibold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity py-3.5 px-6 shadow-md"
@@ -198,22 +218,33 @@ function LandingPage() {
               </button>
             </div>
 
-            <MedicalDisclaimer compact />
+            {/* Trust badges */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-muted-foreground">
+              {trustBadges.map((badge, i) => (
+                <div key={i} className="flex items-center gap-1.5">
+                  <span>{badge.emoji}</span>
+                  <span className="font-medium">{badge.text}</span>
+                </div>
+              ))}
+            </div>
           </motion.div>
         </div>
       </section>
 
       {/* ── Features Strip ── */}
-      <section className="bg-card/60 border-y border-border/50 py-14 px-6 md:px-12 lg:px-16">
+      <section className="py-14 px-5 md:px-12 lg:px-16">
         <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.5 }}
-            className="grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-10"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"
           >
             {features.map((f) => (
-              <div key={f.title} className="flex flex-col items-start gap-3">
+              <div
+                key={f.title}
+                className="flex flex-col items-start gap-3 bg-card rounded-2xl p-5 border-t-[3px] border-t-primary shadow-sm"
+              >
                 <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                   <f.icon className="w-5 h-5 text-primary" />
                 </div>
@@ -227,6 +258,9 @@ function LandingPage() {
         </div>
       </section>
 
+      {/* ── Feedback Form ── */}
+      <FeedbackForm />
+
       {/* ── CTA Footer ── */}
       <section className="py-16 px-6 text-center">
         <motion.div
@@ -235,6 +269,15 @@ function LandingPage() {
           transition={{ delay: 0.55, duration: 0.5 }}
           className="max-w-xl mx-auto"
         >
+          {/* Social proof stats */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 mb-6">
+            {stats.map((stat, i) => (
+              <span key={i} className="font-display font-bold text-primary text-base md:text-lg">
+                {stat.value} {stat.label}
+              </span>
+            ))}
+          </div>
+
           <h2 className="font-display font-bold text-2xl md:text-3xl lg:text-4xl text-foreground mb-3">
             Ready to take control of your health?
           </h2>
