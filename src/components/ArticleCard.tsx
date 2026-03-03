@@ -7,7 +7,6 @@ interface ArticleCardProps {
   source: string;
   imageUrl?: string;
   publishedAt?: string;
-  readTime?: string;
   onClick?: () => void;
 }
 
@@ -17,7 +16,6 @@ export default function ArticleCard({
   source,
   imageUrl,
   publishedAt,
-  readTime,
   onClick,
 }: ArticleCardProps) {
   return (
@@ -44,12 +42,6 @@ export default function ArticleCard({
                 <span>•</span>
                 <Clock className="w-3 h-3" />
                 <span>{publishedAt}</span>
-              </>
-            )}
-            {readTime && (
-              <>
-                <span>•</span>
-                <span>{readTime}</span>
               </>
             )}
           </div>

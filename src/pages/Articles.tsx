@@ -4,12 +4,11 @@ import { supabase } from "@/integrations/supabase/client";
 import AppHeader from "@/components/AppHeader";
 import BottomNav from "@/components/BottomNav";
 import ArticleCard from "@/components/ArticleCard";
+import MedicalDisclaimer from "@/components/MedicalDisclaimer";
 import { Search, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
-
-const categories = ["All", "Nutrition", "Mental Health", "Vaccinations", "Malaria"];
 
 interface Article {
   id: string;
@@ -27,7 +26,6 @@ export default function Articles() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [activeCategory, setActiveCategory] = useState("All");
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -48,13 +46,6 @@ export default function Articles() {
       a.summary?.toLowerCase().includes(search.toLowerCase())
   );
 
-  // Estimate read time from content length
-  const getReadTime = (content: string) => {
-    const words = content.split(/\s+/).length;
-    const minutes = Math.max(1, Math.round(words / 200));
-    return `${minutes} min read`;
-  };
-
   return (
     <div className="min-h-screen bg-background pb-20 md:pb-8 flex flex-col">
       <AppHeader title="Health Articles" />
@@ -71,21 +62,8 @@ export default function Articles() {
           />
         </div>
 
-        {/* Category filter chips */}
-        <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-1">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                activeCategory === cat
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+        <div className="md:max-w-2xl">
+          <MedicalDisclaimer compact />
         </div>
 
         {/* Articles */}
@@ -119,7 +97,6 @@ export default function Articles() {
                 summary={article.summary || ""}
                 source={article.source || "AfyaConnect"}
                 imageUrl={article.image_url || undefined}
-                readTime={getReadTime(article.content)}
                 publishedAt={
                   article.published_at
                     ? new Date(article.published_at).toLocaleDateString("en-KE", {

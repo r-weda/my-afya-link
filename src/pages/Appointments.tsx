@@ -37,8 +37,6 @@ const statusColors: Record<string, string> = {
   completed: "bg-primary/10 text-primary border-primary/20",
 };
 
-const statusTabs = ["All", "Upcoming", "Cancelled", "Completed"];
-
 export default function Appointments() {
   const { user } = useAuth();
   const { toast } = useToast();
@@ -47,7 +45,6 @@ export default function Appointments() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [activeTab, setActiveTab] = useState("All");
 
   // Form state
   const [clinicId, setClinicId] = useState("");
@@ -98,6 +95,7 @@ export default function Appointments() {
     } else {
       toast({ title: "Appointment booked!", description: "You will receive a confirmation soon." });
 
+      // Send SMS reminder if user has a phone number
       try {
         const { data: profile } = await supabase
           .from("profiles")
@@ -148,14 +146,6 @@ export default function Appointments() {
 
   const today = new Date().toISOString().split("T")[0];
 
-  const filteredAppointments = appointments.filter((apt) => {
-    if (activeTab === "All") return true;
-    if (activeTab === "Upcoming") return apt.status === "pending" || apt.status === "confirmed";
-    if (activeTab === "Cancelled") return apt.status === "cancelled";
-    if (activeTab === "Completed") return apt.status === "completed";
-    return true;
-  });
-
   return (
     <div className="min-h-screen bg-background pb-20 md:pb-8 flex flex-col">
       <AppHeader title="Appointments" />
@@ -164,6 +154,7 @@ export default function Appointments() {
         <div className="md:flex md:gap-6">
           {/* Booking column */}
           <div className="md:w-1/2 space-y-4">
+            {/* Book button */}
             <Button
               onClick={() => setShowForm(!showForm)}
               className="w-full md:w-auto h-12 rounded-xl font-semibold"
@@ -180,6 +171,7 @@ export default function Appointments() {
               )}
             </Button>
 
+            {/* Booking form */}
             <AnimatePresence>
               {showForm && (
                 <motion.form
@@ -255,40 +247,19 @@ export default function Appointments() {
               Your Appointments
             </h3>
 
-            {/* Status filter tabs */}
-            <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-3">
-              {statusTabs.map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`shrink-0 px-4 py-2 rounded-full text-xs font-medium transition-colors ${
-                    activeTab === tab
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                  }`}
-                >
-                  {tab}
-                </button>
-              ))}
-            </div>
-
             {loading ? (
               <div className="flex justify-center py-12">
                 <Loader2 className="w-6 h-6 animate-spin text-primary" />
               </div>
-            ) : filteredAppointments.length === 0 ? (
+            ) : appointments.length === 0 ? (
               <div className="text-center py-12 elevated-card rounded-2xl">
                 <Calendar className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
-                <p className="text-sm text-muted-foreground">
-                  {activeTab === "All" ? "No appointments yet" : `No ${activeTab.toLowerCase()} appointments`}
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {activeTab === "All" ? "Book your first visit above" : "Check other tabs or book a new visit"}
-                </p>
+                <p className="text-sm text-muted-foreground">No appointments yet</p>
+                <p className="text-xs text-muted-foreground mt-1">Book your first visit above</p>
               </div>
             ) : (
               <motion.div className="space-y-3" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                {filteredAppointments.map((apt) => (
+                {appointments.map((apt) => (
                   <div key={apt.id} className="elevated-card rounded-2xl p-4">
                     <div className="flex items-start justify-between mb-2">
                       <div>
