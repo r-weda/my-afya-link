@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Footer from "@/components/Footer";
 import { Stethoscope, AlertTriangle, ChevronRight, RotateCcw } from "lucide-react";
 
+// Define common symptoms
 const commonSymptoms = [
   "Headache", "Fever", "Cough", "Fatigue", "Sore throat",
   "Nausea", "Body aches", "Diarrhea", "Chest pain", "Dizziness",
@@ -99,7 +100,6 @@ export default function SymptomChecker() {
               exit={{ opacity: 0 }}
               className="space-y-5"
             >
-              {/* Header */}
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                   <Stethoscope className="w-5 h-5 text-primary" />
@@ -112,7 +112,6 @@ export default function SymptomChecker() {
                 </div>
               </div>
 
-              {/* Symptom chips */}
               <div className="flex flex-wrap gap-2">
                 {commonSymptoms.map((symptom) => (
                   <Badge
@@ -130,7 +129,6 @@ export default function SymptomChecker() {
                 ))}
               </div>
 
-              {/* Additional notes */}
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-muted-foreground">Additional details (optional)</label>
                 <Textarea
@@ -158,7 +156,6 @@ export default function SymptomChecker() {
               exit={{ opacity: 0 }}
               className="space-y-5"
             >
-              {/* Result card */}
               <div className={`p-5 rounded-2xl border ${severityColors[result.severity]}`}>
                 <div className="flex items-center gap-2 mb-3">
                   <AlertTriangle className="w-5 h-5" />
@@ -173,7 +170,6 @@ export default function SymptomChecker() {
                 </Button>
               </div>
 
-              {/* Selected symptoms */}
               <div className="elevated-card rounded-2xl p-4">
                 <h4 className="font-display font-semibold text-sm text-foreground mb-2">Your symptoms</h4>
                 <div className="flex flex-wrap gap-1.5">

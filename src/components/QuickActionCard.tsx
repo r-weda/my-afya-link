@@ -21,7 +21,7 @@ export default function QuickActionCard({
   return (
     <motion.button
       onClick={onClick}
-      className={`flex flex-col items-start rounded-2xl elevated-card text-left ${
+      className={`flex flex-col items-start rounded-2xl elevated-card text-left md:hover:border-primary/30 md:hover:shadow-[0_8px_30px_-4px_hsl(168_60%_40%/0.15)] transition-all ${
         prominent
           ? "p-5 md:p-6 lg:p-8 ring-2 ring-primary/20"
           : "p-4 md:p-5 lg:p-6"
