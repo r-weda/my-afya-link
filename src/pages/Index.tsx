@@ -218,8 +218,8 @@ function LandingPage() {
                   <f.icon className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-display font-semibold text-base text-foreground mb-1">{f.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{f.description}</p>
+                  <h3 className="font-display font-semibold text-base md:text-lg text-foreground mb-1">{f.title}</h3>
+                  <p className="text-base text-muted-foreground leading-relaxed">{f.description}</p>
                 </div>
               </div>
             ))}
