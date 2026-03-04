@@ -177,7 +177,7 @@ function LandingPage() {
             <h1 className="font-display font-extrabold text-4xl md:text-5xl lg:text-6xl text-foreground leading-[1.1] mb-4">
               AfyaConnect
             </h1>
-            <p className="text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed mb-10 max-w-md">
+            <p className="text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed mb-10 max-w-md lg:max-w-lg">
               Your trusted health companion. Access verified health information, find nearby clinics,
               and book appointments — all in one place.
             </p>
@@ -185,14 +185,14 @@ function LandingPage() {
             <div className="flex flex-col sm:flex-row gap-3 mb-10">
               <button
                 onClick={() => navigate("/auth")}
-                className="flex-1 sm:flex-none sm:min-w-[160px] h-13 rounded-2xl bg-primary text-primary-foreground font-semibold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity py-3.5 px-6 shadow-md"
+                className="flex-1 sm:flex-none sm:min-w-[160px] h-13 rounded-2xl bg-primary text-primary-foreground font-semibold text-sm lg:text-base flex items-center justify-center gap-2 hover:opacity-90 transition-opacity py-3.5 px-6 shadow-md"
               >
                 Get Started
                 <ArrowRight className="w-4 h-4" />
               </button>
               <button
                 onClick={() => navigate("/auth")}
-                className="flex-1 sm:flex-none sm:min-w-[160px] h-12 rounded-2xl bg-secondary text-secondary-foreground font-semibold text-sm hover:opacity-80 transition-opacity px-6"
+                className="flex-1 sm:flex-none sm:min-w-[160px] h-12 rounded-2xl bg-secondary text-secondary-foreground font-semibold text-sm lg:text-base hover:opacity-80 transition-opacity px-6"
               >
                 Sign In
               </button>
@@ -218,8 +218,8 @@ function LandingPage() {
                   <f.icon className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-display font-semibold text-base md:text-lg text-foreground mb-1">{f.title}</h3>
-                  <p className="text-base text-muted-foreground leading-relaxed">{f.description}</p>
+                  <h3 className="font-display font-semibold text-base md:text-lg lg:text-xl text-foreground mb-1">{f.title}</h3>
+                  <p className="text-base lg:text-lg text-muted-foreground leading-relaxed">{f.description}</p>
                 </div>
               </div>
             ))}
@@ -238,12 +238,12 @@ function LandingPage() {
           <h2 className="font-display font-bold text-2xl md:text-3xl lg:text-4xl text-foreground mb-3">
             Ready to take control of your health?
           </h2>
-          <p className="text-muted-foreground text-base md:text-lg mb-8">
+          <p className="text-muted-foreground text-base md:text-lg lg:text-xl mb-8">
             Join thousands of Kenyans using AfyaConnect every day.
           </p>
           <button
             onClick={() => navigate("/auth")}
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl bg-primary text-primary-foreground font-semibold text-sm hover:opacity-90 transition-opacity shadow-md"
+            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl bg-primary text-primary-foreground font-semibold text-sm lg:text-base hover:opacity-90 transition-opacity shadow-md"
           >
             Create Free Account
             <ArrowRight className="w-4 h-4" />
