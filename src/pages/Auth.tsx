@@ -93,19 +93,19 @@ export default function Auth() {
         </Button>
       </div>
 
-      <div className="flex-1 flex flex-col justify-center px-6 pb-8 max-w-md mx-auto w-full">
+      <div className="flex-1 flex flex-col justify-center px-6 pb-8 max-w-md lg:max-w-lg mx-auto w-full">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-8 text-center"
         >
-          <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
-            <Heart className="w-8 h-8 text-primary" />
+          <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+            <Heart className="w-8 h-8 lg:w-10 lg:h-10 text-primary" />
           </div>
-          <h1 className="font-display font-bold text-2xl text-foreground mb-1">
+          <h1 className="font-display font-bold text-2xl lg:text-4xl text-foreground mb-1">
             {isLogin ? "Welcome back" : "Create account"}
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm lg:text-lg text-muted-foreground">
             {isLogin ? "Sign in to continue to AfyaConnect" : "Join AfyaConnect for better health"}
           </p>
         </motion.div>
@@ -123,43 +123,43 @@ export default function Auth() {
             {!isLogin && (
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
-                  <Label htmlFor="firstName" className="text-xs font-medium">First Name</Label>
+                  <Label htmlFor="firstName" className="text-xs lg:text-base font-medium">First Name</Label>
                   <Input
                     id="firstName"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     placeholder="John"
-                    className="rounded-xl h-11"
+                    className="rounded-xl h-11 lg:h-13 lg:text-lg"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="lastName" className="text-xs font-medium">Last Name</Label>
+                  <Label htmlFor="lastName" className="text-xs lg:text-base font-medium">Last Name</Label>
                   <Input
                     id="lastName"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     placeholder="Doe"
-                    className="rounded-xl h-11"
+                    className="rounded-xl h-11 lg:h-13 lg:text-lg"
                   />
                 </div>
               </div>
             )}
 
             <div className="space-y-1.5">
-              <Label htmlFor="email" className="text-xs font-medium">Email</Label>
+              <Label htmlFor="email" className="text-xs lg:text-base font-medium">Email</Label>
               <Input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="rounded-xl h-11"
+                className="rounded-xl h-11 lg:h-13 lg:text-lg"
                 autoComplete="email"
               />
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="password" className="text-xs font-medium">Password</Label>
+              <Label htmlFor="password" className="text-xs lg:text-base font-medium">Password</Label>
               <div className="relative">
                 <Input
                   id="password"
@@ -167,7 +167,7 @@ export default function Auth() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="rounded-xl h-11 pr-10"
+                  className="rounded-xl h-11 lg:h-13 lg:text-lg pr-10"
                   autoComplete={isLogin ? "current-password" : "new-password"}
                 />
                 <button
@@ -182,20 +182,20 @@ export default function Auth() {
 
             {!isLogin && (
               <div className="space-y-1.5">
-                <Label htmlFor="confirmPassword" className="text-xs font-medium">Confirm Password</Label>
+                <Label htmlFor="confirmPassword" className="text-xs lg:text-base font-medium">Confirm Password</Label>
                 <Input
                   id="confirmPassword"
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="rounded-xl h-11"
+                  className="rounded-xl h-11 lg:h-13 lg:text-lg"
                   autoComplete="new-password"
                 />
               </div>
             )}
 
-            <Button type="submit" className="w-full h-12 rounded-xl font-semibold text-sm" disabled={isLoading}>
+            <Button type="submit" className="w-full h-12 lg:h-14 rounded-xl font-semibold text-sm lg:text-lg" disabled={isLoading}>
               {isLoading ? (
                 <Loader2 className="w-4 h-4 animate-spin mr-2" />
               ) : null}
@@ -204,7 +204,7 @@ export default function Auth() {
           </motion.form>
         </AnimatePresence>
 
-        <p className="text-center text-sm text-muted-foreground mt-6">
+        <p className="text-center text-sm lg:text-lg text-muted-foreground mt-6">
           {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
           <button
             onClick={() => setIsLogin(!isLogin)}

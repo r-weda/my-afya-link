@@ -52,19 +52,19 @@ export default function Index() {
             <h2 className="font-display font-bold text-2xl md:text-3xl lg:text-4xl text-foreground">
               Habari, {firstName} 👋
             </h2>
-            <p className="text-sm md:text-base lg:text-lg text-muted-foreground mt-1">How are you feeling today?</p>
+            <p className="text-sm md:text-base lg:text-xl text-muted-foreground mt-1">How are you feeling today?</p>
           </div>
           <div className="flex items-center gap-3">
             <button
               onClick={() => navigate("/symptom-checker")}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-primary text-primary-foreground font-semibold text-sm hover:opacity-90 transition-opacity shadow-md shrink-0"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-primary text-primary-foreground font-semibold text-sm lg:text-base hover:opacity-90 transition-opacity shadow-md shrink-0"
             >
               <Stethoscope className="w-4 h-4" />
               Check Symptoms Now
             </button>
             <button
               onClick={() => navigate("/appointments")}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-secondary text-secondary-foreground font-semibold text-sm hover:opacity-80 transition-opacity shrink-0"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-secondary text-secondary-foreground font-semibold text-sm lg:text-base hover:opacity-80 transition-opacity shrink-0"
             >
               <Calendar className="w-4 h-4" />
               Book Appointment
@@ -74,7 +74,7 @@ export default function Index() {
 
         {/* Quick Actions */}
         <motion.div variants={item}>
-          <h3 className="font-display font-semibold text-xs md:text-sm text-muted-foreground uppercase tracking-wider mb-4">
+          <h3 className="font-display font-semibold text-xs md:text-sm lg:text-base text-muted-foreground uppercase tracking-wider mb-4">
             Quick Actions
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-5">
@@ -177,7 +177,7 @@ function LandingPage() {
             <h1 className="font-display font-extrabold text-4xl md:text-5xl lg:text-6xl text-foreground leading-[1.1] mb-4">
               AfyaConnect
             </h1>
-            <p className="text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed mb-10 max-w-md lg:max-w-lg">
+            <p className="text-base md:text-lg lg:text-2xl text-muted-foreground leading-relaxed mb-10 max-w-md lg:max-w-lg">
               Your trusted health companion. Access verified health information, find nearby clinics,
               and book appointments — all in one place.
             </p>
@@ -185,14 +185,14 @@ function LandingPage() {
             <div className="flex flex-col sm:flex-row gap-3 mb-10">
               <button
                 onClick={() => navigate("/auth")}
-                className="flex-1 sm:flex-none sm:min-w-[160px] h-13 rounded-2xl bg-primary text-primary-foreground font-semibold text-sm lg:text-base flex items-center justify-center gap-2 hover:opacity-90 transition-opacity py-3.5 px-6 shadow-md"
+                className="flex-1 sm:flex-none sm:min-w-[160px] lg:min-w-[200px] h-13 lg:h-14 rounded-2xl bg-primary text-primary-foreground font-semibold text-sm lg:text-lg flex items-center justify-center gap-2 hover:opacity-90 transition-opacity py-3.5 px-6 lg:px-8 shadow-md"
               >
                 Get Started
                 <ArrowRight className="w-4 h-4" />
               </button>
               <button
                 onClick={() => navigate("/auth")}
-                className="flex-1 sm:flex-none sm:min-w-[160px] h-12 rounded-2xl bg-secondary text-secondary-foreground font-semibold text-sm lg:text-base hover:opacity-80 transition-opacity px-6"
+                className="flex-1 sm:flex-none sm:min-w-[160px] lg:min-w-[200px] h-12 lg:h-14 rounded-2xl bg-secondary text-secondary-foreground font-semibold text-sm lg:text-lg hover:opacity-80 transition-opacity px-6 lg:px-8"
               >
                 Sign In
               </button>
@@ -214,12 +214,12 @@ function LandingPage() {
           >
             {features.map((f) => (
               <div key={f.title} className="flex flex-col items-start gap-3">
-                <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                  <f.icon className="w-5 h-5 text-primary" />
+                <div className="w-11 h-11 lg:w-14 lg:h-14 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                  <f.icon className="w-5 h-5 lg:w-6 lg:h-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-display font-semibold text-base md:text-lg lg:text-xl text-foreground mb-1">{f.title}</h3>
-                  <p className="text-base lg:text-lg text-muted-foreground leading-relaxed">{f.description}</p>
+                  <h3 className="font-display font-semibold text-base md:text-lg lg:text-2xl text-foreground mb-1">{f.title}</h3>
+                  <p className="text-base lg:text-xl text-muted-foreground leading-relaxed">{f.description}</p>
                 </div>
               </div>
             ))}
@@ -238,12 +238,12 @@ function LandingPage() {
           <h2 className="font-display font-bold text-2xl md:text-3xl lg:text-4xl text-foreground mb-3">
             Ready to take control of your health?
           </h2>
-          <p className="text-muted-foreground text-base md:text-lg lg:text-xl mb-8">
-            Join thousands of Kenyans using AfyaConnect every day.
-          </p>
-          <button
-            onClick={() => navigate("/auth")}
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl bg-primary text-primary-foreground font-semibold text-sm lg:text-base hover:opacity-90 transition-opacity shadow-md"
+            <p className="text-muted-foreground text-base md:text-lg lg:text-2xl mb-8">
+              Join thousands of Kenyans using AfyaConnect every day.
+            </p>
+            <button
+              onClick={() => navigate("/auth")}
+              className="inline-flex items-center gap-2 px-8 py-3.5 lg:py-4 rounded-2xl bg-primary text-primary-foreground font-semibold text-sm lg:text-lg hover:opacity-90 transition-opacity shadow-md"
           >
             Create Free Account
             <ArrowRight className="w-4 h-4" />
