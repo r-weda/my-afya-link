@@ -13,6 +13,7 @@ import Clinics from "./pages/Clinics";
 import Appointments from "./pages/Appointments";
 import Admin from "./pages/Admin";
 import Profile from "./pages/Profile";
+import Feedback from "./pages/Feedback";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,8 @@ const App = () => (
             <Route path="/appointments" element={<Appointments />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/feedback" element={<Feedback />} />
+            <Route path="*" element={<NotFound />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
