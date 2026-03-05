@@ -122,10 +122,10 @@ export default function ProfilePage() {
               <User className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <h2 className="font-display font-bold text-lg text-card-foreground">
+              <h2 className="font-display font-bold text-lg lg:text-xl text-card-foreground">
                 {profile.first_name || "Your"} {profile.last_name || "Profile"}
               </h2>
-              <div className="flex items-center gap-1 text-xs text-muted-foreground">
+              <div className="flex items-center gap-1 text-xs lg:text-sm text-muted-foreground">
                 <Mail className="w-3 h-3" />
                 <span>{user?.email}</span>
               </div>
@@ -135,40 +135,40 @@ export default function ProfilePage() {
           <div className="space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <Label className="text-xs font-medium">First Name</Label>
+                <Label className="text-xs lg:text-sm font-medium">First Name</Label>
                 <Input
                   value={profile.first_name || ""}
                   onChange={(e) => setProfile({ ...profile, first_name: e.target.value })}
                   placeholder="First name"
-                  className="rounded-xl h-11"
+                  className="rounded-xl h-11 lg:h-12 lg:text-base"
                 />
               </div>
               <div className="space-y-1.5">
-                <Label className="text-xs font-medium">Last Name</Label>
+                <Label className="text-xs lg:text-sm font-medium">Last Name</Label>
                 <Input
                   value={profile.last_name || ""}
                   onChange={(e) => setProfile({ ...profile, last_name: e.target.value })}
                   placeholder="Last name"
-                  className="rounded-xl h-11"
+                  className="rounded-xl h-11 lg:h-12 lg:text-base"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-xs font-medium">Phone Number</Label>
+              <Label className="text-xs lg:text-sm font-medium">Phone Number</Label>
               <div className="relative">
                 <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
                   value={profile.phone_number || ""}
                   onChange={(e) => setProfile({ ...profile, phone_number: e.target.value })}
                   placeholder="+254 7XX XXX XXX"
-                  className="rounded-xl h-11 pl-10"
+                  className="rounded-xl h-11 lg:h-12 lg:text-base pl-10"
                 />
               </div>
             </div>
           </div>
 
-          <Button onClick={handleSave} disabled={saving} className="w-full h-11 rounded-xl font-semibold">
+          <Button onClick={handleSave} disabled={saving} className="w-full h-11 lg:h-12 rounded-xl font-semibold lg:text-base">
             {saving ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />}
             Save Changes
           </Button>
@@ -176,7 +176,7 @@ export default function ProfilePage() {
 
         {/* Appointment History */}
         <section className="md:flex-1">
-          <h3 className="font-display font-semibold text-sm text-muted-foreground uppercase tracking-wider mb-3">
+          <h3 className="font-display font-semibold text-sm lg:text-base text-muted-foreground uppercase tracking-wider mb-3">
             Appointment History
           </h3>
 
@@ -187,25 +187,25 @@ export default function ProfilePage() {
           ) : appointments.length === 0 ? (
             <div className="text-center py-12 elevated-card rounded-2xl">
               <Calendar className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
-              <p className="text-sm text-muted-foreground">No appointments yet</p>
+              <p className="text-sm lg:text-base text-muted-foreground">No appointments yet</p>
             </div>
           ) : (
             <div className="space-y-3">
               {appointments.map((apt) => (
                 <div key={apt.id} className="elevated-card rounded-2xl p-4">
                   <div className="flex items-start justify-between mb-2">
-                    <h4 className="font-display font-semibold text-sm text-card-foreground">
+                    <h4 className="font-display font-semibold text-sm lg:text-base text-card-foreground">
                       {apt.clinics?.name || "Unknown Clinic"}
                     </h4>
-                    <Badge variant="outline" className={`text-[10px] ${statusColors[apt.status] || ""}`}>
+                    <Badge variant="outline" className={`text-[10px] lg:text-xs ${statusColors[apt.status] || ""}`}>
                       {apt.status}
                     </Badge>
                   </div>
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-1 text-xs lg:text-sm text-muted-foreground">
                     <MapPin className="w-3 h-3" />
                     <span>{apt.clinics?.address}, {apt.clinics?.city}</span>
                   </div>
-                  <div className="flex items-center gap-4 text-xs text-muted-foreground mt-2">
+                  <div className="flex items-center gap-4 text-xs lg:text-sm text-muted-foreground mt-2">
                     <div className="flex items-center gap-1">
                       <Calendar className="w-3 h-3" />
                       <span>{new Date(apt.appointment_date).toLocaleDateString("en-KE", { month: "short", day: "numeric", year: "numeric" })}</span>

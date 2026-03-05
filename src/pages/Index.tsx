@@ -111,7 +111,7 @@ export default function Index() {
               icon={MessageSquare}
               label="Feedback"
               description="Share your thoughts"
-              color="bg-accent text-accent-foreground"
+              color="bg-primary/10 text-primary"
               onClick={() => navigate("/feedback")}
             />
           </div>

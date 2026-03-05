@@ -105,10 +105,10 @@ export default function SymptomChecker() {
                   <Stethoscope className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <h2 className="font-display font-semibold text-lg md:text-xl text-foreground">
+                  <h2 className="font-display font-semibold text-lg md:text-xl lg:text-2xl text-foreground">
                     What symptoms do you have?
                   </h2>
-                  <p className="text-xs text-muted-foreground">Select all that apply</p>
+                  <p className="text-xs lg:text-sm text-muted-foreground">Select all that apply</p>
                 </div>
               </div>
 
@@ -118,7 +118,7 @@ export default function SymptomChecker() {
                   <Badge
                     key={symptom}
                     variant={selected.includes(symptom) ? "default" : "outline"}
-                    className={`cursor-pointer rounded-xl py-2 px-3 text-sm transition-all ${
+                    className={`cursor-pointer rounded-xl py-2 px-3 text-sm lg:text-base transition-all ${
                       selected.includes(symptom)
                         ? "bg-primary text-primary-foreground border-primary"
                         : "hover:bg-secondary"
@@ -132,19 +132,19 @@ export default function SymptomChecker() {
 
               {/* Additional notes */}
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-muted-foreground">Additional details (optional)</label>
+                <label className="text-xs lg:text-sm font-medium text-muted-foreground">Additional details (optional)</label>
                 <Textarea
                   value={additionalNotes}
                   onChange={(e) => setAdditionalNotes(e.target.value)}
                   placeholder="Describe any other symptoms or how long you've been feeling this way..."
-                  className="rounded-xl resize-none min-h-[80px]"
+                  className="rounded-xl resize-none min-h-[80px] lg:text-base"
                 />
               </div>
 
               <Button
                 onClick={handleCheck}
                 disabled={selected.length === 0}
-                className="w-full md:w-auto h-12 rounded-xl font-semibold"
+                className="w-full md:w-auto h-12 lg:h-13 rounded-xl font-semibold lg:text-base"
               >
                 Check Symptoms
                 <ChevronRight className="w-4 h-4 ml-1" />
@@ -162,12 +162,12 @@ export default function SymptomChecker() {
               <div className={`p-5 rounded-2xl border ${severityColors[result.severity]}`}>
                 <div className="flex items-center gap-2 mb-3">
                   <AlertTriangle className="w-5 h-5" />
-                  <span className="font-display font-bold text-sm uppercase tracking-wider">
+                  <span className="font-display font-bold text-sm lg:text-base uppercase tracking-wider">
                     {result.severity === "high" ? "Urgent" : result.severity === "moderate" ? "Moderate" : "Mild"}
                   </span>
                 </div>
-                <h3 className="font-display font-bold text-xl text-foreground mb-2">{result.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-4">{result.description}</p>
+                <h3 className="font-display font-bold text-xl lg:text-2xl text-foreground mb-2">{result.title}</h3>
+                <p className="text-sm lg:text-base text-muted-foreground leading-relaxed mb-4">{result.description}</p>
                 <Button variant="outline" className="rounded-xl w-full md:w-auto" onClick={() => {}}>
                   {result.action}
                 </Button>
@@ -175,7 +175,7 @@ export default function SymptomChecker() {
 
               {/* Selected symptoms */}
               <div className="elevated-card rounded-2xl p-4">
-                <h4 className="font-display font-semibold text-sm text-foreground mb-2">Your symptoms</h4>
+                <h4 className="font-display font-semibold text-sm lg:text-base text-foreground mb-2">Your symptoms</h4>
                 <div className="flex flex-wrap gap-1.5">
                   {selected.map((s) => (
                     <Badge key={s} variant="secondary" className="rounded-lg text-xs">
