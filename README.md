@@ -56,11 +56,6 @@ Access to reliable healthcare services remains a challenge in many regions. Pati
 - Location-based clinic display
 - Navigation support
 
-### 💳 Digital Payments
-- M-Pesa STK Push integration (Daraja API)
-- Secure transaction logging
-- Payment verification system
-
 ### 🔐 Authentication & Data Management
 - Secure user authentication
 - Role-based access control
@@ -80,7 +75,7 @@ User (Browser)
 → Supabase (Authentication & Database)  
 → External APIs  
 &nbsp;&nbsp;&nbsp;&nbsp;• OpenStreetMap  
-&nbsp;&nbsp;&nbsp;&nbsp;• Safaricom Daraja API  
+
 
 ---
 
