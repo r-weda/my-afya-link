@@ -13,14 +13,13 @@ Access to reliable healthcare services remains a challenge in many regions. Pati
 - Locate nearby clinics
 - Verify clinic services
 - Access contact information
-- Make secure digital payments
+
 
 **Afyaconnect provides a technological solution by offering:**
 
 - 📍 Location-based clinic discovery
 - 🏥 Verified clinic listings
 - 🗺 Interactive map integration
-- 💳 M-Pesa payment support (Daraja API ready)
 - 📱 Mobile-first responsive design
 
 ---
@@ -29,8 +28,8 @@ Access to reliable healthcare services remains a challenge in many regions. Pati
 
 1. Improve healthcare accessibility through digital clinic discovery.
 2. Provide structured and verified clinic information.
-3. Enable secure digital payments via M-Pesa.
-4. Create a scalable health-tech solution for Kenya.
+3. Create a scalable health-tech solution for Kenya.
+
 
 ---
 
