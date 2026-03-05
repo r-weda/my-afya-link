@@ -104,14 +104,7 @@ Supabase (Authentication & Database)
 ↓  
 External APIs  
 • OpenStreetMap  
-• Safaricom Daraja API (M-Pesa)  
+• Africa's Talking
 
 ---
 
-## ⚙️ Local Development Setup
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/your-username/afyaconnect.git
-cd afyaconnect
