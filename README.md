@@ -1,37 +1,65 @@
-# 🏥 Afyaconnect (My Afya Link)
+👥 Team: Health Action Team
+🏥 Sector: Health
 
-🌐 **Live Application:** https://my-afya-link.vercel.app/
+AfyaConnect
+A Digital Health Access Platform for Kenyans
 
-Afyaconnect (My Afya Link) is a digital health platform developed to improve healthcare accessibility in Kenya by connecting patients with nearby clinics through a mobile-first web application.
-
----
-
-## 📌 Project Overview
-
-Access to reliable healthcare services remains a challenge in many regions. Patients often struggle to:
-
-- Locate nearby clinics
-- Verify clinic services
-- Access contact information
+🌐 Live Demo: https://my-afya-link.vercel.app/
 
 
-**Afyaconnect provides a technological solution by offering:**
+📖 About The Project
 
-- 📍 Location-based clinic discovery
-- 🏥 Verified clinic listings
-- 🗺 Interactive map integration
-- 📱 Mobile-first responsive design
+AfyaConnect is a mobile-friendly digital health platform designed to improve access to reliable health information and medical guidance for underserved communities in Kenya.
 
----
+The platform provides:
 
-## 🎯 Project Objectives
+✅ Verified health information
 
-1. Improve healthcare accessibility through digital clinic discovery.
-2. Provide structured and verified clinic information.
-3. Create a scalable health-tech solution for Kenya.
+🩺 Symptom guidance
 
+📍 Nearby clinic location services
 
----
+📲 SMS-based health alerts and appointment reminders
+
+AfyaConnect addresses healthcare access gaps in rural and low-income communities by combining web and SMS technology to deliver trusted, actionable health support.
+
+🚨 Problem Statement
+
+Many Kenyans — especially in rural and low-income areas — struggle to access reliable health information and timely medical guidance. This results in:
+
+Delayed treatment
+
+Preventable illnesses
+
+Reliance on unverified sources
+
+Poor appointment adherence
+
+Limited access to trustworthy digital health systems significantly impacts health outcomes.
+
+💡 Solution
+
+AfyaConnect provides a:
+
+Mobile-first web platform
+
+Symptom guidance interface
+
+Verified medical information repository
+
+Clinic location support
+
+SMS-based appointment & health reminder system
+
+The system works for both smartphone and basic mobile phone users.
+
+🎯 SMART Objectives
+
+Development Objective
+Design and deploy a mobile-friendly digital health platform within 8 weeks serving at least 500 users with verified health information and clinic access.
+
+SMS Objective
+Implement an SMS-based health alert and appointment reminder system that improves timely health-seeking behaviour by at least 30% among registered users.
 
 ## 🛠 Tech Stack
 
