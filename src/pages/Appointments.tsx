@@ -157,7 +157,7 @@ export default function Appointments() {
             {/* Book button */}
             <Button
               onClick={() => setShowForm(!showForm)}
-              className="w-full md:w-auto h-12 rounded-xl font-semibold"
+              className="w-full md:w-auto h-12 lg:h-13 rounded-xl font-semibold lg:text-base"
               variant={showForm ? "outline" : "default"}
             >
               {showForm ? (
@@ -182,9 +182,9 @@ export default function Appointments() {
                   className="elevated-card rounded-2xl p-4 space-y-4 overflow-hidden"
                 >
                   <div className="space-y-1.5">
-                    <Label className="text-xs font-medium">Clinic</Label>
+                    <Label className="text-xs lg:text-sm font-medium">Clinic</Label>
                     <Select value={clinicId} onValueChange={setClinicId}>
-                      <SelectTrigger className="rounded-xl h-11">
+                      <SelectTrigger className="rounded-xl h-11 lg:h-12 lg:text-base">
                         <SelectValue placeholder="Select a clinic" />
                       </SelectTrigger>
                       <SelectContent>
@@ -202,37 +202,37 @@ export default function Appointments() {
 
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1.5">
-                      <Label className="text-xs font-medium">Date</Label>
+                      <Label className="text-xs lg:text-sm font-medium">Date</Label>
                       <Input
                         type="date"
                         value={date}
                         min={today}
                         onChange={(e) => setDate(e.target.value)}
-                        className="rounded-xl h-11"
+                        className="rounded-xl h-11 lg:h-12 lg:text-base"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <Label className="text-xs font-medium">Time</Label>
+                      <Label className="text-xs lg:text-sm font-medium">Time</Label>
                       <Input
                         type="time"
                         value={time}
                         onChange={(e) => setTime(e.target.value)}
-                        className="rounded-xl h-11"
+                        className="rounded-xl h-11 lg:h-12 lg:text-base"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-1.5">
-                    <Label className="text-xs font-medium">Notes (optional)</Label>
+                    <Label className="text-xs lg:text-sm font-medium">Notes (optional)</Label>
                     <Textarea
                       value={notes}
                       onChange={(e) => setNotes(e.target.value)}
                       placeholder="Any specific concerns..."
-                      className="rounded-xl resize-none min-h-[60px]"
+                      className="rounded-xl resize-none min-h-[60px] lg:text-base"
                     />
                   </div>
 
-                  <Button type="submit" disabled={submitting || !clinicId || !date || !time} className="w-full h-11 rounded-xl font-semibold">
+                  <Button type="submit" disabled={submitting || !clinicId || !date || !time} className="w-full h-11 lg:h-12 rounded-xl font-semibold lg:text-base">
                     {submitting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
                     Confirm Booking
                   </Button>
@@ -243,7 +243,7 @@ export default function Appointments() {
 
           {/* Appointments list */}
           <div className="mt-4 md:mt-0 md:flex-1">
-            <h3 className="font-display font-semibold text-sm text-muted-foreground uppercase tracking-wider mb-3">
+            <h3 className="font-display font-semibold text-sm lg:text-base text-muted-foreground uppercase tracking-wider mb-3">
               Your Appointments
             </h3>
 
@@ -254,8 +254,8 @@ export default function Appointments() {
             ) : appointments.length === 0 ? (
               <div className="text-center py-12 elevated-card rounded-2xl">
                 <Calendar className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
-                <p className="text-sm text-muted-foreground">No appointments yet</p>
-                <p className="text-xs text-muted-foreground mt-1">Book your first visit above</p>
+                <p className="text-sm lg:text-base text-muted-foreground">No appointments yet</p>
+                <p className="text-xs lg:text-sm text-muted-foreground mt-1">Book your first visit above</p>
               </div>
             ) : (
               <motion.div className="space-y-3" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -263,19 +263,19 @@ export default function Appointments() {
                   <div key={apt.id} className="elevated-card rounded-2xl p-4">
                     <div className="flex items-start justify-between mb-2">
                       <div>
-                        <h4 className="font-display font-semibold text-sm text-card-foreground">
+                        <h4 className="font-display font-semibold text-sm lg:text-base text-card-foreground">
                           {apt.clinics?.name || "Unknown Clinic"}
                         </h4>
-                        <div className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
+                        <div className="flex items-center gap-1 text-xs lg:text-sm text-muted-foreground mt-0.5">
                           <MapPin className="w-3 h-3" />
                           <span>{apt.clinics?.address}, {apt.clinics?.city}</span>
                         </div>
                       </div>
-                      <Badge variant="outline" className={`text-[10px] ${statusColors[apt.status] || ""}`}>
+                      <Badge variant="outline" className={`text-[10px] lg:text-xs ${statusColors[apt.status] || ""}`}>
                         {apt.status}
                       </Badge>
                     </div>
-                    <div className="flex items-center gap-4 text-xs text-muted-foreground mt-3">
+                    <div className="flex items-center gap-4 text-xs lg:text-sm text-muted-foreground mt-3">
                       <div className="flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
                         <span>{new Date(apt.appointment_date).toLocaleDateString("en-KE", { month: "short", day: "numeric", year: "numeric" })}</span>
