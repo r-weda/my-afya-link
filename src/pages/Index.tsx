@@ -5,7 +5,7 @@ import BottomNav from "@/components/BottomNav";
 import QuickActionCard from "@/components/QuickActionCard";
 import MedicalDisclaimer from "@/components/MedicalDisclaimer";
 import Footer from "@/components/Footer";
-import { FileText, Stethoscope, MapPin, Calendar, ArrowRight, Shield, Clock, Users } from "lucide-react";
+import { FileText, Stethoscope, MapPin, Calendar, ArrowRight, Shield, Clock, Users, MessageSquare } from "lucide-react";
 import { motion } from "framer-motion";
 import heroImage from "@/assets/hero-health.jpg";
 
@@ -77,7 +77,7 @@ export default function Index() {
           <h3 className="font-display font-semibold text-xs md:text-sm lg:text-base text-muted-foreground uppercase tracking-wider mb-4">
             Quick Actions
           </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 lg:gap-5">
             <QuickActionCard
               icon={Stethoscope}
               label="Check Symptoms"
@@ -106,6 +106,13 @@ export default function Index() {
               description="Nearby hospitals"
               color="bg-warning/10 text-warning"
               onClick={() => navigate("/clinics")}
+            />
+            <QuickActionCard
+              icon={MessageSquare}
+              label="Feedback"
+              description="Share your thoughts"
+              color="bg-accent text-accent-foreground"
+              onClick={() => navigate("/feedback")}
             />
           </div>
         </motion.div>
