@@ -65,7 +65,6 @@ Implement an SMS-based health alert and appointment reminder system that improve
 - **Backend:** Supabase  
 - **Database:** PostgreSQL (via Supabase)  
 - **Maps Integration:** OpenStreetMap  
-- **Payments:** Safaricom Daraja API (M-Pesa)  
 - **Hosting:** Vercel  
 
 ---
