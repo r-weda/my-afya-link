@@ -93,8 +93,7 @@ Create a .env file:
 
 VITE_SUPABASE_URL=your_supabase_url
 VITE_SUPABASE_ANON_KEY=your_supabase_key
-DARJA_CONSUMER_KEY=your_daraja_key
-DARJA_CONSUMER_SECRET=your_daraja_secret
+
 4. Run Development Server
 npm run dev
 🚀 Future Enhancements
