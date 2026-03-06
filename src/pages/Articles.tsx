@@ -50,7 +50,7 @@ export default function Articles() {
     <div className="min-h-screen bg-background pb-20 md:pb-8 flex flex-col">
       <AppHeader title="Health Articles" />
 
-      <main className="px-4 pt-4 max-w-lg md:max-w-4xl lg:max-w-6xl mx-auto space-y-4">
+      <main className="px-4 pt-4 max-w-lg md:max-w-4xl lg:max-w-[1400px] mx-auto space-y-4">
         {/* Search */}
         <div className="relative md:max-w-md">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -58,7 +58,7 @@ export default function Articles() {
             placeholder="Search articles..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-10 rounded-xl h-11 bg-secondary/50 border-0"
+            className="pl-10 rounded-xl h-11 lg:h-12 lg:text-base bg-secondary/50 border-0"
           />
         </div>
 

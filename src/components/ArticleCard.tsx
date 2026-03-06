@@ -25,17 +25,17 @@ export default function ArticleCard({
       whileTap={{ scale: 0.98 }}
     >
       {imageUrl && (
-        <div className="h-40 overflow-hidden bg-muted">
+        <div className="h-40 lg:h-48 overflow-hidden bg-muted">
           <img src={imageUrl} alt={title} className="w-full h-full object-cover" loading="lazy" />
         </div>
       )}
       <div className="p-4">
-        <h3 className="font-display font-semibold text-base md:text-lg text-card-foreground leading-snug mb-1.5 line-clamp-2">
+        <h3 className="font-display font-semibold text-base lg:text-lg text-card-foreground leading-snug mb-1.5 line-clamp-2">
           {title}
         </h3>
-        <p className="text-sm md:text-base text-muted-foreground line-clamp-2 mb-3">{summary}</p>
+        <p className="text-sm lg:text-base text-muted-foreground line-clamp-2 mb-3">{summary}</p>
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+          <div className="flex items-center gap-2 text-xs lg:text-sm text-muted-foreground">
             <span className="font-medium text-primary">{source}</span>
             {publishedAt && (
               <>

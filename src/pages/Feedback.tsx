@@ -89,7 +89,7 @@ export default function Feedback() {
             <h1 className="font-display font-semibold text-lg md:text-xl lg:text-2xl text-foreground">
               We'd love to hear from you
             </h1>
-            <p className="text-xs lg:text-base text-muted-foreground">
+            <p className="text-xs lg:text-sm text-muted-foreground">
               Share feedback, ask a question, or report an issue
             </p>
           </div>
@@ -105,10 +105,10 @@ export default function Feedback() {
               <CheckCircle2 className="w-8 h-8 text-primary" />
             </div>
             <h2 className="font-display font-bold text-xl lg:text-2xl text-foreground">Thank You!</h2>
-            <p className="text-sm lg:text-lg text-muted-foreground leading-relaxed">
+            <p className="text-sm lg:text-base text-muted-foreground leading-relaxed">
               Your message has been received. We'll get back to you as soon as possible.
             </p>
-            <Button onClick={handleReset} className="rounded-xl h-11 lg:h-13 lg:text-lg">
+            <Button onClick={handleReset} className="rounded-xl h-11 lg:h-12 lg:text-base">
               Submit Another
             </Button>
           </motion.div>
@@ -118,23 +118,23 @@ export default function Feedback() {
             animate={{ opacity: 1 }}
           >
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 lg:space-y-5">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 {/* Category */}
                 <FormField
                   control={form.control}
                   name="category"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="lg:text-base">Category</FormLabel>
+                      <FormLabel className="lg:text-sm">Category</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger className="rounded-xl h-11 lg:h-13 lg:text-lg">
+                          <SelectTrigger className="rounded-xl h-11 lg:h-12 lg:text-base">
                             <SelectValue placeholder="Select a category" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
                           {categories.map((cat) => (
-                            <SelectItem key={cat.value} value={cat.value} className="lg:text-lg">
+                            <SelectItem key={cat.value} value={cat.value} className="lg:text-base">
                               {cat.label}
                             </SelectItem>
                           ))}
@@ -152,9 +152,9 @@ export default function Feedback() {
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="lg:text-base">Name</FormLabel>
+                        <FormLabel className="lg:text-sm">Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="Your name" className="rounded-xl h-11 lg:h-13 lg:text-lg" {...field} />
+                          <Input placeholder="Your name" className="rounded-xl h-11 lg:h-12 lg:text-base" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -165,9 +165,9 @@ export default function Feedback() {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="lg:text-base">Email</FormLabel>
+                        <FormLabel className="lg:text-sm">Email</FormLabel>
                         <FormControl>
-                          <Input type="email" placeholder="you@email.com" className="rounded-xl h-11 lg:h-13 lg:text-lg" {...field} />
+                          <Input type="email" placeholder="you@email.com" className="rounded-xl h-11 lg:h-12 lg:text-base" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -181,9 +181,9 @@ export default function Feedback() {
                   name="subject"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="lg:text-base">Subject</FormLabel>
+                      <FormLabel className="lg:text-sm">Subject</FormLabel>
                       <FormControl>
-                        <Input placeholder="Brief subject" className="rounded-xl h-11 lg:h-13 lg:text-lg" {...field} />
+                        <Input placeholder="Brief subject" className="rounded-xl h-11 lg:h-12 lg:text-base" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -196,11 +196,11 @@ export default function Feedback() {
                   name="message"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="lg:text-base">Message</FormLabel>
+                      <FormLabel className="lg:text-sm">Message</FormLabel>
                       <FormControl>
                         <Textarea
                           placeholder="Tell us more..."
-                          className="rounded-xl resize-none min-h-[120px] lg:text-lg"
+                          className="rounded-xl resize-none min-h-[120px] lg:text-base"
                           {...field}
                         />
                       </FormControl>
@@ -212,7 +212,7 @@ export default function Feedback() {
                 <Button
                   type="submit"
                   disabled={loading}
-                  className="w-full md:w-auto h-12 lg:h-14 rounded-xl font-semibold lg:text-lg lg:px-8"
+                  className="w-full md:w-auto h-12 lg:h-12 rounded-xl font-semibold lg:text-base lg:px-8"
                 >
                   {loading ? "Submitting..." : "Send Message"}
                   <Send className="w-4 h-4 lg:w-5 lg:h-5 ml-2" />
