@@ -52,7 +52,7 @@ export default function Index() {
             <h2 className="font-display font-bold text-2xl md:text-3xl lg:text-4xl text-foreground">
               Habari, {firstName} 👋
             </h2>
-            <p className="text-sm md:text-base lg:text-xl text-muted-foreground mt-1">How are you feeling today?</p>
+            <p className="text-sm md:text-base lg:text-lg text-muted-foreground mt-1">How are you feeling today?</p>
           </div>
           <div className="flex items-center gap-3">
             <button

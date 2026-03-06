@@ -100,7 +100,7 @@ export default function ArticleDetail() {
             {article.title}
           </h1>
 
-          <div className="flex items-center gap-3 text-sm text-muted-foreground mb-6">
+          <div className="flex items-center gap-3 text-sm lg:text-base text-muted-foreground mb-6">
             {article.source && (
               <span className="font-medium text-primary">{article.source}</span>
             )}
@@ -119,7 +119,7 @@ export default function ArticleDetail() {
           </div>
 
           {article.summary && (
-            <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-6 border-l-4 border-primary/30 pl-4 italic">
+            <p className="text-base lg:text-lg text-muted-foreground leading-relaxed mb-6 border-l-4 border-primary/30 pl-4 italic">
               {article.summary}
             </p>
           )}

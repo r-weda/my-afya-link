@@ -57,7 +57,7 @@ export default function AppHeader({ title }: AppHeaderProps) {
                 <button
                   key={navItem.path}
                   onClick={() => navigate(navItem.path)}
-                  className={`flex items-center gap-2 px-3 lg:px-4 py-2 rounded-xl text-sm lg:text-base font-medium transition-colors ${
+                  className={`flex items-center gap-2 px-3 lg:px-4 py-2 rounded-xl text-sm lg:text-[0.95rem] font-medium transition-colors ${
                     isActive
                       ? "bg-primary/10 text-primary"
                       : "text-muted-foreground hover:bg-secondary hover:text-foreground"
@@ -86,7 +86,7 @@ export default function AppHeader({ title }: AppHeaderProps) {
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48 rounded-xl">
+            <DropdownMenuContent align="end" className="w-48 lg:w-52 rounded-xl">
               <DropdownMenuItem className="rounded-lg" onClick={() => navigate("/profile")}>
                 <Settings className="w-4 h-4 mr-2" />
                 Profile

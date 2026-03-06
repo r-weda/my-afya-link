@@ -84,7 +84,7 @@ export default function Clinics() {
     <div className="min-h-screen bg-background pb-20 md:pb-8 flex flex-col">
       <AppHeader title="Find Clinics" />
 
-      <main className="px-4 pt-4 max-w-lg md:max-w-4xl lg:max-w-6xl mx-auto space-y-4">
+      <main className="px-4 pt-4 max-w-lg md:max-w-4xl lg:max-w-[1400px] mx-auto space-y-4">
         {/* Desktop: side-by-side map + list. Mobile: stacked */}
         <div className="md:flex md:gap-6">
           {/* Map + search column */}
@@ -107,7 +107,7 @@ export default function Clinics() {
                 placeholder="Search clinics, hospitals..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-10 rounded-xl h-11 bg-secondary/50 border-0"
+                className="pl-10 rounded-xl h-11 lg:h-12 lg:text-base bg-secondary/50 border-0"
               />
             </div>
           </div>
