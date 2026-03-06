@@ -107,7 +107,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-background pb-20 md:pb-8">
+    <div className="min-h-screen bg-background pb-20 md:pb-8 flex flex-col">
       <AppHeader title="Profile" />
 
       <motion.main
@@ -223,6 +223,7 @@ export default function ProfilePage() {
         </section>
       </motion.main>
 
+      <div className="flex-1" />
       <Footer />
       <BottomNav />
     </div>
