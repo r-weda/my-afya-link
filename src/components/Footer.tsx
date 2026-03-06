@@ -18,7 +18,7 @@ export default function Footer() {
   }
 
   return (
-    <footer className="hidden md:block border-t border-border/50 bg-card/50">
+    <footer className="hidden md:block border-t border-border/50 bg-card/50 mt-12">
       <div className="max-w-lg md:max-w-4xl lg:max-w-[1400px] mx-auto px-4 md:px-6 py-8">
         <div className="grid grid-cols-3 gap-10">
           {/* Brand */}
