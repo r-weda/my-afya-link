@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 import AppHeader from "@/components/AppHeader";
 import BottomNav from "@/components/BottomNav";
 import ClinicCard from "@/components/ClinicCard";
 import ClinicMap from "@/components/ClinicMap";
-import { Search, Loader2 } from "lucide-react";
+import { Search, Loader2, LogIn } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 
@@ -23,11 +26,14 @@ interface Clinic {
 }
 
 export default function Clinics() {
+  const { user, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
   const [clinics, setClinics] = useState<Clinic[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
+    if (!user) return;
     const fetchClinics = async () => {
       const { data } = await supabase
         .from("clinics")
@@ -37,7 +43,31 @@ export default function Clinics() {
       setLoading(false);
     };
     fetchClinics();
-  }, []);
+  }, [user]);
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="w-6 h-6 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-background pb-20 md:pb-8 flex flex-col">
+        <AppHeader title="Find Clinics" />
+        <div className="flex-1 flex flex-col items-center justify-center px-6">
+          <LogIn className="w-10 h-10 text-muted-foreground mb-4" />
+          <h2 className="font-display font-bold text-lg lg:text-xl text-foreground mb-2">Sign in to view clinics</h2>
+          <p className="text-sm lg:text-base text-muted-foreground mb-4 text-center">You need to be logged in to browse clinic information.</p>
+          <Button onClick={() => navigate("/auth")} className="rounded-xl">Sign In</Button>
+        </div>
+        <Footer />
+        <BottomNav />
+      </div>
+    );
+  }
 
   const filtered = clinics.filter(
     (c) =>
