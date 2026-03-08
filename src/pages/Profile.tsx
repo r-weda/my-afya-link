@@ -180,6 +180,15 @@ export default function ProfilePage() {
             {saving ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />}
             Save Changes
           </Button>
+
+          <Button
+            variant="outline"
+            className="w-full h-11 lg:h-12 rounded-xl font-semibold lg:text-base"
+            onClick={() => navigate("/symptom-history")}
+          >
+            <History className="w-4 h-4 mr-2" />
+            Symptom Check History
+          </Button>
         </section>
 
         {/* Appointment History */}
