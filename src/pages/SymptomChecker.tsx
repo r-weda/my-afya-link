@@ -272,10 +272,10 @@ export default function SymptomChecker() {
                   <Stethoscope className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <h2 className="font-display font-semibold text-lg md:text-xl text-foreground">
+                  <h2 className="font-display font-semibold text-lg md:text-xl lg:text-2xl text-foreground">
                     What symptoms do you have?
                   </h2>
-                  <p className="text-xs text-muted-foreground">Select all that apply or search</p>
+                  <p className="text-xs lg:text-sm text-muted-foreground">Select all that apply or search</p>
                 </div>
               </div>
 
@@ -439,10 +439,10 @@ export default function SymptomChecker() {
                   <AlertTriangle className="w-5 h-5 text-warning" />
                 </div>
                 <div>
-                  <h2 className="font-display font-semibold text-lg md:text-xl text-foreground">
+                  <h2 className="font-display font-semibold text-lg md:text-xl lg:text-2xl text-foreground">
                     How severe are your symptoms?
                   </h2>
-                  <p className="text-xs text-muted-foreground">Rate each symptom's severity and duration</p>
+                  <p className="text-xs lg:text-sm text-muted-foreground">Rate each symptom's severity and duration</p>
                 </div>
               </div>
 
@@ -530,10 +530,10 @@ export default function SymptomChecker() {
                   <User className="w-5 h-5 text-info" />
                 </div>
                 <div>
-                  <h2 className="font-display font-semibold text-lg md:text-xl text-foreground">
+                  <h2 className="font-display font-semibold text-lg md:text-xl lg:text-2xl text-foreground">
                     A few more details
                   </h2>
-                  <p className="text-xs text-muted-foreground">Helps provide more accurate analysis</p>
+                  <p className="text-xs lg:text-sm text-muted-foreground">Helps provide more accurate analysis</p>
                 </div>
               </div>
 

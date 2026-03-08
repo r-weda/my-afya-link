@@ -65,7 +65,7 @@ export default function SymptomHistory() {
         <AppHeader title="Symptom History" />
         <div className="flex-1 flex flex-col items-center justify-center px-6">
           <LogIn className="w-10 h-10 text-muted-foreground mb-4" />
-          <h2 className="font-display font-bold text-lg text-foreground mb-2">Sign in to view history</h2>
+          <h2 className="font-display font-bold text-lg lg:text-xl text-foreground mb-2">Sign in to view history</h2>
           <Button onClick={() => navigate("/auth")} className="rounded-xl">Sign In</Button>
         </div>
         <Footer />
@@ -92,7 +92,7 @@ export default function SymptomHistory() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <History className="w-5 h-5 text-primary" />
-            <h2 className="font-display font-bold text-lg text-foreground">
+            <h2 className="font-display font-bold text-lg lg:text-xl text-foreground">
               Past Symptom Checks
             </h2>
           </div>
@@ -113,7 +113,7 @@ export default function SymptomHistory() {
         ) : checks.length === 0 ? (
           <div className="text-center py-16 elevated-card rounded-2xl">
             <Stethoscope className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
-            <p className="text-sm text-muted-foreground mb-4">No symptom checks yet</p>
+            <p className="text-sm lg:text-base text-muted-foreground mb-4">No symptom checks yet</p>
             <Button onClick={() => navigate("/symptom-checker")} className="rounded-xl">
               Check Symptoms Now
             </Button>
