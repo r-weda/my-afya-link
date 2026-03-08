@@ -139,9 +139,9 @@ export default function DashboardWidgets() {
         ) : (
           <div className="space-y-2">
             {checks.map((check) => (
-              <div key={check.id} className="bg-muted/50 rounded-xl p-2.5 md:p-3 space-y-1">
+              <div key={check.id} className="bg-muted/50 rounded-xl p-2.5 space-y-1">
                 <div className="flex items-center gap-1.5">
-                  <p className="text-[11px] md:text-xs text-muted-foreground">
+                  <p className="text-[11px] text-muted-foreground">
                     {format(new Date(check.created_at), "MMM d")}
                   </p>
                   {check.is_urgent && (
