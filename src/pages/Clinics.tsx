@@ -8,6 +8,7 @@ import ClinicCard from "@/components/ClinicCard";
 import ClinicMap from "@/components/ClinicMap";
 import ClinicDetailSheet from "@/components/ClinicDetailSheet";
 import { Search, Loader2, LogIn, X } from "lucide-react";
+import { ClinicCardSkeleton } from "@/components/SkeletonCards";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
