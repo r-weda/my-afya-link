@@ -54,17 +54,17 @@ export default function Index() {
             </h2>
             <p className="text-sm md:text-base lg:text-lg text-muted-foreground mt-1">How are you feeling today?</p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 md:gap-3 flex-wrap">
             <button
               onClick={() => navigate("/symptom-checker")}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-primary text-primary-foreground font-semibold text-sm lg:text-base hover:opacity-90 transition-opacity shadow-md shrink-0"
+              className="flex items-center gap-1.5 md:gap-2 px-3 md:px-5 py-2.5 rounded-2xl bg-primary text-primary-foreground font-semibold text-xs md:text-sm lg:text-base hover:opacity-90 transition-opacity shadow-md"
             >
               <Stethoscope className="w-4 h-4" />
-              Check Symptoms Now
+              Check Symptoms
             </button>
             <button
               onClick={() => navigate("/appointments")}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-secondary text-secondary-foreground font-semibold text-sm lg:text-base hover:opacity-80 transition-opacity shrink-0"
+              className="flex items-center gap-1.5 md:gap-2 px-3 md:px-5 py-2.5 rounded-2xl bg-secondary text-secondary-foreground font-semibold text-xs md:text-sm lg:text-base hover:opacity-80 transition-opacity"
             >
               <Calendar className="w-4 h-4" />
               Book Appointment
