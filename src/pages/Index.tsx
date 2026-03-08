@@ -199,7 +199,7 @@ function LandingPage() {
               </button>
               <button
                 onClick={() => navigate("/auth")}
-                className="flex-1 sm:flex-none sm:min-w-[160px] lg:min-w-[200px] h-12 lg:h-14 rounded-2xl bg-secondary text-secondary-foreground font-semibold text-sm lg:text-lg hover:opacity-80 transition-opacity px-6 lg:px-8 border border-border"
+                className="flex-1 sm:flex-none sm:min-w-[160px] lg:min-w-[200px] h-13 lg:h-14 rounded-2xl bg-secondary text-secondary-foreground font-semibold text-sm lg:text-lg hover:opacity-80 transition-opacity py-3.5 px-6 lg:px-8 border border-border"
               >
                 Sign In
               </button>
