@@ -92,7 +92,7 @@ export default function SymptomHistory() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <History className="w-5 h-5 text-primary" />
-            <h2 className="font-display font-bold text-lg text-foreground">
+            <h2 className="font-display font-bold text-lg lg:text-xl text-foreground">
               Past Symptom Checks
             </h2>
           </div>
