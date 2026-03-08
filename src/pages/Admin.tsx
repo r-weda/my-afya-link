@@ -155,6 +155,7 @@ function AdminArticles() {
 
       {showImport && (
         <CsvArticleImport onImportComplete={() => { setShowImport(false); fetchArticles(); }} />
+      )}
 
       {showForm && (
         <motion.form initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} onSubmit={handleCreate} className="elevated-card rounded-2xl p-4 space-y-3">
