@@ -99,7 +99,7 @@ export default function DashboardWidgets() {
         </button>
 
         {appointments.length === 0 ? (
-          <p className="text-xs text-muted-foreground py-2">No upcoming appointments</p>
+          <p className="text-xs md:text-sm text-muted-foreground py-2">No upcoming appointments</p>
         ) : (
           <div className="space-y-2">
             {appointments.map((apt) => (
