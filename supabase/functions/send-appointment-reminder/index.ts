@@ -8,12 +8,49 @@ const corsHeaders = {
 };
 
 interface ReminderRequest {
-  appointmentId: string;
+  appointmentId?: string;
   phoneNumber: string;
   patientName: string;
   clinicName: string;
   appointmentDate: string;
   appointmentTime: string;
+  type?: "appointment_reminder" | "booking_confirmation";
+}
+
+async function sendSms(
+  phoneNumber: string,
+  message: string,
+  apiKey: string,
+  username: string
+): Promise<{ success: boolean; result?: unknown; error?: string }> {
+  const baseUrl =
+    username === "sandbox"
+      ? "https://api.sandbox.africastalking.com"
+      : "https://api.africastalking.com";
+
+  const formData = new URLSearchParams();
+  formData.append("username", username);
+  formData.append("to", phoneNumber);
+  formData.append("message", message);
+
+  const smsResponse = await fetch(`${baseUrl}/version1/messaging`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/x-www-form-urlencoded",
+      apiKey: apiKey,
+    },
+    body: formData.toString(),
+  });
+
+  const smsResult = await smsResponse.json();
+
+  if (!smsResponse.ok) {
+    console.error(`Africa's Talking API error [${smsResponse.status}]:`, smsResult);
+    return { success: false, error: "SMS delivery failed" };
+  }
+
+  return { success: true, result: smsResult };
 }
 
 serve(async (req: Request) => {
@@ -25,7 +62,7 @@ serve(async (req: Request) => {
     const apiKey = Deno.env.get("AFRICASTALKING_API_KEY");
     if (!apiKey) {
       console.error("AFRICASTALKING_API_KEY is not configured");
-      return new Response(JSON.stringify({ success: false, error: "SMS service is currently unavailable. Please try again later." }), {
+      return new Response(JSON.stringify({ success: false, error: "SMS service is currently unavailable." }), {
         status: 503,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -34,7 +71,7 @@ serve(async (req: Request) => {
     const username = Deno.env.get("AFRICASTALKING_USERNAME");
     if (!username) {
       console.error("AFRICASTALKING_USERNAME is not configured");
-      return new Response(JSON.stringify({ success: false, error: "SMS service is currently unavailable. Please try again later." }), {
+      return new Response(JSON.stringify({ success: false, error: "SMS service is currently unavailable." }), {
         status: 503,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -50,14 +87,18 @@ serve(async (req: Request) => {
     }
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
-    const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+    const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    
+    // User-scoped client for auth verification
+    const supabaseUser = createClient(supabaseUrl, Deno.env.get("SUPABASE_ANON_KEY")!, {
       global: { headers: { Authorization: authHeader } },
     });
 
-    const token = authHeader.replace("Bearer ", "");
-    const { data: claimsData, error: claimsError } = await supabase.auth.getClaims(token);
-    if (claimsError || !claimsData?.claims) {
+    // Service role client for writing notification history (bypasses RLS)
+    const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey);
+
+    const { data: { user }, error: authError } = await supabaseUser.auth.getUser();
+    if (authError || !user) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -71,12 +112,12 @@ serve(async (req: Request) => {
       clinicName,
       appointmentDate,
       appointmentTime,
+      type = "appointment_reminder",
     }: ReminderRequest = await req.json();
 
-    // Verify ownership: if appointmentId is provided, confirm the authenticated user owns it
+    // Verify ownership if appointmentId is provided
     if (appointmentId) {
-      const authenticatedUserId = claimsData.claims.sub;
-      const { data: appointment, error: apptError } = await supabase
+      const { data: appointment, error: apptError } = await supabaseUser
         .from("appointments")
         .select("user_id")
         .eq("id", appointmentId)
@@ -89,8 +130,8 @@ serve(async (req: Request) => {
         });
       }
 
-      if (appointment.user_id !== authenticatedUserId) {
-        return new Response(JSON.stringify({ error: "Forbidden: you do not own this appointment" }), {
+      if (appointment.user_id !== user.id) {
+        return new Response(JSON.stringify({ error: "Forbidden" }), {
           status: 403,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
@@ -104,55 +145,71 @@ serve(async (req: Request) => {
       );
     }
 
-    // Format the message
-    const message = `Hi ${patientName || "there"}! This is a reminder for your appointment at ${clinicName} on ${appointmentDate} at ${appointmentTime}. Please arrive 10 minutes early. - AfyaConnect`;
+    // Check notification preferences
+    const prefField = type === "booking_confirmation" ? "booking_confirmations" : "appointment_reminders";
+    const { data: prefs } = await supabaseAdmin
+      .from("notification_preferences")
+      .select(prefField)
+      .eq("user_id", user.id)
+      .maybeSingle();
 
-    // Determine API base URL (sandbox vs production)
-    const baseUrl =
-      username === "sandbox"
-        ? "https://api.sandbox.africastalking.com"
-        : "https://api.africastalking.com";
-
-    // Send SMS via Africa's Talking
-    const formData = new URLSearchParams();
-    formData.append("username", username);
-    formData.append("to", phoneNumber);
-    formData.append("message", message);
-
-    const smsResponse = await fetch(`${baseUrl}/version1/messaging`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/x-www-form-urlencoded",
-        apiKey: apiKey,
-      },
-      body: formData.toString(),
-    });
-
-    const smsResult = await smsResponse.json();
-
-    if (!smsResponse.ok) {
-      console.error(`Africa's Talking API error [${smsResponse.status}]:`, smsResult);
-      throw new Error("SMS delivery failed");
+    // If preferences exist and the relevant type is disabled, skip sending
+    if (prefs && prefs[prefField] === false) {
+      console.log(`User ${user.id} has ${prefField} disabled, skipping SMS`);
+      return new Response(JSON.stringify({ success: true, skipped: true, reason: "Notification type disabled by user" }), {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
-    // Mark reminder as sent if appointmentId is provided
-    if (appointmentId) {
-      await supabase
+    // Format the message based on type
+    let message: string;
+    let notificationTitle: string;
+
+    if (type === "booking_confirmation") {
+      message = `Hi ${patientName || "there"}! Your appointment at ${clinicName} on ${appointmentDate} at ${appointmentTime} has been confirmed. We'll send you a reminder before your visit. - AfyaConnect`;
+      notificationTitle = `Booking confirmed: ${clinicName}`;
+    } else {
+      message = `Hi ${patientName || "there"}! This is a reminder for your appointment at ${clinicName} on ${appointmentDate} at ${appointmentTime}. Please arrive 10 minutes early. - AfyaConnect`;
+      notificationTitle = `Reminder: ${clinicName}`;
+    }
+
+    // Send SMS
+    const smsResult = await sendSms(phoneNumber, message, apiKey, username);
+
+    // Log to notification history using service role (bypasses RLS)
+    await supabaseAdmin.from("notification_history").insert({
+      user_id: user.id,
+      type: type,
+      title: notificationTitle,
+      message: message,
+      status: smsResult.success ? "sent" : "failed",
+    });
+
+    // Mark reminder as sent if appointmentId is provided and type is reminder
+    if (appointmentId && type === "appointment_reminder" && smsResult.success) {
+      await supabaseUser
         .from("appointments")
         .update({ reminder_sent: true })
         .eq("id", appointmentId);
     }
 
-    console.log("SMS sent successfully:", smsResult);
+    if (!smsResult.success) {
+      return new Response(JSON.stringify({ success: false, error: "SMS delivery failed" }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
-    return new Response(JSON.stringify({ success: true, result: smsResult }), {
+    console.log("SMS sent successfully:", smsResult.result);
+
+    return new Response(JSON.stringify({ success: true, result: smsResult.result }), {
       status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error: unknown) {
-    console.error("Error sending SMS reminder:", error);
-    return new Response(JSON.stringify({ success: false, error: "Unable to send SMS reminder. Please try again later." }), {
+    console.error("Error sending SMS:", error);
+    return new Response(JSON.stringify({ success: false, error: "Unable to send SMS. Please try again later." }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
