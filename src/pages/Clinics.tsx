@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -131,6 +131,7 @@ export default function Clinics() {
                 {filtered.map((clinic) => (
                   <ClinicCard
                     key={clinic.id}
+                    id={clinic.id}
                     name={clinic.name}
                     address={clinic.address}
                     city={clinic.city}
@@ -138,6 +139,7 @@ export default function Clinics() {
                     operatingHours={clinic.operating_hours || undefined}
                     services={clinic.services || undefined}
                     isVerified={clinic.is_verified}
+                    onBook={(clinicId) => navigate(`/appointments?clinic=${clinicId}`)}
                   />
                 ))}
               </motion.div>

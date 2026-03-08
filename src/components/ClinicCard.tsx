@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 
 interface ClinicCardProps {
+  id?: string;
   name: string;
   address: string;
   city: string;
@@ -11,9 +12,11 @@ interface ClinicCardProps {
   services?: string[];
   isVerified?: boolean;
   onClick?: () => void;
+  onBook?: (clinicId: string) => void;
 }
 
 export default function ClinicCard({
+  id,
   name,
   address,
   city,
@@ -22,6 +25,7 @@ export default function ClinicCard({
   services,
   isVerified,
   onClick,
+  onBook,
 }: ClinicCardProps) {
   return (
     <motion.button
@@ -77,6 +81,20 @@ export default function ClinicCard({
               +{services.length - 3} more
             </span>
           )}
+        </div>
+      )}
+
+      {onBook && id && (
+        <div className="mt-3 pt-3 border-t border-border/50">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onBook(id);
+            }}
+            className="text-xs lg:text-sm font-semibold text-primary hover:text-primary/80 transition-colors"
+          >
+            Book Appointment →
+          </button>
         </div>
       )}
     </motion.button>
