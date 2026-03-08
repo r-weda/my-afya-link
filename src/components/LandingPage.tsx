@@ -82,23 +82,23 @@ export default function LandingPage() {
             </div>
             <span className="font-display font-bold text-lg text-foreground">AfyaConnect</span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <button
               onClick={toggleTheme}
-              className="w-9 h-9 rounded-xl flex items-center justify-center text-muted-foreground hover:bg-secondary transition-colors"
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center text-muted-foreground hover:bg-secondary transition-colors"
               aria-label="Toggle theme"
             >
               {theme === "light" ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
             </button>
             <button
               onClick={() => navigate("/auth")}
-              className="text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors px-3 py-2"
+              className="text-xs sm:text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors px-2 sm:px-3 py-2"
             >
               Sign In
             </button>
             <button
               onClick={() => navigate("/auth")}
-              className="text-sm font-semibold bg-primary text-primary-foreground px-4 py-2 rounded-xl hover:opacity-90 transition-opacity shadow-sm"
+              className="text-xs sm:text-sm font-semibold bg-primary text-primary-foreground px-3 sm:px-4 py-2 rounded-xl hover:opacity-90 transition-opacity shadow-sm"
             >
               Get Started
             </button>
