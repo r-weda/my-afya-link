@@ -96,7 +96,7 @@ export default function LandingPage() {
               Sign In
             </button>
             <button
-              onClick={() => navigate("/auth")}
+              onClick={() => navigate("/auth?tab=signup")}
               className="text-xs sm:text-sm font-semibold bg-primary text-primary-foreground px-3 sm:px-4 py-2 rounded-xl hover:opacity-90 transition-opacity shadow-sm"
             >
               Get Started
