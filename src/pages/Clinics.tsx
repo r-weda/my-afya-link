@@ -37,6 +37,8 @@ export default function Clinics() {
   const [clinics, setClinics] = useState<Clinic[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [selectedCounty, setSelectedCounty] = useState<string>("all");
+  const [selectedCity, setSelectedCity] = useState<string>("all");
   const [selectedClinic, setSelectedClinic] = useState<Clinic | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
 
