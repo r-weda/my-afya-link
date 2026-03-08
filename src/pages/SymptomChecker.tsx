@@ -11,7 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Footer from "@/components/Footer";
 import {
   Stethoscope, ChevronRight, RotateCcw, MapPin, CalendarPlus,
-  Loader2, ShieldAlert, History, Trash2, ChevronDown,
+  Loader2, ShieldAlert, History, Trash2, ChevronDown, Sparkles, Brain,
 } from "lucide-react";
 import { analyzeSymptoms, type MatchResult } from "@/services/symptomRules";
 import { supabase } from "@/integrations/supabase/client";
