@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { Bell, Settings, LogOut, Shield, Home, FileText, Stethoscope, MapPin, Calendar } from "lucide-react";
+import { useTheme } from "@/hooks/useTheme";
+import { Bell, Settings, LogOut, Shield, Home, FileText, Stethoscope, MapPin, Calendar, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -26,6 +27,7 @@ interface AppHeaderProps {
 
 export default function AppHeader({ title }: AppHeaderProps) {
   const { user, isAdmin, signOut } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -72,6 +74,9 @@ export default function AppHeader({ title }: AppHeaderProps) {
         )}
 
         <div className="flex items-center gap-2">
+          <Button variant="ghost" size="icon" className="w-9 h-9 rounded-xl" onClick={toggleTheme} aria-label="Toggle theme">
+            {theme === "light" ? <Moon className="w-4 h-4 text-muted-foreground" /> : <Sun className="w-4 h-4 text-muted-foreground" />}
+          </Button>
           <Button variant="ghost" size="icon" className="w-9 h-9 rounded-xl">
             <Bell className="w-4 h-4 text-muted-foreground" />
           </Button>
