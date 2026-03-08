@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AppHeader from "@/components/AppHeader";
 import BottomNav from "@/components/BottomNav";
@@ -8,8 +8,15 @@ import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { motion, AnimatePresence } from "framer-motion";
 import Footer from "@/components/Footer";
-import { Stethoscope, AlertTriangle, ChevronRight, RotateCcw, MapPin, CalendarPlus, Loader2, ShieldAlert } from "lucide-react";
+import {
+  Stethoscope, ChevronRight, RotateCcw, MapPin, CalendarPlus,
+  Loader2, ShieldAlert, History, Trash2, ChevronDown,
+} from "lucide-react";
 import { analyzeSymptoms, type MatchResult } from "@/services/symptomRules";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "@/hooks/use-toast";
+import { format } from "date-fns";
 
 const commonSymptoms = [
   "Headache", "Fever", "Cough", "Fatigue", "Sore throat",
@@ -17,14 +24,62 @@ const commonSymptoms = [
   "Stomach pain", "Difficulty breathing",
 ];
 
+interface SymptomCheck {
+  id: string;
+  symptoms: string[];
+  additional_notes: string | null;
+  is_urgent: boolean;
+  results: MatchResult[];
+  created_at: string;
+}
+
 export default function SymptomChecker() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [selected, setSelected] = useState<string[]>([]);
   const [additionalNotes, setAdditionalNotes] = useState("");
   const [results, setResults] = useState<MatchResult[] | null>(null);
   const [isUrgent, setIsUrgent] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState("");
+  const [history, setHistory] = useState<SymptomCheck[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
+  const [loadingHistory, setLoadingHistory] = useState(false);
+
+  useEffect(() => {
+    if (user) fetchHistory();
+  }, [user]);
+
+  const fetchHistory = async () => {
+    if (!user) return;
+    setLoadingHistory(true);
+    const { data } = await supabase
+      .from("symptom_checks")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(20);
+    if (data) setHistory(data as unknown as SymptomCheck[]);
+    setLoadingHistory(false);
+  };
+
+  const saveCheck = async (analysisResults: MatchResult[], urgent: boolean) => {
+    if (!user) return;
+    await supabase.from("symptom_checks").insert({
+      user_id: user.id,
+      symptoms: selected,
+      additional_notes: additionalNotes || null,
+      is_urgent: urgent,
+      results: JSON.parse(JSON.stringify(analysisResults)),
+    });
+    fetchHistory();
+  };
+
+  const deleteCheck = async (id: string) => {
+    await supabase.from("symptom_checks").delete().eq("id", id);
+    setHistory((prev) => prev.filter((h) => h.id !== id));
+    toast({ title: "Check deleted" });
+  };
 
   const toggleSymptom = (symptom: string) => {
     setSelected((prev) =>
@@ -40,14 +95,15 @@ export default function SymptomChecker() {
     }
     setError("");
     setIsAnalyzing(true);
-
-    // Simulate brief analysis delay for UX
     await new Promise((r) => setTimeout(r, 1200));
 
     const analysis = analyzeSymptoms(selected);
     setResults(analysis.results);
     setIsUrgent(analysis.isUrgent);
     setIsAnalyzing(false);
+
+    // Save to database
+    await saveCheck(analysis.results, analysis.isUrgent);
   };
 
   const handleReset = () => {
@@ -56,6 +112,14 @@ export default function SymptomChecker() {
     setResults(null);
     setIsUrgent(false);
     setError("");
+  };
+
+  const loadFromHistory = (check: SymptomCheck) => {
+    setSelected(check.symptoms);
+    setAdditionalNotes(check.additional_notes || "");
+    setResults(check.results);
+    setIsUrgent(check.is_urgent);
+    setShowHistory(false);
   };
 
   const likelihoodColors: Record<string, string> = {
@@ -153,6 +217,74 @@ export default function SymptomChecker() {
                   </>
                 )}
               </Button>
+
+              {/* History section */}
+              {user && history.length > 0 && (
+                <div className="space-y-3 pt-2">
+                  <button
+                    onClick={() => setShowHistory(!showHistory)}
+                    className="flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    <History className="w-4 h-4" />
+                    Past Symptom Checks ({history.length})
+                    <ChevronDown className={`w-4 h-4 transition-transform ${showHistory ? "rotate-180" : ""}`} />
+                  </button>
+
+                  <AnimatePresence>
+                    {showHistory && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="space-y-2 overflow-hidden"
+                      >
+                        {history.map((check) => (
+                          <div
+                            key={check.id}
+                            className="elevated-card rounded-xl p-3 flex items-center justify-between gap-3"
+                          >
+                            <button
+                              onClick={() => loadFromHistory(check)}
+                              className="flex-1 text-left space-y-1 min-w-0"
+                            >
+                              <div className="flex items-center gap-2">
+                                <p className="text-xs text-muted-foreground">
+                                  {format(new Date(check.created_at), "MMM d, yyyy · h:mm a")}
+                                </p>
+                                {check.is_urgent && (
+                                  <Badge variant="destructive" className="text-[10px] rounded-md px-1.5 py-0">
+                                    Urgent
+                                  </Badge>
+                                )}
+                              </div>
+                              <div className="flex flex-wrap gap-1">
+                                {check.symptoms.slice(0, 4).map((s) => (
+                                  <Badge key={s} variant="secondary" className="text-[10px] rounded-md">
+                                    {s}
+                                  </Badge>
+                                ))}
+                                {check.symptoms.length > 4 && (
+                                  <Badge variant="secondary" className="text-[10px] rounded-md">
+                                    +{check.symptoms.length - 4}
+                                  </Badge>
+                                )}
+                              </div>
+                            </button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="shrink-0 h-8 w-8 text-muted-foreground hover:text-destructive"
+                              onClick={() => deleteCheck(check.id)}
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </Button>
+                          </div>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              )}
             </motion.div>
           ) : (
             <motion.div

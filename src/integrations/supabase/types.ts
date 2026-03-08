@@ -327,6 +327,36 @@ export type Database = {
         }
         Relationships: []
       }
+      symptom_checks: {
+        Row: {
+          additional_notes: string | null
+          created_at: string
+          id: string
+          is_urgent: boolean
+          results: Json
+          symptoms: string[]
+          user_id: string
+        }
+        Insert: {
+          additional_notes?: string | null
+          created_at?: string
+          id?: string
+          is_urgent?: boolean
+          results?: Json
+          symptoms: string[]
+          user_id: string
+        }
+        Update: {
+          additional_notes?: string | null
+          created_at?: string
+          id?: string
+          is_urgent?: boolean
+          results?: Json
+          symptoms?: string[]
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
