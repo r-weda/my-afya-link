@@ -7,6 +7,8 @@ import BottomNav from "@/components/BottomNav";
 import Footer from "@/components/Footer";
 import MedicalDisclaimer from "@/components/MedicalDisclaimer";
 import { Loader2, ArrowLeft, Clock, ExternalLink, ChevronDown, ChevronUp, Lightbulb } from "lucide-react";
+import BookmarkButton from "@/components/BookmarkButton";
+import { useBookmarks } from "@/hooks/useBookmarks";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
