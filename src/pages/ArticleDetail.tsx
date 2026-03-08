@@ -44,6 +44,7 @@ export default function ArticleDetail() {
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState(false);
+  const { isBookmarked, toggle: toggleBookmark } = useBookmarks();
 
   useEffect(() => {
     const fetchArticle = async () => {
