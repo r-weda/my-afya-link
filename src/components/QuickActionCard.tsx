@@ -40,8 +40,8 @@ export default function QuickActionCard({
       <h3
         className={`font-display font-semibold text-card-foreground mb-1 ${
           prominent
-            ? "text-base md:text-lg lg:text-xl"
-            : "text-sm md:text-base lg:text-lg"
+            ? "text-base md:text-base lg:text-base"
+            : "text-sm md:text-sm lg:text-sm"
         }`}
       >
         {label}
