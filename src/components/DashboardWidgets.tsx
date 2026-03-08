@@ -126,10 +126,10 @@ export default function DashboardWidgets() {
           className="flex items-center justify-between w-full"
         >
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-              <Stethoscope className="w-4 h-4 text-primary" />
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+              <Stethoscope className="w-4 h-4 md:w-5 md:h-5 text-primary" />
             </div>
-            <h4 className="font-display font-semibold text-sm text-card-foreground">Recent Checks</h4>
+            <h4 className="font-display font-semibold text-sm md:text-base lg:text-lg text-card-foreground">Recent Checks</h4>
           </div>
           <ChevronRight className="w-4 h-4 text-muted-foreground" />
         </button>
