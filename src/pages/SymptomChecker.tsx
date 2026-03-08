@@ -149,6 +149,7 @@ export default function SymptomChecker() {
     setResults(null);
     setIsUrgent(false);
     setError("");
+    setAiInsight(null);
   };
 
   const loadFromHistory = (check: SymptomCheck) => {
