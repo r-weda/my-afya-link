@@ -16,7 +16,6 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import heroImage from "@/assets/hero-health.jpg";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
