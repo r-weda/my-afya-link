@@ -31,7 +31,7 @@ export default function Index() {
   }
 
   if (!user) {
-    return <LandingPage />;
+    return <LandingPageComponent />;
   }
 
   const firstName = user.user_metadata?.first_name || "there";
