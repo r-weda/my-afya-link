@@ -5,6 +5,7 @@ import BottomNav from "@/components/BottomNav";
 import QuickActionCard from "@/components/QuickActionCard";
 import MedicalDisclaimer from "@/components/MedicalDisclaimer";
 import Footer from "@/components/Footer";
+import LandingPageComponent from "@/components/LandingPage";
 import { FileText, Stethoscope, MapPin, Calendar, ArrowRight, Shield, Clock, Users, MessageSquare } from "lucide-react";
 import { motion } from "framer-motion";
 import heroImage from "@/assets/hero-health.jpg";
