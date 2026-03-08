@@ -173,8 +173,8 @@ export default function DashboardWidgets() {
           className="flex items-center justify-between w-full"
         >
           <div className="flex items-center gap-2">
-            <div className="relative w-8 h-8 md:w-10 md:h-10 rounded-lg bg-warning/10 flex items-center justify-center">
-              <Bell className="w-4 h-4 md:w-5 md:h-5 text-warning" />
+            <div className="relative w-8 h-8 rounded-lg bg-warning/10 flex items-center justify-center">
+              <Bell className="w-4 h-4 text-warning" />
               {unreadCount > 0 && (
                 <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-destructive text-destructive-foreground text-[9px] font-bold flex items-center justify-center">
                   {unreadCount > 9 ? "9+" : unreadCount}
