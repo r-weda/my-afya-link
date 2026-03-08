@@ -198,8 +198,8 @@ export default function ProfilePage() {
           </h3>
 
           {loadingAppointments ? (
-            <div className="flex justify-center py-12">
-              <Loader2 className="w-6 h-6 animate-spin text-primary" />
+            <div className="space-y-3">
+              {[1, 2, 3].map((i) => <AppointmentCardSkeleton key={i} />)}
             </div>
           ) : appointments.length === 0 ? (
             <div className="text-center py-12 elevated-card rounded-2xl">
