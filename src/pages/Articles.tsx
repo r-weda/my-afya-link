@@ -58,15 +58,26 @@ export default function Articles() {
       <AppHeader title="Health Articles" />
 
       <main className="px-4 pt-4 max-w-lg md:max-w-4xl lg:max-w-[1400px] mx-auto space-y-4">
-        {/* Search */}
-        <div className="relative md:max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input
-            placeholder="Search articles..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-10 rounded-xl h-11 lg:h-12 lg:text-base bg-secondary/50 border-0"
-          />
+        {/* Search + Bookmark filter */}
+        <div className="flex gap-2 items-center">
+          <div className="relative flex-1 md:max-w-md">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              placeholder="Search articles..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-10 rounded-xl h-11 lg:h-12 lg:text-base bg-secondary/50 border-0"
+            />
+          </div>
+          <Button
+            variant={showBookmarked ? "default" : "outline"}
+            size="icon"
+            className="h-11 w-11 lg:h-12 lg:w-12 rounded-xl shrink-0"
+            onClick={() => setShowBookmarked(!showBookmarked)}
+            aria-label="Show bookmarked articles"
+          >
+            <Bookmark className={`w-4 h-4 ${showBookmarked ? "fill-primary-foreground" : ""}`} />
+          </Button>
         </div>
 
         <div className="md:max-w-2xl">
