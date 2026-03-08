@@ -137,11 +137,20 @@ export default function LandingPage() {
               variants={fadeUp}
               initial="hidden"
               animate="show"
-              className="font-display font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-foreground leading-[1.08] mb-5"
+              className="font-display font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-foreground leading-[1.08] mb-3"
+            >
+              AfyaConnect
+            </motion.h1>
+            <motion.p
+              custom={1.5}
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              className="font-display font-bold text-xl sm:text-2xl md:text-3xl lg:text-4xl text-muted-foreground leading-tight mb-5"
             >
               Healthcare at your{" "}
               <span className="text-gradient-primary">fingertips</span>
-            </motion.h1>
+            </motion.p>
 
             <motion.p
               custom={2}
