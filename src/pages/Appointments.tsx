@@ -95,31 +95,41 @@ export default function Appointments() {
     } else {
       toast({ title: "Appointment booked!", description: "You will receive a confirmation soon." });
 
-      // Send SMS reminder if user has a phone number
+      // Send booking confirmation SMS if user has preferences with phone
       try {
+        // Check notification preferences first
+        const { data: notifPrefs } = await supabase
+          .from("notification_preferences")
+          .select("booking_confirmations, phone_number")
+          .eq("user_id", user.id)
+          .maybeSingle();
+
+        // Also check profile phone as fallback
         const { data: profile } = await supabase
           .from("profiles")
           .select("phone_number, first_name")
           .eq("user_id", user.id)
           .single();
 
-        if (profile?.phone_number) {
+        const phone = notifPrefs?.phone_number || profile?.phone_number;
+
+        if (phone) {
           const selectedClinic = clinics.find((c) => c.id === clinicId);
-          const { data: { session } } = await supabase.auth.getSession();
-          if (session?.access_token && selectedClinic) {
+          if (selectedClinic) {
             await supabase.functions.invoke("send-appointment-reminder", {
               body: {
-                phoneNumber: profile.phone_number,
-                patientName: profile.first_name || "",
+                phoneNumber: phone,
+                patientName: profile?.first_name || "",
                 clinicName: selectedClinic.name,
                 appointmentDate: date,
                 appointmentTime: time,
+                type: "booking_confirmation",
               },
             });
           }
         }
       } catch (smsError) {
-        console.warn("SMS reminder failed (non-blocking):", smsError);
+        console.warn("SMS confirmation failed (non-blocking):", smsError);
       }
 
       setShowForm(false);
