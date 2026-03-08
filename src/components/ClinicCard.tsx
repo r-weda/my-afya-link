@@ -54,17 +54,17 @@ export default function ClinicCard({
         <ChevronRight className="w-5 h-5 text-muted-foreground shrink-0 mt-1" />
       </div>
 
-      <div className="flex items-center gap-4 mt-3 text-xs lg:text-sm text-muted-foreground">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-xs lg:text-sm text-muted-foreground">
         {phone && (
-          <div className="flex items-center gap-1">
-            <Phone className="w-3 h-3" />
-            <span>{phone}</span>
+          <div className="flex items-center gap-1 min-w-0">
+            <Phone className="w-3 h-3 shrink-0" />
+            <span className="truncate">{phone}</span>
           </div>
         )}
         {operatingHours && (
-          <div className="flex items-center gap-1">
-            <Clock className="w-3 h-3" />
-            <span>{operatingHours}</span>
+          <div className="flex items-center gap-1 min-w-0">
+            <Clock className="w-3 h-3 shrink-0" />
+            <span className="truncate">{operatingHours}</span>
           </div>
         )}
       </div>
