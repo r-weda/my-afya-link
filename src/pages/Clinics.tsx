@@ -79,14 +79,23 @@ export default function Clinics() {
     );
   }
 
-  const filtered = clinics.filter(
-    (c) =>
+  const counties = [...new Set(clinics.map((c) => c.county).filter(Boolean) as string[])].sort();
+
+  const citiesForCounty = selectedCounty === "all"
+    ? [...new Set(clinics.map((c) => c.city))].sort()
+    : [...new Set(clinics.filter((c) => c.county === selectedCounty).map((c) => c.city))].sort();
+
+  const filtered = clinics.filter((c) => {
+    const matchesSearch =
       c.name.toLowerCase().includes(search.toLowerCase()) ||
       c.address.toLowerCase().includes(search.toLowerCase()) ||
-      c.city.toLowerCase().includes(search.toLowerCase())
-  );
+      c.city.toLowerCase().includes(search.toLowerCase());
+    const matchesCounty = selectedCounty === "all" || c.county === selectedCounty;
+    const matchesCity = selectedCity === "all" || c.city === selectedCity;
+    return matchesSearch && matchesCounty && matchesCity;
+  });
 
-  const mapClinics = clinics.filter(
+  const mapClinics = filtered.filter(
     (c) => c.latitude != null && c.longitude != null
   ) as { id: string; name: string; address: string; latitude: number; longitude: number }[];
 
