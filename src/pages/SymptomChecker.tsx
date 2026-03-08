@@ -442,7 +442,7 @@ export default function SymptomChecker() {
                   <h2 className="font-display font-semibold text-lg md:text-xl lg:text-2xl text-foreground">
                     How severe are your symptoms?
                   </h2>
-                  <p className="text-xs text-muted-foreground">Rate each symptom's severity and duration</p>
+                  <p className="text-xs lg:text-sm text-muted-foreground">Rate each symptom's severity and duration</p>
                 </div>
               </div>
 

@@ -95,7 +95,7 @@ export default function Articles() {
             animate={{ opacity: 1 }}
             className="text-center py-12"
           >
-            <p className="text-muted-foreground text-sm">
+            <p className="text-muted-foreground text-sm lg:text-base">
               {articles.length === 0
                 ? "No articles published yet. Check back soon!"
                 : "No articles match your search."}

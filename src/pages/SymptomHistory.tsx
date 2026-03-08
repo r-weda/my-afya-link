@@ -113,7 +113,7 @@ export default function SymptomHistory() {
         ) : checks.length === 0 ? (
           <div className="text-center py-16 elevated-card rounded-2xl">
             <Stethoscope className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
-            <p className="text-sm text-muted-foreground mb-4">No symptom checks yet</p>
+            <p className="text-sm lg:text-base text-muted-foreground mb-4">No symptom checks yet</p>
             <Button onClick={() => navigate("/symptom-checker")} className="rounded-xl">
               Check Symptoms Now
             </Button>
