@@ -119,6 +119,7 @@ serve(async (req: Request) => {
       appointmentTime,
       notes,
       type = "appointment_reminder",
+      confirmationToken,
     } = body;
 
     // Verify ownership if appointmentId is provided
