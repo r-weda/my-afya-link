@@ -155,7 +155,8 @@ function AdminArticles() {
 
       {showImport && (
         <CsvArticleImport onImportComplete={() => { setShowImport(false); fetchArticles(); }} />
-      )}
+
+      {showForm && (
         <motion.form initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} onSubmit={handleCreate} className="elevated-card rounded-2xl p-4 space-y-3">
           <div className="space-y-1.5"><Label className="text-xs">Title</Label><Input value={title} onChange={(e) => setTitle(e.target.value)} className="rounded-xl h-10" required /></div>
           <div className="space-y-1.5"><Label className="text-xs">Summary</Label><Input value={summary} onChange={(e) => setSummary(e.target.value)} className="rounded-xl h-10" /></div>
