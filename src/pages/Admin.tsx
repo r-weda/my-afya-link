@@ -13,7 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import {
   ArrowLeft, FileText, MapPin, Calendar, Plus, Loader2,
-  Trash2, CheckCircle, Users, Upload
+  Trash2, CheckCircle, Users, Upload, X
 } from "lucide-react";
 import CsvClinicImport from "@/components/CsvClinicImport";
 import CsvArticleImport from "@/components/CsvArticleImport";
