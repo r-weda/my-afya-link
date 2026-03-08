@@ -83,12 +83,17 @@ export default function ArticleDetail() {
     );
   }
 
-  const isLong = article.content.length > COLLAPSE_THRESHOLD;
-  const displayContent = isLong && !expanded
-    ? article.content.slice(0, COLLAPSE_THRESHOLD) + "…"
-    : article.content;
+  // Normalize content: convert literal \n strings to actual newlines
+  const normalizedContent = article.content
+    .replace(/\\n/g, "\n")
+    .replace(/\\t/g, "  ");
 
-  const tips = extractTips(article.content);
+  const isLong = normalizedContent.length > COLLAPSE_THRESHOLD;
+  const displayContent = isLong && !expanded
+    ? normalizedContent.slice(0, COLLAPSE_THRESHOLD) + "…"
+    : normalizedContent;
+
+  const tips = extractTips(normalizedContent);
 
   return (
     <div className="min-h-screen bg-background pb-20 md:pb-8 flex flex-col">
