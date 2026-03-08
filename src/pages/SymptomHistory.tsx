@@ -65,7 +65,7 @@ export default function SymptomHistory() {
         <AppHeader title="Symptom History" />
         <div className="flex-1 flex flex-col items-center justify-center px-6">
           <LogIn className="w-10 h-10 text-muted-foreground mb-4" />
-          <h2 className="font-display font-bold text-lg text-foreground mb-2">Sign in to view history</h2>
+          <h2 className="font-display font-bold text-lg lg:text-xl text-foreground mb-2">Sign in to view history</h2>
           <Button onClick={() => navigate("/auth")} className="rounded-xl">Sign In</Button>
         </div>
         <Footer />
