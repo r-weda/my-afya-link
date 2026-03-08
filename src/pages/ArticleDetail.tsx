@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import ReactMarkdown from "react-markdown";
 import AppHeader from "@/components/AppHeader";
 import BottomNav from "@/components/BottomNav";
 import Footer from "@/components/Footer";
 import MedicalDisclaimer from "@/components/MedicalDisclaimer";
-import { Loader2, ArrowLeft, Clock, ExternalLink } from "lucide-react";
+import { Loader2, ArrowLeft, Clock, ExternalLink, ChevronDown, ChevronUp, Lightbulb } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
@@ -20,11 +21,27 @@ interface Article {
   published_at: string | null;
 }
 
+/** Extract lines that look like key tips (start with "Tip:" or "Key point:" etc.) */
+function extractTips(content: string): string[] {
+  const tips: string[] = [];
+  const lines = content.split("\n");
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (/^(tip|key point|important|note|remember):/i.test(trimmed)) {
+      tips.push(trimmed);
+    }
+  }
+  return tips;
+}
+
+const COLLAPSE_THRESHOLD = 2000; // characters
+
 export default function ArticleDetail() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -66,12 +83,19 @@ export default function ArticleDetail() {
     );
   }
 
+  const isLong = article.content.length > COLLAPSE_THRESHOLD;
+  const displayContent = isLong && !expanded
+    ? article.content.slice(0, COLLAPSE_THRESHOLD) + "…"
+    : article.content;
+
+  const tips = extractTips(article.content);
+
   return (
     <div className="min-h-screen bg-background pb-20 md:pb-8 flex flex-col">
       <AppHeader title="Article" />
 
       <motion.main
-        className="px-4 pt-4 max-w-lg md:max-w-3xl mx-auto space-y-6"
+        className="px-4 pt-4 max-w-lg md:max-w-3xl mx-auto space-y-6 w-full"
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -85,6 +109,7 @@ export default function ArticleDetail() {
           Back
         </Button>
 
+        {/* Hero image */}
         {article.image_url && (
           <div className="rounded-2xl overflow-hidden border border-border/50">
             <img
@@ -95,12 +120,13 @@ export default function ArticleDetail() {
           </div>
         )}
 
-        <div>
-          <h1 className="font-display font-bold text-2xl md:text-3xl lg:text-4xl text-foreground leading-tight mb-3">
+        {/* Article header card */}
+        <div className="bg-card rounded-2xl border border-border/40 p-5 md:p-7 space-y-4">
+          <h1 className="font-display font-bold text-2xl md:text-3xl lg:text-4xl text-foreground leading-tight">
             {article.title}
           </h1>
 
-          <div className="flex items-center gap-3 text-sm lg:text-base text-muted-foreground mb-6">
+          <div className="flex items-center gap-3 text-sm lg:text-base text-muted-foreground">
             {article.source && (
               <span className="font-medium text-primary">{article.source}</span>
             )}
@@ -119,27 +145,134 @@ export default function ArticleDetail() {
           </div>
 
           {article.summary && (
-            <p className="text-base lg:text-lg text-muted-foreground leading-relaxed mb-6 border-l-4 border-primary/30 pl-4 italic">
+            <p className="text-base lg:text-lg text-muted-foreground leading-relaxed border-l-4 border-primary/30 pl-4 italic">
               {article.summary}
             </p>
           )}
+        </div>
 
-          <div className="prose prose-sm md:prose-base max-w-none text-foreground leading-relaxed whitespace-pre-line">
-            {article.content}
+        {/* Key tips box */}
+        {tips.length > 0 && (
+          <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4 md:p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <Lightbulb className="w-4 h-4 text-primary" />
+              <span className="font-display font-semibold text-sm text-primary">Key Points</span>
+            </div>
+            <ul className="space-y-1.5">
+              {tips.map((tip, i) => (
+                <li key={i} className="text-sm text-foreground leading-relaxed pl-1">
+                  • {tip.replace(/^(tip|key point|important|note|remember):\s*/i, "")}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Article body */}
+        <div className="bg-card rounded-2xl border border-border/40 p-5 md:p-7">
+          <div className="article-content">
+            <ReactMarkdown
+              components={{
+                h1: ({ children }) => (
+                  <h2 className="font-display font-bold text-xl md:text-2xl text-foreground mt-8 mb-3 first:mt-0">
+                    {children}
+                  </h2>
+                ),
+                h2: ({ children }) => (
+                  <h2 className="font-display font-bold text-xl md:text-2xl text-foreground mt-8 mb-3 first:mt-0">
+                    {children}
+                  </h2>
+                ),
+                h3: ({ children }) => (
+                  <h3 className="font-display font-semibold text-lg md:text-xl text-foreground mt-6 mb-2">
+                    {children}
+                  </h3>
+                ),
+                h4: ({ children }) => (
+                  <h4 className="font-display font-semibold text-base md:text-lg text-foreground mt-5 mb-2">
+                    {children}
+                  </h4>
+                ),
+                p: ({ children }) => (
+                  <p className="text-sm md:text-base text-foreground/90 leading-relaxed mb-4">
+                    {children}
+                  </p>
+                ),
+                ul: ({ children }) => (
+                  <ul className="space-y-1.5 mb-4 ml-1">
+                    {children}
+                  </ul>
+                ),
+                ol: ({ children }) => (
+                  <ol className="space-y-1.5 mb-4 ml-1 list-decimal list-inside">
+                    {children}
+                  </ol>
+                ),
+                li: ({ children }) => (
+                  <li className="text-sm md:text-base text-foreground/90 leading-relaxed flex gap-2">
+                    <span className="text-primary mt-0.5 shrink-0">•</span>
+                    <span>{children}</span>
+                  </li>
+                ),
+                strong: ({ children }) => (
+                  <strong className="font-semibold text-foreground">{children}</strong>
+                ),
+                em: ({ children }) => (
+                  <em className="italic text-foreground/80">{children}</em>
+                ),
+                a: ({ href, children }) => (
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline"
+                  >
+                    {children}
+                  </a>
+                ),
+                blockquote: ({ children }) => (
+                  <blockquote className="border-l-4 border-primary/30 pl-4 my-4 text-muted-foreground italic">
+                    {children}
+                  </blockquote>
+                ),
+                hr: () => <hr className="border-border/50 my-6" />,
+              }}
+            >
+              {displayContent}
+            </ReactMarkdown>
           </div>
 
-          {article.source_url && (
-            <a
-              href={article.source_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline mt-6"
+          {/* Read more / collapse */}
+          {isLong && (
+            <button
+              onClick={() => setExpanded(!expanded)}
+              className="mt-4 flex items-center gap-1.5 text-sm font-semibold text-primary hover:opacity-80 transition-opacity"
             >
-              Read original source
-              <ExternalLink className="w-3.5 h-3.5" />
-            </a>
+              {expanded ? (
+                <>
+                  Show less <ChevronUp className="w-4 h-4" />
+                </>
+              ) : (
+                <>
+                  Read more <ChevronDown className="w-4 h-4" />
+                </>
+              )}
+            </button>
           )}
         </div>
+
+        {/* Source link */}
+        {article.source_url && (
+          <a
+            href={article.source_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
+          >
+            Read original source
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+        )}
 
         <MedicalDisclaimer />
       </motion.main>
