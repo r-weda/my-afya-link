@@ -46,6 +46,8 @@ export default function SymptomChecker() {
   const [history, setHistory] = useState<SymptomCheck[]>([]);
   const [showHistory, setShowHistory] = useState(false);
   const [loadingHistory, setLoadingHistory] = useState(false);
+  const [useAI, setUseAI] = useState(false);
+  const [aiInsight, setAiInsight] = useState<string | null>(null);
 
   useEffect(() => {
     if (user) fetchHistory();
