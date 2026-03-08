@@ -43,7 +43,14 @@ async function sendSms(
     body: formData.toString(),
   });
 
-  const smsResult = await smsResponse.json();
+  const responseText = await smsResponse.text();
+  let smsResult: unknown;
+  try {
+    smsResult = JSON.parse(responseText);
+  } catch {
+    console.error(`Africa's Talking returned non-JSON response [${smsResponse.status}]:`, responseText);
+    return { success: false, error: `SMS API returned non-JSON: ${responseText.substring(0, 200)}` };
+  }
 
   if (!smsResponse.ok) {
     console.error(`Africa's Talking API error [${smsResponse.status}]:`, smsResult);
