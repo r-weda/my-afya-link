@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -6,6 +6,7 @@ import AppHeader from "@/components/AppHeader";
 import BottomNav from "@/components/BottomNav";
 import ClinicCard from "@/components/ClinicCard";
 import ClinicMap from "@/components/ClinicMap";
+import ClinicDetailSheet from "@/components/ClinicDetailSheet";
 import { Search, Loader2, LogIn } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -17,12 +18,16 @@ interface Clinic {
   name: string;
   address: string;
   city: string;
+  county: string | null;
   phone_number: string | null;
+  email: string | null;
+  website: string | null;
   operating_hours: string | null;
   services: string[] | null;
   is_verified: boolean;
   latitude: number | null;
   longitude: number | null;
+  description: string | null;
 }
 
 export default function Clinics() {
@@ -31,13 +36,15 @@ export default function Clinics() {
   const [clinics, setClinics] = useState<Clinic[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [selectedClinic, setSelectedClinic] = useState<Clinic | null>(null);
+  const [sheetOpen, setSheetOpen] = useState(false);
 
   useEffect(() => {
     if (!user) return;
     const fetchClinics = async () => {
       const { data } = await supabase
         .from("clinics")
-        .select("id, name, address, city, phone_number, operating_hours, services, is_verified, latitude, longitude")
+        .select("id, name, address, city, county, phone_number, email, website, operating_hours, services, is_verified, latitude, longitude, description")
         .order("name");
       setClinics(data || []);
       setLoading(false);
@@ -80,16 +87,18 @@ export default function Clinics() {
     (c) => c.latitude != null && c.longitude != null
   ) as { id: string; name: string; address: string; latitude: number; longitude: number }[];
 
+  const handleClinicClick = (clinic: Clinic) => {
+    setSelectedClinic(clinic);
+    setSheetOpen(true);
+  };
+
   return (
     <div className="min-h-screen bg-background pb-20 md:pb-8 flex flex-col overflow-x-hidden">
       <AppHeader title="Find Clinics" />
 
       <main className="px-4 pt-4 max-w-lg md:max-w-4xl lg:max-w-[1400px] mx-auto space-y-4 w-full overflow-hidden">
-        {/* Desktop: side-by-side map + list. Mobile: stacked */}
         <div className="md:flex md:gap-6">
-          {/* Map + search column */}
           <div className="md:w-1/2 lg:w-2/5 space-y-4 md:sticky md:top-20 md:self-start">
-            {/* Map */}
             <div className="h-48 md:h-72 lg:h-96 rounded-2xl overflow-hidden border border-border/50">
               {loading ? (
                 <div className="h-full flex items-center justify-center bg-secondary/50">
@@ -100,7 +109,6 @@ export default function Clinics() {
               )}
             </div>
 
-            {/* Search */}
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
@@ -112,7 +120,6 @@ export default function Clinics() {
             </div>
           </div>
 
-          {/* Clinic list */}
           <div className="mt-4 md:mt-0 md:flex-1">
             {loading ? (
               <div className="flex justify-center py-12">
@@ -121,9 +128,7 @@ export default function Clinics() {
             ) : filtered.length === 0 ? (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-12">
                 <p className="text-muted-foreground text-sm">
-                  {clinics.length === 0
-                    ? "No clinics registered yet."
-                    : "No clinics match your search."}
+                  {clinics.length === 0 ? "No clinics registered yet." : "No clinics match your search."}
                 </p>
               </motion.div>
             ) : (
@@ -139,6 +144,7 @@ export default function Clinics() {
                     operatingHours={clinic.operating_hours || undefined}
                     services={clinic.services || undefined}
                     isVerified={clinic.is_verified}
+                    onClick={() => handleClinicClick(clinic)}
                     onBook={(clinicId) => navigate(`/appointments?clinic=${clinicId}`)}
                   />
                 ))}
@@ -151,6 +157,12 @@ export default function Clinics() {
       <div className="flex-1" />
       <Footer />
       <BottomNav />
+
+      <ClinicDetailSheet
+        clinic={selectedClinic}
+        open={sheetOpen}
+        onOpenChange={setSheetOpen}
+      />
     </div>
   );
 }
