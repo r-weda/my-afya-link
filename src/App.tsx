@@ -15,6 +15,7 @@ import Appointments from "./pages/Appointments";
 import Admin from "./pages/Admin";
 import Profile from "./pages/Profile";
 import Feedback from "./pages/Feedback";
+import Notifications from "./pages/Notifications";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
