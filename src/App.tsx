@@ -17,6 +17,7 @@ import Profile from "./pages/Profile";
 import Feedback from "./pages/Feedback";
 import Notifications from "./pages/Notifications";
 import ClinicAction from "./pages/ClinicAction";
+import SymptomHistory from "./pages/SymptomHistory";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
