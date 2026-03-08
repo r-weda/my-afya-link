@@ -46,7 +46,7 @@ export default function ClinicCard({
               </Badge>
             )}
           </div>
-          <div className="flex items-center gap-1 text-sm lg:text-base text-muted-foreground">
+          <div className="flex items-center gap-1 text-sm lg:text-base text-muted-foreground min-w-0">
             <MapPin className="w-3.5 h-3.5 shrink-0" />
             <span className="truncate">{address}, {city}</span>
           </div>
