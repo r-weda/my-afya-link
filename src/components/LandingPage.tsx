@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useTheme } from "@/hooks/useTheme";
+import { supabase } from "@/integrations/supabase/client";
 import MedicalDisclaimer from "@/components/MedicalDisclaimer";
 import {
   ArrowRight,
@@ -26,12 +28,7 @@ const fadeUp = {
   }),
 };
 
-const stats = [
-  { value: "500+", label: "Health Facilities" },
-  { value: "31+", label: "Verified Articles" },
-  { value: "24/7", label: "Always Available" },
-  { value: "47", label: "Counties Covered" },
-];
+// stats are now dynamic, defined inside the component
 
 const features = [
   {
@@ -69,6 +66,27 @@ const trustPoints = [
 export default function LandingPage() {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+  const [dynamicStats, setDynamicStats] = useState({ clinics: "500+", articles: "31+", counties: "47" });
+
+  useEffect(() => {
+    supabase.rpc("get_public_stats").then(({ data }) => {
+      if (data) {
+        const d = data as { clinics_count: number; articles_count: number; counties_count: number };
+        setDynamicStats({
+          clinics: `${d.clinics_count}+`,
+          articles: `${d.articles_count}+`,
+          counties: `${d.counties_count}`,
+        });
+      }
+    });
+  }, []);
+
+  const stats = [
+    { value: dynamicStats.clinics, label: "Health Facilities" },
+    { value: dynamicStats.articles, label: "Verified Articles" },
+    { value: "24/7", label: "Always Available" },
+    { value: dynamicStats.counties, label: "Counties Covered" },
+  ];
 
   return (
     <div className="min-h-screen bg-background flex flex-col overflow-x-hidden">
