@@ -86,8 +86,8 @@ export default function Articles() {
 
         {/* Articles */}
         {loading ? (
-          <div className="flex justify-center py-12">
-            <Loader2 className="w-6 h-6 animate-spin text-primary" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[1, 2, 3, 4, 5, 6].map((i) => <ArticleCardSkeleton key={i} />)}
           </div>
         ) : filtered.length === 0 ? (
           <motion.div
