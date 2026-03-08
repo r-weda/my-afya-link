@@ -7,10 +7,9 @@ import ArticleCard from "@/components/ArticleCard";
 import MedicalDisclaimer from "@/components/MedicalDisclaimer";
 import { ArticleCardSkeleton } from "@/components/SkeletonCards";
 import { useBookmarks } from "@/hooks/useBookmarks";
-import { Search, Bookmark, X } from "lucide-react";
+import { Search, Bookmark } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 
@@ -23,57 +22,36 @@ interface Article {
   source: string | null;
   image_url: string | null;
   published_at: string | null;
-  category_id: string | null;
-}
-
-interface Category {
-  id: string;
-  name: string;
-  icon: string | null;
 }
 
 export default function Articles() {
   const navigate = useNavigate();
   const [articles, setArticles] = useState<Article[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showBookmarked, setShowBookmarked] = useState(false);
   const { isBookmarked, toggle: toggleBookmark } = useBookmarks();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const [articlesRes, categoriesRes] = await Promise.all([
-        supabase
-          .from("health_articles")
-          .select("id, title, slug, summary, content, source, image_url, published_at, category_id")
-          .eq("is_published", true)
-          .order("published_at", { ascending: false }),
-        supabase
-          .from("article_categories")
-          .select("id, name, icon")
-          .order("name"),
-      ]);
-      setArticles(articlesRes.data || []);
-      setCategories(categoriesRes.data || []);
+    const fetchArticles = async () => {
+      const { data } = await supabase
+        .from("health_articles")
+        .select("id, title, slug, summary, content, source, image_url, published_at")
+        .eq("is_published", true)
+        .order("published_at", { ascending: false });
+      setArticles(data || []);
       setLoading(false);
     };
-    fetchData();
+    fetchArticles();
   }, []);
 
   const filtered = articles.filter((a) => {
-    const q = search.toLowerCase();
     const matchesSearch =
-      a.title.toLowerCase().includes(q) ||
-      a.summary?.toLowerCase().includes(q) ||
-      a.content.toLowerCase().includes(q);
+      a.title.toLowerCase().includes(search.toLowerCase()) ||
+      a.summary?.toLowerCase().includes(search.toLowerCase());
     const matchesBookmark = !showBookmarked || isBookmarked(a.id);
-    const matchesCategory = !selectedCategory || a.category_id === selectedCategory;
-    return matchesSearch && matchesBookmark && matchesCategory;
+    return matchesSearch && matchesBookmark;
   });
-
-  const hasActiveFilters = showBookmarked || selectedCategory || search;
 
   return (
     <div className="min-h-screen bg-background pb-20 md:pb-8 flex flex-col">
@@ -90,14 +68,6 @@ export default function Articles() {
               onChange={(e) => setSearch(e.target.value)}
               className="pl-10 rounded-xl h-11 lg:h-12 lg:text-base bg-secondary/50 border-0"
             />
-            {search && (
-              <button
-                onClick={() => setSearch("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2"
-              >
-                <X className="w-4 h-4 text-muted-foreground" />
-              </button>
-            )}
           </div>
           <Button
             variant={showBookmarked ? "default" : "outline"}
@@ -109,54 +79,6 @@ export default function Articles() {
             <Bookmark className={`w-4 h-4 ${showBookmarked ? "fill-primary-foreground" : ""}`} />
           </Button>
         </div>
-
-        {/* Category chips */}
-        {categories.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            <Badge
-              variant={!selectedCategory ? "default" : "outline"}
-              className="cursor-pointer rounded-xl py-1.5 px-3 text-xs transition-all"
-              onClick={() => setSelectedCategory(null)}
-            >
-              All
-            </Badge>
-            {categories.map((cat) => (
-              <Badge
-                key={cat.id}
-                variant={selectedCategory === cat.id ? "default" : "outline"}
-                className={`cursor-pointer rounded-xl py-1.5 px-3 text-xs transition-all ${
-                  selectedCategory === cat.id
-                    ? "bg-primary text-primary-foreground"
-                    : "hover:bg-secondary"
-                }`}
-                onClick={() =>
-                  setSelectedCategory(selectedCategory === cat.id ? null : cat.id)
-                }
-              >
-                {cat.icon && <span className="mr-1">{cat.icon}</span>}
-                {cat.name}
-              </Badge>
-            ))}
-          </div>
-        )}
-
-        {hasActiveFilters && (
-          <div className="flex items-center gap-2">
-            <p className="text-xs text-muted-foreground">
-              {filtered.length} result{filtered.length !== 1 ? "s" : ""}
-            </p>
-            <button
-              onClick={() => {
-                setSearch("");
-                setSelectedCategory(null);
-                setShowBookmarked(false);
-              }}
-              className="text-xs text-primary hover:underline"
-            >
-              Clear all
-            </button>
-          </div>
-        )}
 
         <div className="md:max-w-2xl">
           <MedicalDisclaimer compact />
@@ -176,7 +98,7 @@ export default function Articles() {
             <p className="text-muted-foreground text-sm">
               {articles.length === 0
                 ? "No articles published yet. Check back soon!"
-                : "No articles match your filters."}
+                : "No articles match your search."}
             </p>
           </motion.div>
         ) : (
