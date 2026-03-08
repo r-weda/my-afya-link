@@ -40,13 +40,13 @@ export default function QuickActionCard({
       <h3
         className={`font-display font-semibold text-card-foreground mb-1 ${
           prominent
-            ? "text-base md:text-base lg:text-base"
-            : "text-sm md:text-sm lg:text-sm"
+            ? "text-base md:text-lg lg:text-xl"
+            : "text-sm md:text-base lg:text-lg"
         }`}
       >
         {label}
       </h3>
-      <p className="text-xs md:text-xs lg:text-xs text-muted-foreground leading-relaxed">{description}</p>
+      <p className="text-xs md:text-sm lg:text-base text-muted-foreground leading-relaxed">{description}</p>
     </motion.button>
   );
 }

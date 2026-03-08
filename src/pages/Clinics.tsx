@@ -175,7 +175,7 @@ export default function Clinics() {
               </div>
             ) : filtered.length === 0 ? (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-12">
-                <p className="text-muted-foreground text-sm lg:text-base">
+                <p className="text-muted-foreground text-sm">
                   {clinics.length === 0 ? "No clinics registered yet." : "No clinics match your search."}
                 </p>
               </motion.div>

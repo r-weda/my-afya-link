@@ -5,35 +5,22 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { ThemeProvider } from "@/hooks/useTheme";
-import { lazy, Suspense } from "react";
-
-// Eager-loaded (critical path)
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import Articles from "./pages/Articles";
+import ArticleDetail from "./pages/ArticleDetail";
+import SymptomChecker from "./pages/SymptomChecker";
+import Clinics from "./pages/Clinics";
+import Appointments from "./pages/Appointments";
+import Admin from "./pages/Admin";
+import Profile from "./pages/Profile";
+import Feedback from "./pages/Feedback";
+import Notifications from "./pages/Notifications";
+import ClinicAction from "./pages/ClinicAction";
+import SymptomHistory from "./pages/SymptomHistory";
 import NotFound from "./pages/NotFound";
 
-// Lazy-loaded (code-split by route)
-const Articles = lazy(() => import("./pages/Articles"));
-const ArticleDetail = lazy(() => import("./pages/ArticleDetail"));
-const SymptomChecker = lazy(() => import("./pages/SymptomChecker"));
-const Clinics = lazy(() => import("./pages/Clinics"));
-const Appointments = lazy(() => import("./pages/Appointments"));
-const Admin = lazy(() => import("./pages/Admin"));
-const Profile = lazy(() => import("./pages/Profile"));
-const Feedback = lazy(() => import("./pages/Feedback"));
-const Notifications = lazy(() => import("./pages/Notifications"));
-const ClinicAction = lazy(() => import("./pages/ClinicAction"));
-const SymptomHistory = lazy(() => import("./pages/SymptomHistory"));
-
 const queryClient = new QueryClient();
-
-function RouteLoader() {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
-    </div>
-  );
-}
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -43,7 +30,6 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <AuthProvider>
-          <Suspense fallback={<RouteLoader />}>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
@@ -60,7 +46,6 @@ const App = () => (
             <Route path="/symptom-history" element={<SymptomHistory />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-          </Suspense>
           </AuthProvider>
         </BrowserRouter>
       </TooltipProvider>

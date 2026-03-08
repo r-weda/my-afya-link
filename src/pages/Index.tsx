@@ -4,7 +4,6 @@ import AppHeader from "@/components/AppHeader";
 import BottomNav from "@/components/BottomNav";
 import QuickActionCard from "@/components/QuickActionCard";
 import MedicalDisclaimer from "@/components/MedicalDisclaimer";
-import DashboardWidgets from "@/components/DashboardWidgets";
 import Footer from "@/components/Footer";
 import LandingPageComponent from "@/components/LandingPage";
 import { FileText, Stethoscope, MapPin, Calendar, MessageSquare } from "lucide-react";
@@ -75,7 +74,7 @@ export default function Index() {
 
         {/* Quick Actions */}
         <motion.div variants={item}>
-          <h3 className="font-display font-semibold text-xs md:text-sm lg:text-sm text-muted-foreground uppercase tracking-wider mb-4">
+          <h3 className="font-display font-semibold text-xs md:text-sm lg:text-base text-muted-foreground uppercase tracking-wider mb-4">
             Quick Actions
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4 lg:gap-5">
@@ -116,14 +115,6 @@ export default function Index() {
               onClick={() => navigate("/feedback")}
             />
           </div>
-        </motion.div>
-
-        {/* Dashboard Widgets */}
-        <motion.div variants={item}>
-          <h3 className="font-display font-semibold text-xs md:text-sm lg:text-base text-muted-foreground uppercase tracking-wider mb-4">
-            At a Glance
-          </h3>
-          <DashboardWidgets />
         </motion.div>
 
         {/* Medical Disclaimer */}
