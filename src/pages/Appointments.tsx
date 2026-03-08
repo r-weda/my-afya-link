@@ -13,13 +13,14 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import Footer from "@/components/Footer";
-import { Calendar, Clock, MapPin, Plus, Loader2, X } from "lucide-react";
+import { Calendar, Clock, MapPin, Plus, Loader2, X, CheckCircle2, Copy, Phone } from "lucide-react";
 
 interface Clinic {
   id: string;
   name: string;
   address: string;
   city: string;
+  phone_number: string | null;
 }
 
 interface Appointment {
@@ -28,7 +29,7 @@ interface Appointment {
   appointment_time: string;
   status: string;
   notes: string | null;
-  clinics: { name: string; address: string; city: string } | null;
+  clinics: { name: string; address: string; city: string; phone_number: string | null } | null;
 }
 
 const statusColors: Record<string, string> = {
@@ -37,6 +38,16 @@ const statusColors: Record<string, string> = {
   cancelled: "bg-destructive/10 text-destructive border-destructive/20",
   completed: "bg-primary/10 text-primary border-primary/20",
 };
+
+interface BookingConfirmation {
+  ref: string;
+  clinicName: string;
+  date: string;
+  time: string;
+  userSms: boolean;
+  clinicSms: boolean;
+  clinicPhone: string | null;
+}
 
 export default function Appointments() {
   const { user } = useAuth();
@@ -47,6 +58,7 @@ export default function Appointments() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [confirmation, setConfirmation] = useState<BookingConfirmation | null>(null);
 
   // Form state
   const preselectedClinic = searchParams.get("clinic") || "";
@@ -55,7 +67,6 @@ export default function Appointments() {
   const [time, setTime] = useState("");
   const [notes, setNotes] = useState("");
 
-  // Auto-open form if clinic is preselected
   useEffect(() => {
     if (preselectedClinic) {
       setClinicId(preselectedClinic);
@@ -67,9 +78,9 @@ export default function Appointments() {
     if (!user) return;
     const { data } = await supabase
       .from("appointments")
-      .select("id, appointment_date, appointment_time, status, notes, clinics(name, address, city)")
+      .select("id, appointment_date, appointment_time, status, notes, clinics(name, address, city, phone_number)")
       .eq("user_id", user.id)
-      .order("appointment_date", { ascending: true });
+      .order("appointment_date", { ascending: false });
     setAppointments((data as unknown as Appointment[]) || []);
     setLoading(false);
   };
@@ -77,7 +88,7 @@ export default function Appointments() {
   const fetchClinics = async () => {
     const { data } = await supabase
       .from("clinics")
-      .select("id, name, address, city")
+      .select("id, name, address, city, phone_number")
       .eq("is_verified", true)
       .order("name");
     setClinics(data || []);
@@ -93,6 +104,8 @@ export default function Appointments() {
     if (!user || !clinicId || !date || !time) return;
 
     setSubmitting(true);
+
+    // 1. Insert appointment
     const { error } = await supabase.from("appointments").insert({
       user_id: user.id,
       clinic_id: clinicId,
@@ -103,53 +116,78 @@ export default function Appointments() {
 
     if (error) {
       toast({ title: "Error", description: "Failed to book appointment. Please try again.", variant: "destructive" });
-    } else {
-      toast({ title: "Appointment booked!", description: "You will receive a confirmation soon." });
-
-      // Send booking confirmation SMS if user has preferences with phone
-      try {
-        // Check notification preferences first
-        const { data: notifPrefs } = await supabase
-          .from("notification_preferences")
-          .select("booking_confirmations, phone_number")
-          .eq("user_id", user.id)
-          .maybeSingle();
-
-        // Also check profile phone as fallback
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("phone_number, first_name")
-          .eq("user_id", user.id)
-          .single();
-
-        const phone = notifPrefs?.phone_number || profile?.phone_number;
-
-        if (phone) {
-          const selectedClinic = clinics.find((c) => c.id === clinicId);
-          if (selectedClinic) {
-            await supabase.functions.invoke("send-appointment-reminder", {
-              body: {
-                phoneNumber: phone,
-                patientName: profile?.first_name || "",
-                clinicName: selectedClinic.name,
-                appointmentDate: date,
-                appointmentTime: time,
-                type: "booking_confirmation",
-              },
-            });
-          }
-        }
-      } catch (smsError) {
-        console.warn("SMS confirmation failed (non-blocking):", smsError);
-      }
-
-      setShowForm(false);
-      setClinicId("");
-      setDate("");
-      setTime("");
-      setNotes("");
-      fetchAppointments();
+      setSubmitting(false);
+      return;
     }
+
+    // 2. Get user info for SMS
+    const selectedClinic = clinics.find((c) => c.id === clinicId);
+    let userPhone: string | null = null;
+    let firstName = "";
+
+    try {
+      const { data: notifPrefs } = await supabase
+        .from("notification_preferences")
+        .select("booking_confirmations, phone_number")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("phone_number, first_name")
+        .eq("user_id", user.id)
+        .single();
+
+      userPhone = notifPrefs?.phone_number || profile?.phone_number || null;
+      firstName = profile?.first_name || user.user_metadata?.first_name || "";
+    } catch {
+      console.warn("Could not fetch user profile for SMS");
+    }
+
+    // 3. Send notifications (SMS to user + clinic)
+    let bookingRef = "";
+    let userSms = false;
+    let clinicSms = false;
+
+    try {
+      if (selectedClinic) {
+        const { data: result } = await supabase.functions.invoke("send-appointment-reminder", {
+          body: {
+            phoneNumber: userPhone,
+            patientName: firstName,
+            clinicName: selectedClinic.name,
+            clinicPhone: selectedClinic.phone_number,
+            appointmentDate: date,
+            appointmentTime: time,
+            notes: notes || undefined,
+            type: "booking_confirmation",
+          },
+        });
+        bookingRef = result?.ref || "";
+        userSms = result?.userSms || false;
+        clinicSms = result?.clinicSms || false;
+      }
+    } catch (smsError) {
+      console.warn("Notification failed (non-blocking):", smsError);
+    }
+
+    // 4. Show confirmation
+    setConfirmation({
+      ref: bookingRef,
+      clinicName: selectedClinic?.name || "Clinic",
+      date,
+      time,
+      userSms,
+      clinicSms,
+      clinicPhone: selectedClinic?.phone_number || null,
+    });
+
+    setShowForm(false);
+    setClinicId("");
+    setDate("");
+    setTime("");
+    setNotes("");
+    fetchAppointments();
     setSubmitting(false);
   };
 
@@ -165,34 +203,113 @@ export default function Appointments() {
     }
   };
 
+  const copyRef = (ref: string) => {
+    navigator.clipboard.writeText(ref);
+    toast({ title: "Reference copied!" });
+  };
+
   const today = new Date().toISOString().split("T")[0];
 
   return (
     <div className="min-h-screen bg-background pb-20 md:pb-8 flex flex-col">
       <AppHeader title="Appointments" />
 
-      <main className="px-4 pt-4 max-w-lg md:max-w-4xl mx-auto space-y-4">
+      <main className="px-4 pt-4 max-w-lg md:max-w-4xl mx-auto space-y-4 w-full">
+        {/* ── Booking Confirmation Modal ── */}
+        <AnimatePresence>
+          {confirmation && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="elevated-card rounded-2xl p-5 md:p-6 space-y-4 border-2 border-health-green/30"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-health-green/10 flex items-center justify-center shrink-0">
+                  <CheckCircle2 className="w-5 h-5 text-health-green" />
+                </div>
+                <div>
+                  <h3 className="font-display font-bold text-base md:text-lg text-foreground">Booking Confirmed!</h3>
+                  <p className="text-xs md:text-sm text-muted-foreground">Your appointment has been booked</p>
+                </div>
+              </div>
+
+              <div className="bg-muted/50 rounded-xl p-4 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-muted-foreground">Reference</span>
+                  <button
+                    onClick={() => copyRef(confirmation.ref)}
+                    className="flex items-center gap-1.5 text-sm font-bold text-primary"
+                  >
+                    {confirmation.ref || "—"}
+                    {confirmation.ref && <Copy className="w-3.5 h-3.5" />}
+                  </button>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-muted-foreground">Clinic</span>
+                  <span className="text-sm font-medium text-foreground">{confirmation.clinicName}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-muted-foreground">Date</span>
+                  <span className="text-sm text-foreground">
+                    {new Date(confirmation.date).toLocaleDateString("en-KE", { weekday: "short", month: "short", day: "numeric" })}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-muted-foreground">Time</span>
+                  <span className="text-sm text-foreground">{confirmation.time}</span>
+                </div>
+              </div>
+
+              {/* Status indicators */}
+              <div className="space-y-1.5 text-xs text-muted-foreground">
+                {confirmation.userSms && (
+                  <p className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-health-green" /> SMS confirmation sent to you
+                  </p>
+                )}
+                {confirmation.clinicSms && (
+                  <p className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-health-green" /> Clinic notified via SMS
+                  </p>
+                )}
+                {!confirmation.clinicSms && confirmation.clinicPhone && (
+                  <p className="flex items-center gap-1.5">
+                    <Phone className="w-3.5 h-3.5 text-warning" /> We couldn't reach the clinic by SMS. Call them to confirm:
+                    <a href={`tel:${confirmation.clinicPhone}`} className="text-primary font-medium">{confirmation.clinicPhone}</a>
+                  </p>
+                )}
+                {!confirmation.clinicSms && !confirmation.clinicPhone && (
+                  <p className="text-warning">No clinic phone on file. Please contact the clinic directly to confirm your visit.</p>
+                )}
+              </div>
+
+              <Button
+                variant="outline"
+                className="w-full rounded-xl h-10"
+                onClick={() => setConfirmation(null)}
+              >
+                Done
+              </Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <div className="md:flex md:gap-6">
           {/* Booking column */}
           <div className="md:w-1/2 space-y-4">
-            {/* Book button */}
             <Button
-              onClick={() => setShowForm(!showForm)}
+              onClick={() => { setShowForm(!showForm); setConfirmation(null); }}
               className="w-full md:w-auto h-12 lg:h-13 rounded-xl font-semibold lg:text-base"
               variant={showForm ? "outline" : "default"}
             >
               {showForm ? (
-                <>
-                  <X className="w-4 h-4 mr-2" /> Cancel
-                </>
+                <><X className="w-4 h-4 mr-2" /> Cancel</>
               ) : (
-                <>
-                  <Plus className="w-4 h-4 mr-2" /> Book Appointment
-                </>
+                <><Plus className="w-4 h-4 mr-2" /> Book Appointment</>
               )}
             </Button>
 
-            {/* Booking form */}
             <AnimatePresence>
               {showForm && (
                 <motion.form
@@ -307,16 +424,30 @@ export default function Appointments() {
                       </div>
                     </div>
                     {apt.notes && <p className="text-xs text-muted-foreground mt-2 italic">{apt.notes}</p>}
-                    {apt.status === "pending" && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="mt-3 text-destructive text-xs rounded-lg h-8"
-                        onClick={() => handleCancel(apt.id)}
-                      >
-                        Cancel Appointment
-                      </Button>
-                    )}
+                    <div className="flex items-center gap-2 mt-3">
+                      {apt.status === "pending" && apt.clinics?.phone_number && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="text-xs rounded-lg h-8"
+                          asChild
+                        >
+                          <a href={`tel:${apt.clinics.phone_number}`}>
+                            <Phone className="w-3 h-3 mr-1" /> Call Clinic
+                          </a>
+                        </Button>
+                      )}
+                      {apt.status === "pending" && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-destructive text-xs rounded-lg h-8"
+                          onClick={() => handleCancel(apt.id)}
+                        >
+                          Cancel
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 ))}
               </motion.div>
