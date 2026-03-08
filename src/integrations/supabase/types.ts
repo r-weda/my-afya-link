@@ -19,6 +19,7 @@ export type Database = {
           appointment_date: string
           appointment_time: string
           clinic_id: string
+          confirmation_token: string | null
           created_at: string
           id: string
           notes: string | null
@@ -31,6 +32,7 @@ export type Database = {
           appointment_date: string
           appointment_time: string
           clinic_id: string
+          confirmation_token?: string | null
           created_at?: string
           id?: string
           notes?: string | null
@@ -43,6 +45,7 @@ export type Database = {
           appointment_date?: string
           appointment_time?: string
           clinic_id?: string
+          confirmation_token?: string | null
           created_at?: string
           id?: string
           notes?: string | null
