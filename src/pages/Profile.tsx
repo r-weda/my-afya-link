@@ -11,7 +11,8 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import Footer from "@/components/Footer";
-import { User, Phone, Mail, Calendar, Clock, MapPin, Loader2, Save } from "lucide-react";
+import { User, Phone, Mail, Calendar, Clock, MapPin, Loader2, Save, History } from "lucide-react";
+import { ProfileSkeleton, AppointmentCardSkeleton } from "@/components/SkeletonCards";
 
 interface Profile {
   first_name: string | null;
