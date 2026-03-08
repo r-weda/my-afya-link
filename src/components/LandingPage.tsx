@@ -96,7 +96,7 @@ export default function LandingPage() {
               Sign In
             </button>
             <button
-              onClick={() => navigate("/auth")}
+              onClick={() => navigate("/auth?tab=signup")}
               className="text-xs sm:text-sm font-semibold bg-primary text-primary-foreground px-3 sm:px-4 py-2 rounded-xl hover:opacity-90 transition-opacity shadow-sm"
             >
               Get Started
@@ -160,7 +160,7 @@ export default function LandingPage() {
               className="flex flex-col sm:flex-row gap-3 mb-10"
             >
               <button
-                onClick={() => navigate("/auth")}
+                onClick={() => navigate("/auth?tab=signup")}
                 className="group flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-primary text-primary-foreground font-semibold text-sm sm:text-base hover:opacity-90 transition-all shadow-lg"
               >
                 Get Started Free
