@@ -365,6 +365,25 @@ export default function SymptomChecker() {
                 </motion.div>
               )}
 
+              {/* AI Insight */}
+              {aiInsight && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="p-4 rounded-2xl border border-primary/20 bg-primary/5"
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <Brain className="w-5 h-5 text-primary" />
+                    <span className="font-display font-bold text-sm lg:text-base text-primary">
+                      AI Insight
+                    </span>
+                  </div>
+                  <p className="text-sm lg:text-base text-foreground leading-relaxed">
+                    {aiInsight}
+                  </p>
+                </motion.div>
+              )}
+
               {/* Results heading */}
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
