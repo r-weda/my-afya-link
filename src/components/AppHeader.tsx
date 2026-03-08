@@ -117,8 +117,11 @@ export default function AppHeader({ title }: AppHeaderProps) {
           <Button variant="ghost" size="icon" className="w-9 h-9 rounded-xl" onClick={toggleTheme} aria-label="Toggle theme">
             {theme === "light" ? <Moon className="w-4 h-4 text-muted-foreground" /> : <Sun className="w-4 h-4 text-muted-foreground" />}
           </Button>
-          <Button variant="ghost" size="icon" className="w-9 h-9 rounded-xl" onClick={() => navigate("/notifications")} aria-label="Notifications">
+          <Button variant="ghost" size="icon" className="w-9 h-9 rounded-xl relative" onClick={() => navigate("/notifications")} aria-label="Notifications">
             <Bell className="w-4 h-4 text-muted-foreground" />
+            {hasUnread && (
+              <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 rounded-full bg-destructive border-2 border-background animate-pulse" />
+            )}
           </Button>
 
           <DropdownMenu>
