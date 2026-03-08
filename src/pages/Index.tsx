@@ -131,8 +131,6 @@ export default function Index() {
     </div>
   );
 }
-
-const features = [
   {
     icon: Shield,
     title: "Verified Information",
