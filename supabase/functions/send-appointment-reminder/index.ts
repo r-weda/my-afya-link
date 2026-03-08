@@ -199,7 +199,15 @@ serve(async (req: Request) => {
     // ── 2. Notify the CLINIC ──
     if (smsAvailable && clinicPhone) {
       const notesStr = notes ? ` Notes: ${notes}` : "";
-      const clinicMsg = `[AfyaConnect Booking] New appointment request from ${patientName || "a patient"} on ${appointmentDate} at ${appointmentTime}. Ref: ${bookingRef}.${notesStr} Please confirm availability.`;
+
+      // Build action links if token available
+      const appUrl = "https://my-afya-link.lovable.app";
+      let actionLinks = "";
+      if (confirmationToken) {
+        actionLinks = `\nConfirm: ${appUrl}/clinic-action?token=${confirmationToken}&action=confirm\nDecline: ${appUrl}/clinic-action?token=${confirmationToken}&action=decline`;
+      }
+
+      const clinicMsg = `[AfyaConnect] New booking from ${patientName || "a patient"} on ${appointmentDate} at ${appointmentTime}. Ref: ${bookingRef}.${notesStr}${actionLinks}\nOr reply to confirm/decline.`;
 
       const clinicSmsResult = await sendSms(clinicPhone, clinicMsg, apiKey!, username!);
       results.clinicSms = clinicSmsResult.success;
