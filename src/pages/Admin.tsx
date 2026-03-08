@@ -16,6 +16,7 @@ import {
   Trash2, CheckCircle, Users, Upload
 } from "lucide-react";
 import CsvClinicImport from "@/components/CsvClinicImport";
+import CsvArticleImport from "@/components/CsvArticleImport";
 
 export default function Admin() {
   const { isAdmin, loading: authLoading } = useAuth();
@@ -78,6 +79,7 @@ function AdminArticles() {
   const [articles, setArticles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [showImport, setShowImport] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
@@ -142,9 +144,18 @@ function AdminArticles() {
 
   return (
     <div className="space-y-4">
-      <Button onClick={() => setShowForm(!showForm)} variant={showForm ? "outline" : "default"} className="w-full rounded-xl h-10">
-        {showForm ? "Cancel" : <><Plus className="w-4 h-4 mr-1" /> New Article</>}
-      </Button>
+      <div className="flex gap-2">
+        <Button onClick={() => { setShowForm(!showForm); setShowImport(false); }} variant={showForm ? "outline" : "default"} className="flex-1 rounded-xl h-10">
+          {showForm ? "Cancel" : <><Plus className="w-4 h-4 mr-1" /> New Article</>}
+        </Button>
+        <Button onClick={() => { setShowImport(!showImport); setShowForm(false); }} variant={showImport ? "outline" : "secondary"} className="flex-1 rounded-xl h-10">
+          {showImport ? "Cancel" : <><Upload className="w-4 h-4 mr-1" /> CSV Import</>}
+        </Button>
+      </div>
+
+      {showImport && (
+        <CsvArticleImport onImportComplete={() => { setShowImport(false); fetchArticles(); }} />
+      )}
 
       {showForm && (
         <motion.form initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} onSubmit={handleCreate} className="elevated-card rounded-2xl p-4 space-y-3">
