@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 
 interface ClinicCardProps {
+  id?: string;
   name: string;
   address: string;
   city: string;
@@ -11,6 +12,7 @@ interface ClinicCardProps {
   services?: string[];
   isVerified?: boolean;
   onClick?: () => void;
+  onBook?: (clinicId: string) => void;
 }
 
 export default function ClinicCard({
