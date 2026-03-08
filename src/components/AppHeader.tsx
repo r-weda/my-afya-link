@@ -1,6 +1,8 @@
+import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "@/hooks/useTheme";
+import { supabase } from "@/integrations/supabase/client";
 import { Bell, Settings, LogOut, Shield, Home, FileText, Stethoscope, MapPin, Calendar, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
