@@ -41,6 +41,7 @@ const App = () => (
             <Route path="/profile" element={<Profile />} />
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/notifications" element={<Notifications />} />
+            <Route path="/clinic-action" element={<ClinicAction />} />
             <Route path="*" element={<NotFound />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
