@@ -30,7 +30,7 @@ export default function ClinicCard({
   return (
     <motion.button
       onClick={onClick}
-      className="w-full text-left elevated-card rounded-2xl p-4 transition-all hover:scale-[1.01] active:scale-[0.99]"
+      className="w-full text-left elevated-card rounded-2xl p-4 transition-all hover:scale-[1.01] active:scale-[0.99] overflow-hidden"
       whileTap={{ scale: 0.98 }}
     >
       <div className="flex items-start justify-between mb-2">
