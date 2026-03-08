@@ -439,7 +439,7 @@ export default function SymptomChecker() {
                   <AlertTriangle className="w-5 h-5 text-warning" />
                 </div>
                 <div>
-                  <h2 className="font-display font-semibold text-lg md:text-xl text-foreground">
+                  <h2 className="font-display font-semibold text-lg md:text-xl lg:text-2xl text-foreground">
                     How severe are your symptoms?
                   </h2>
                   <p className="text-xs text-muted-foreground">Rate each symptom's severity and duration</p>
