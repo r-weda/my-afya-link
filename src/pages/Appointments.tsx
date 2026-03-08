@@ -105,20 +105,22 @@ export default function Appointments() {
 
     setSubmitting(true);
 
-    // 1. Insert appointment
-    const { error } = await supabase.from("appointments").insert({
+    // 1. Insert appointment and get confirmation_token
+    const { data: insertedAppt, error } = await supabase.from("appointments").insert({
       user_id: user.id,
       clinic_id: clinicId,
       appointment_date: date,
       appointment_time: time,
       notes: notes || null,
-    });
+    }).select("confirmation_token").single();
 
     if (error) {
       toast({ title: "Error", description: "Failed to book appointment. Please try again.", variant: "destructive" });
       setSubmitting(false);
       return;
     }
+
+    const confirmationToken = insertedAppt?.confirmation_token || "";
 
     // 2. Get user info for SMS
     const selectedClinic = clinics.find((c) => c.id === clinicId);
