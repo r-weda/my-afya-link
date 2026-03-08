@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useTheme } from "@/hooks/useTheme";
+import { supabase } from "@/integrations/supabase/client";
 import MedicalDisclaimer from "@/components/MedicalDisclaimer";
 import {
   ArrowRight,
