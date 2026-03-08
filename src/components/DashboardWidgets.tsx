@@ -186,13 +186,13 @@ export default function DashboardWidgets() {
           <ChevronRight className="w-4 h-4 text-muted-foreground" />
         </button>
 
-        <div className="bg-muted/50 rounded-xl p-3 text-center">
+        <div className="bg-muted/50 rounded-xl p-3 md:p-4 text-center">
           {unreadCount > 0 ? (
-            <p className="text-xs text-card-foreground">
+            <p className="text-xs md:text-sm text-card-foreground">
               You have <span className="font-semibold text-primary">{unreadCount}</span> notification{unreadCount !== 1 ? "s" : ""}
             </p>
           ) : (
-            <p className="text-xs text-muted-foreground">All caught up! 🎉</p>
+            <p className="text-xs md:text-sm text-muted-foreground">All caught up! 🎉</p>
           )}
         </div>
       </div>
