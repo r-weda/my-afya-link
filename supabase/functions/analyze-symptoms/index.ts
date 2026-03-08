@@ -13,7 +13,7 @@ serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
-    const { symptoms, additionalNotes } = await req.json();
+    const { symptoms, additionalNotes, age, symptomDetails } = await req.json();
 
     if (!symptoms || !Array.isArray(symptoms) || symptoms.length === 0) {
       return new Response(JSON.stringify({ error: "At least one symptom is required" }), {
@@ -22,24 +22,39 @@ serve(async (req) => {
       });
     }
 
-    const systemPrompt = `You are a medical triage assistant for AfyaConnect, a digital health platform. You analyze symptoms and provide educational health guidance. You are NOT a doctor and must always remind users this is not a diagnosis.
+    // Build severity/duration context
+    let detailsContext = "";
+    if (symptomDetails && typeof symptomDetails === "object") {
+      const entries = Object.entries(symptomDetails as Record<string, { severity: string; duration: string }>);
+      if (entries.length > 0) {
+        detailsContext = "\n\nSymptom details:\n" + entries.map(([name, d]) =>
+          `- ${name}: severity ${d.severity}/5, duration: ${d.duration}`
+        ).join("\n");
+      }
+    }
 
-Given a list of symptoms and optional additional details from the user, return a structured analysis using the tool provided. Focus on:
-1. Conditions that best match ALL provided information (symptoms + context from additional details)
-2. How the additional details (duration, severity, history, etc.) affect the likelihood
-3. Whether any symptoms suggest urgency
+    const ageContext = age ? `\nPatient age: ${age} years old.` : "";
+
+    const systemPrompt = `You are a medical triage assistant for AfyaConnect, a digital health platform serving Kenyan communities. You analyze symptoms and provide educational health guidance. You are NOT a doctor and must always remind users this is not a diagnosis.
+
+Given a list of symptoms with severity ratings, duration, patient age, and optional additional details, return a structured analysis. Focus on:
+1. Conditions that best match ALL provided information
+2. How severity, duration, and age affect the likelihood and urgency
+3. Whether any symptoms suggest urgency (especially for children <5 or elderly >65)
+4. Age-appropriate advice and considerations
 
 IMPORTANT: 
 - Be conservative with likelihood scores
 - Always recommend professional medical consultation
-- Consider the African healthcare context (e.g. malaria prevalence)
-- Maximum 4 conditions returned
-- Match scores should reflect how well the full picture matches, not just symptom count`;
+- Consider the African/Kenyan healthcare context (malaria, typhoid, TB prevalence)
+- Maximum 5 conditions returned
+- For children, consider pediatric conditions; for elderly, consider chronic disease complications
+- Include specific clinic type recommendations (e.g., "Visit a Level 4 hospital" or "Any nearby dispensary can help")`;
 
-    const userPrompt = `Selected symptoms: ${symptoms.join(", ")}
+    const userPrompt = `Selected symptoms: ${symptoms.join(", ")}${ageContext}${detailsContext}
 ${additionalNotes ? `\nAdditional details from patient: "${additionalNotes}"` : ""}
 
-Analyze these symptoms and provide possible conditions.`;
+Analyze these symptoms and provide possible conditions with age-appropriate guidance.`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -70,23 +85,27 @@ Analyze these symptoms and provide possible conditions.`;
                         condition: { type: "string", description: "Name of the condition" },
                         matchScore: {
                           type: "number",
-                          description: "Likelihood percentage 0-100 based on symptoms and context",
+                          description: "Likelihood percentage 0-100 based on symptoms, severity, duration, and age",
                         },
                         description: {
                           type: "string",
-                          description: "Brief explanation of why this condition matches, referencing the patient's specific details",
+                          description: "Brief explanation referencing the patient's specific details including age considerations",
                         },
                         advice: {
                           type: "string",
-                          description: "Recommended next steps for this condition",
+                          description: "Age-appropriate recommended next steps",
                         },
                         matchedSymptoms: {
                           type: "array",
                           items: { type: "string" },
                           description: "Which of the selected symptoms match this condition",
                         },
+                        facilityLevel: {
+                          type: "string",
+                          description: "Recommended facility level: 'dispensary', 'health_center', 'hospital', 'emergency'",
+                        },
                       },
-                      required: ["condition", "matchScore", "description", "advice", "matchedSymptoms"],
+                      required: ["condition", "matchScore", "description", "advice", "matchedSymptoms", "facilityLevel"],
                       additionalProperties: false,
                     },
                   },
@@ -96,10 +115,14 @@ Analyze these symptoms and provide possible conditions.`;
                   },
                   aiInsight: {
                     type: "string",
-                    description: "A brief personalized insight based on the additional details provided, or general health guidance if no details were given. 1-2 sentences.",
+                    description: "A brief personalized insight considering the patient's age, symptom severity, and duration. 2-3 sentences max.",
+                  },
+                  emergencyWarning: {
+                    type: "string",
+                    description: "If urgent, a specific emergency instruction. Otherwise empty string.",
                   },
                 },
-                required: ["conditions", "isUrgent", "aiInsight"],
+                required: ["conditions", "isUrgent", "aiInsight", "emergencyWarning"],
                 additionalProperties: false,
               },
             },
@@ -136,10 +159,7 @@ Analyze these symptoms and provide possible conditions.`;
 
     const analysis = JSON.parse(toolCall.function.arguments);
 
-    // Ensure conditions are sorted by score
     analysis.conditions.sort((a: any, b: any) => b.matchScore - a.matchScore);
-
-    // Add likelihood labels
     analysis.conditions = analysis.conditions.map((c: any) => ({
       ...c,
       likelihood: c.matchScore >= 75 ? "High" : c.matchScore >= 50 ? "Moderate" : "Low",
