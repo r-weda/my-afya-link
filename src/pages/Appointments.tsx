@@ -41,6 +41,7 @@ const statusColors: Record<string, string> = {
 export default function Appointments() {
   const { user } = useAuth();
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [clinics, setClinics] = useState<Clinic[]>([]);
   const [loading, setLoading] = useState(true);
@@ -48,10 +49,19 @@ export default function Appointments() {
   const [submitting, setSubmitting] = useState(false);
 
   // Form state
-  const [clinicId, setClinicId] = useState("");
+  const preselectedClinic = searchParams.get("clinic") || "";
+  const [clinicId, setClinicId] = useState(preselectedClinic);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [notes, setNotes] = useState("");
+
+  // Auto-open form if clinic is preselected
+  useEffect(() => {
+    if (preselectedClinic) {
+      setClinicId(preselectedClinic);
+      setShowForm(true);
+    }
+  }, [preselectedClinic]);
 
   const fetchAppointments = async () => {
     if (!user) return;
