@@ -84,30 +84,30 @@ export default function DashboardWidgets() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {/* Upcoming Appointments */}
-      <div className="elevated-card rounded-2xl p-4 md:p-5 lg:p-6 space-y-3">
+      <div className="elevated-card rounded-2xl p-4 md:p-3.5 lg:p-4 space-y-3 md:space-y-2">
         <button
           onClick={() => navigate("/appointments")}
           className="flex items-center justify-between w-full"
         >
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-health-green/10 flex items-center justify-center">
-              <Calendar className="w-4 h-4 md:w-5 md:h-5 text-health-green" />
+            <div className="w-8 h-8 md:w-8 md:h-8 rounded-lg bg-health-green/10 flex items-center justify-center">
+              <Calendar className="w-4 h-4 text-health-green" />
             </div>
-            <h4 className="font-display font-semibold text-sm md:text-base lg:text-lg text-card-foreground">Upcoming Visits</h4>
+            <h4 className="font-display font-semibold text-sm md:text-sm lg:text-sm text-card-foreground">Upcoming Visits</h4>
           </div>
           <ChevronRight className="w-4 h-4 text-muted-foreground" />
         </button>
 
         {appointments.length === 0 ? (
-          <p className="text-xs md:text-sm text-muted-foreground py-2">No upcoming appointments</p>
+          <p className="text-xs text-muted-foreground py-2">No upcoming appointments</p>
         ) : (
           <div className="space-y-2">
             {appointments.map((apt) => (
-              <div key={apt.id} className="bg-muted/50 rounded-xl p-2.5 md:p-3 space-y-1">
-                <p className="text-xs md:text-sm font-medium text-card-foreground truncate">
+              <div key={apt.id} className="bg-muted/50 rounded-xl p-2.5 space-y-1">
+                <p className="text-xs font-medium text-card-foreground truncate">
                   {apt.clinics?.name || "Clinic"}
                 </p>
-                <div className="flex items-center gap-2 text-[11px] md:text-xs text-muted-foreground">
+                <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
                   <Calendar className="w-3 h-3" />
                   <span>{format(parseISO(apt.appointment_date), "MMM d")}</span>
                   <Clock className="w-3 h-3" />
@@ -120,28 +120,28 @@ export default function DashboardWidgets() {
       </div>
 
       {/* Recent Symptom Checks */}
-      <div className="elevated-card rounded-2xl p-4 md:p-5 lg:p-6 space-y-3">
+      <div className="elevated-card rounded-2xl p-4 md:p-3.5 lg:p-4 space-y-3 md:space-y-2">
         <button
           onClick={() => navigate("/symptom-history")}
           className="flex items-center justify-between w-full"
         >
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-              <Stethoscope className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+            <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+              <Stethoscope className="w-4 h-4 text-primary" />
             </div>
-            <h4 className="font-display font-semibold text-sm md:text-base lg:text-lg text-card-foreground">Recent Checks</h4>
+            <h4 className="font-display font-semibold text-sm md:text-sm lg:text-sm text-card-foreground">Recent Checks</h4>
           </div>
           <ChevronRight className="w-4 h-4 text-muted-foreground" />
         </button>
 
         {checks.length === 0 ? (
-          <p className="text-xs md:text-sm text-muted-foreground py-2">No symptom checks yet</p>
+          <p className="text-xs text-muted-foreground py-2">No symptom checks yet</p>
         ) : (
           <div className="space-y-2">
             {checks.map((check) => (
-              <div key={check.id} className="bg-muted/50 rounded-xl p-2.5 md:p-3 space-y-1">
+              <div key={check.id} className="bg-muted/50 rounded-xl p-2.5 space-y-1">
                 <div className="flex items-center gap-1.5">
-                  <p className="text-[11px] md:text-xs text-muted-foreground">
+                  <p className="text-[11px] text-muted-foreground">
                     {format(new Date(check.created_at), "MMM d")}
                   </p>
                   {check.is_urgent && (
@@ -167,32 +167,32 @@ export default function DashboardWidgets() {
       </div>
 
       {/* Notifications */}
-      <div className="elevated-card rounded-2xl p-4 md:p-5 lg:p-6 space-y-3">
+      <div className="elevated-card rounded-2xl p-4 md:p-3.5 lg:p-4 space-y-3 md:space-y-2">
         <button
           onClick={() => navigate("/notifications")}
           className="flex items-center justify-between w-full"
         >
           <div className="flex items-center gap-2">
-            <div className="relative w-8 h-8 md:w-10 md:h-10 rounded-lg bg-warning/10 flex items-center justify-center">
-              <Bell className="w-4 h-4 md:w-5 md:h-5 text-warning" />
+            <div className="relative w-8 h-8 rounded-lg bg-warning/10 flex items-center justify-center">
+              <Bell className="w-4 h-4 text-warning" />
               {unreadCount > 0 && (
                 <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-destructive text-destructive-foreground text-[9px] font-bold flex items-center justify-center">
                   {unreadCount > 9 ? "9+" : unreadCount}
                 </span>
               )}
             </div>
-            <h4 className="font-display font-semibold text-sm md:text-base lg:text-lg text-card-foreground">Notifications</h4>
+            <h4 className="font-display font-semibold text-sm md:text-sm lg:text-sm text-card-foreground">Notifications</h4>
           </div>
           <ChevronRight className="w-4 h-4 text-muted-foreground" />
         </button>
 
-        <div className="bg-muted/50 rounded-xl p-3 md:p-4 text-center">
+        <div className="bg-muted/50 rounded-xl p-3 text-center">
           {unreadCount > 0 ? (
-            <p className="text-xs md:text-sm text-card-foreground">
+            <p className="text-xs text-card-foreground">
               You have <span className="font-semibold text-primary">{unreadCount}</span> notification{unreadCount !== 1 ? "s" : ""}
             </p>
           ) : (
-            <p className="text-xs md:text-sm text-muted-foreground">All caught up! 🎉</p>
+            <p className="text-xs text-muted-foreground">All caught up! 🎉</p>
           )}
         </div>
       </div>
