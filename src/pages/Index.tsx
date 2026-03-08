@@ -131,8 +131,6 @@ export default function Index() {
     </div>
   );
 }
-  {
-    icon: Shield,
     title: "Verified Information",
     description: "All health content is reviewed and verified by medical professionals.",
   },
