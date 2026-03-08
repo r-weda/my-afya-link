@@ -115,6 +115,8 @@ export default function Articles() {
                 summary={article.summary || ""}
                 source={article.source || "AfyaConnect"}
                 imageUrl={article.image_url || undefined}
+                isBookmarked={isBookmarked(article.id)}
+                onToggleBookmark={() => toggleBookmark(article.id)}
                 publishedAt={
                   article.published_at
                     ? new Date(article.published_at).toLocaleDateString("en-KE", {
