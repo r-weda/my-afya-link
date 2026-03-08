@@ -167,7 +167,7 @@ export default function DashboardWidgets() {
       </div>
 
       {/* Notifications */}
-      <div className="elevated-card rounded-2xl p-4 md:p-5 lg:p-6 space-y-3">
+      <div className="elevated-card rounded-2xl p-4 md:p-3.5 lg:p-4 space-y-3 md:space-y-2">
         <button
           onClick={() => navigate("/notifications")}
           className="flex items-center justify-between w-full"
