@@ -63,9 +63,27 @@ export const symptomRules: SymptomRule[] = [
     description: "Respiratory symptoms without fever may suggest an allergic response.",
     advice: "Identify and avoid the allergen. Antihistamines may help. Seek emergency care if breathing is affected.",
   },
+  {
+    condition: "Malaria",
+    symptoms: ["fever", "fatigue", "headache", "body aches", "nausea"],
+    description: "Recurring fever with chills, body aches, and fatigue may indicate malaria, especially in endemic regions.",
+    advice: "Visit a healthcare facility immediately for a rapid diagnostic test and treatment.",
+  },
+  {
+    condition: "Typhoid Fever",
+    symptoms: ["fever", "headache", "stomach pain", "fatigue", "diarrhea"],
+    description: "Prolonged fever with abdominal discomfort and fatigue can be signs of typhoid fever.",
+    advice: "Seek medical attention promptly. A blood test can confirm the diagnosis.",
+  },
+  {
+    condition: "Pneumonia",
+    symptoms: ["cough", "fever", "difficulty breathing", "chest pain", "fatigue"],
+    description: "Persistent cough with chest pain and difficulty breathing may indicate pneumonia.",
+    advice: "Seek urgent medical care. Chest X-ray and antibiotics may be needed.",
+  },
 ];
 
-const urgentSymptoms = ["chest pain", "difficulty breathing"];
+const urgentSymptoms = ["chest pain", "difficulty breathing", "severe dizziness"];
 
 export function analyzeSymptoms(selectedSymptoms: string[]): {
   results: MatchResult[];
