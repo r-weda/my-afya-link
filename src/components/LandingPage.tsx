@@ -66,6 +66,27 @@ const trustPoints = [
 export default function LandingPage() {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+  const [dynamicStats, setDynamicStats] = useState({ clinics: "500+", articles: "31+", counties: "47" });
+
+  useEffect(() => {
+    supabase.rpc("get_public_stats").then(({ data }) => {
+      if (data) {
+        const d = data as { clinics_count: number; articles_count: number; counties_count: number };
+        setDynamicStats({
+          clinics: `${d.clinics_count}+`,
+          articles: `${d.articles_count}+`,
+          counties: `${d.counties_count}`,
+        });
+      }
+    });
+  }, []);
+
+  const stats = [
+    { value: dynamicStats.clinics, label: "Health Facilities" },
+    { value: dynamicStats.articles, label: "Verified Articles" },
+    { value: "24/7", label: "Always Available" },
+    { value: dynamicStats.counties, label: "Counties Covered" },
+  ];
 
   return (
     <div className="min-h-screen bg-background flex flex-col overflow-x-hidden">
