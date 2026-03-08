@@ -13,8 +13,9 @@ import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import {
   ArrowLeft, FileText, MapPin, Calendar, Plus, Loader2,
-  Trash2, CheckCircle, Users
+  Trash2, CheckCircle, Users, Upload
 } from "lucide-react";
+import CsvClinicImport from "@/components/CsvClinicImport";
 
 export default function Admin() {
   const { isAdmin, loading: authLoading } = useAuth();
@@ -189,6 +190,7 @@ function AdminClinics() {
   const [clinics, setClinics] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [showImport, setShowImport] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
@@ -247,9 +249,18 @@ function AdminClinics() {
 
   return (
     <div className="space-y-4">
-      <Button onClick={() => setShowForm(!showForm)} variant={showForm ? "outline" : "default"} className="w-full rounded-xl h-10">
-        {showForm ? "Cancel" : <><Plus className="w-4 h-4 mr-1" /> Add Clinic</>}
-      </Button>
+      <div className="flex gap-2">
+        <Button onClick={() => { setShowForm(!showForm); setShowImport(false); }} variant={showForm ? "outline" : "default"} className="flex-1 rounded-xl h-10">
+          {showForm ? "Cancel" : <><Plus className="w-4 h-4 mr-1" /> Add Clinic</>}
+        </Button>
+        <Button onClick={() => { setShowImport(!showImport); setShowForm(false); }} variant={showImport ? "outline" : "secondary"} className="flex-1 rounded-xl h-10">
+          {showImport ? "Cancel" : <><Upload className="w-4 h-4 mr-1" /> CSV Import</>}
+        </Button>
+      </div>
+
+      {showImport && (
+        <CsvClinicImport onImportComplete={() => { setShowImport(false); fetchClinics(); }} />
+      )}
 
       {showForm && (
         <motion.form initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} onSubmit={handleCreate} className="elevated-card rounded-2xl p-4 space-y-3">
