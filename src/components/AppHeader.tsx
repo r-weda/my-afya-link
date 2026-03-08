@@ -32,6 +32,44 @@ export default function AppHeader({ title }: AppHeaderProps) {
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
+  const [hasUnread, setHasUnread] = useState(false);
+
+  // Track the last time the user visited the notifications page
+  useEffect(() => {
+    if (location.pathname === "/notifications") {
+      localStorage.setItem("lastNotifVisit", new Date().toISOString());
+      setHasUnread(false);
+    }
+  }, [location.pathname]);
+
+  // Check for new notifications since last visit
+  useEffect(() => {
+    if (!user) return;
+
+    const checkUnread = async () => {
+      const lastVisit = localStorage.getItem("lastNotifVisit") || "1970-01-01T00:00:00Z";
+      const { count } = await supabase
+        .from("notification_history")
+        .select("id", { count: "exact", head: true })
+        .eq("user_id", user.id)
+        .gt("created_at", lastVisit);
+      setHasUnread((count ?? 0) > 0);
+    };
+
+    checkUnread();
+
+    // Subscribe to realtime inserts
+    const channel = supabase
+      .channel("notif-badge")
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "notification_history" }, (payload: { new: { user_id: string } }) => {
+        if (payload.new.user_id === user.id) {
+          setHasUnread(true);
+        }
+      })
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
+  }, [user]);
 
   const initials = user?.user_metadata?.first_name
     ? `${user.user_metadata.first_name[0]}${user.user_metadata.last_name?.[0] || ""}`
