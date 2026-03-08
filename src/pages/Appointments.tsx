@@ -163,6 +163,7 @@ export default function Appointments() {
             appointmentTime: time,
             notes: notes || undefined,
             type: "booking_confirmation",
+            confirmationToken,
           },
         });
         bookingRef = result?.ref || "";
