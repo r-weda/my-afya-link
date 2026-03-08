@@ -7,6 +7,8 @@ import BottomNav from "@/components/BottomNav";
 import Footer from "@/components/Footer";
 import MedicalDisclaimer from "@/components/MedicalDisclaimer";
 import { Loader2, ArrowLeft, Clock, ExternalLink, ChevronDown, ChevronUp, Lightbulb } from "lucide-react";
+import BookmarkButton from "@/components/BookmarkButton";
+import { useBookmarks } from "@/hooks/useBookmarks";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
@@ -42,6 +44,7 @@ export default function ArticleDetail() {
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState(false);
+  const { isBookmarked, toggle: toggleBookmark } = useBookmarks();
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -127,9 +130,16 @@ export default function ArticleDetail() {
 
         {/* Article header card */}
         <div className="bg-card rounded-2xl border border-border/40 p-5 md:p-7 space-y-4">
-          <h1 className="font-display font-bold text-2xl md:text-3xl lg:text-4xl text-foreground leading-tight">
-            {article.title}
-          </h1>
+          <div className="flex items-start justify-between gap-3">
+            <h1 className="font-display font-bold text-2xl md:text-3xl lg:text-4xl text-foreground leading-tight">
+              {article.title}
+            </h1>
+            <BookmarkButton
+              isBookmarked={isBookmarked(article.id)}
+              onClick={() => toggleBookmark(article.id)}
+              className="shrink-0 mt-1"
+            />
+          </div>
 
           <div className="flex items-center gap-3 text-sm lg:text-base text-muted-foreground">
             {article.source && (

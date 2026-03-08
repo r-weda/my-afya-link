@@ -8,6 +8,7 @@ import ClinicCard from "@/components/ClinicCard";
 import ClinicMap from "@/components/ClinicMap";
 import ClinicDetailSheet from "@/components/ClinicDetailSheet";
 import { Search, Loader2, LogIn, X } from "lucide-react";
+import { ClinicCardSkeleton } from "@/components/SkeletonCards";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -169,8 +170,8 @@ export default function Clinics() {
 
           <div className="mt-4 md:mt-0 md:flex-1">
             {loading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-6 h-6 animate-spin text-primary" />
+              <div className="space-y-3">
+                {[1, 2, 3, 4].map((i) => <ClinicCardSkeleton key={i} />)}
               </div>
             ) : filtered.length === 0 ? (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-12">

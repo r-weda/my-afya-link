@@ -14,6 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import Footer from "@/components/Footer";
 import { Calendar, Clock, MapPin, Plus, Loader2, X, CheckCircle2, Copy, Phone } from "lucide-react";
+import { AppointmentCardSkeleton } from "@/components/SkeletonCards";
 
 interface Clinic {
   id: string;
@@ -389,8 +390,8 @@ export default function Appointments() {
             </h3>
 
             {loading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-6 h-6 animate-spin text-primary" />
+              <div className="space-y-3">
+                {[1, 2, 3].map((i) => <AppointmentCardSkeleton key={i} />)}
               </div>
             ) : appointments.length === 0 ? (
               <div className="text-center py-12 elevated-card rounded-2xl">

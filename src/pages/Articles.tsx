@@ -5,8 +5,11 @@ import AppHeader from "@/components/AppHeader";
 import BottomNav from "@/components/BottomNav";
 import ArticleCard from "@/components/ArticleCard";
 import MedicalDisclaimer from "@/components/MedicalDisclaimer";
-import { Search, Loader2 } from "lucide-react";
+import { ArticleCardSkeleton } from "@/components/SkeletonCards";
+import { useBookmarks } from "@/hooks/useBookmarks";
+import { Search, Bookmark } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 
@@ -26,6 +29,8 @@ export default function Articles() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [showBookmarked, setShowBookmarked] = useState(false);
+  const { isBookmarked, toggle: toggleBookmark } = useBookmarks();
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -40,26 +45,39 @@ export default function Articles() {
     fetchArticles();
   }, []);
 
-  const filtered = articles.filter(
-    (a) =>
+  const filtered = articles.filter((a) => {
+    const matchesSearch =
       a.title.toLowerCase().includes(search.toLowerCase()) ||
-      a.summary?.toLowerCase().includes(search.toLowerCase())
-  );
+      a.summary?.toLowerCase().includes(search.toLowerCase());
+    const matchesBookmark = !showBookmarked || isBookmarked(a.id);
+    return matchesSearch && matchesBookmark;
+  });
 
   return (
     <div className="min-h-screen bg-background pb-20 md:pb-8 flex flex-col">
       <AppHeader title="Health Articles" />
 
       <main className="px-4 pt-4 max-w-lg md:max-w-4xl lg:max-w-[1400px] mx-auto space-y-4">
-        {/* Search */}
-        <div className="relative md:max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input
-            placeholder="Search articles..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-10 rounded-xl h-11 lg:h-12 lg:text-base bg-secondary/50 border-0"
-          />
+        {/* Search + Bookmark filter */}
+        <div className="flex gap-2 items-center">
+          <div className="relative flex-1 md:max-w-md">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              placeholder="Search articles..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-10 rounded-xl h-11 lg:h-12 lg:text-base bg-secondary/50 border-0"
+            />
+          </div>
+          <Button
+            variant={showBookmarked ? "default" : "outline"}
+            size="icon"
+            className="h-11 w-11 lg:h-12 lg:w-12 rounded-xl shrink-0"
+            onClick={() => setShowBookmarked(!showBookmarked)}
+            aria-label="Show bookmarked articles"
+          >
+            <Bookmark className={`w-4 h-4 ${showBookmarked ? "fill-primary-foreground" : ""}`} />
+          </Button>
         </div>
 
         <div className="md:max-w-2xl">
@@ -68,8 +86,8 @@ export default function Articles() {
 
         {/* Articles */}
         {loading ? (
-          <div className="flex justify-center py-12">
-            <Loader2 className="w-6 h-6 animate-spin text-primary" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[1, 2, 3, 4, 5, 6].map((i) => <ArticleCardSkeleton key={i} />)}
           </div>
         ) : filtered.length === 0 ? (
           <motion.div
@@ -97,6 +115,8 @@ export default function Articles() {
                 summary={article.summary || ""}
                 source={article.source || "AfyaConnect"}
                 imageUrl={article.image_url || undefined}
+                isBookmarked={isBookmarked(article.id)}
+                onToggleBookmark={() => toggleBookmark(article.id)}
                 publishedAt={
                   article.published_at
                     ? new Date(article.published_at).toLocaleDateString("en-KE", {
