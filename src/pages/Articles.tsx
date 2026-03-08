@@ -5,8 +5,11 @@ import AppHeader from "@/components/AppHeader";
 import BottomNav from "@/components/BottomNav";
 import ArticleCard from "@/components/ArticleCard";
 import MedicalDisclaimer from "@/components/MedicalDisclaimer";
-import { Search, Loader2 } from "lucide-react";
+import { ArticleCardSkeleton } from "@/components/SkeletonCards";
+import { useBookmarks } from "@/hooks/useBookmarks";
+import { Search, Bookmark } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 
