@@ -103,11 +103,11 @@ export default function DashboardWidgets() {
         ) : (
           <div className="space-y-2">
             {appointments.map((apt) => (
-              <div key={apt.id} className="bg-muted/50 rounded-xl p-2.5 md:p-3 space-y-1">
-                <p className="text-xs md:text-sm font-medium text-card-foreground truncate">
+              <div key={apt.id} className="bg-muted/50 rounded-xl p-2.5 space-y-1">
+                <p className="text-xs font-medium text-card-foreground truncate">
                   {apt.clinics?.name || "Clinic"}
                 </p>
-                <div className="flex items-center gap-2 text-[11px] md:text-xs text-muted-foreground">
+                <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
                   <Calendar className="w-3 h-3" />
                   <span>{format(parseISO(apt.appointment_date), "MMM d")}</span>
                   <Clock className="w-3 h-3" />
