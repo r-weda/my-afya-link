@@ -231,6 +231,69 @@ export type Database = {
           },
         ]
       }
+      notification_history: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          status: string
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          status?: string
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          status?: string
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      notification_preferences: {
+        Row: {
+          appointment_reminders: boolean
+          booking_confirmations: boolean
+          created_at: string
+          health_tips: boolean
+          id: string
+          phone_number: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          appointment_reminders?: boolean
+          booking_confirmations?: boolean
+          created_at?: string
+          health_tips?: boolean
+          id?: string
+          phone_number?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          appointment_reminders?: boolean
+          booking_confirmations?: boolean
+          created_at?: string
+          health_tips?: boolean
+          id?: string
+          phone_number?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
