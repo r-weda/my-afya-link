@@ -45,11 +45,13 @@ export default function Articles() {
     fetchArticles();
   }, []);
 
-  const filtered = articles.filter(
-    (a) =>
+  const filtered = articles.filter((a) => {
+    const matchesSearch =
       a.title.toLowerCase().includes(search.toLowerCase()) ||
-      a.summary?.toLowerCase().includes(search.toLowerCase())
-  );
+      a.summary?.toLowerCase().includes(search.toLowerCase());
+    const matchesBookmark = !showBookmarked || isBookmarked(a.id);
+    return matchesSearch && matchesBookmark;
+  });
 
   return (
     <div className="min-h-screen bg-background pb-20 md:pb-8 flex flex-col">
