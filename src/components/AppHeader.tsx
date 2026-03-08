@@ -73,6 +73,9 @@ export default function AppHeader({ title }: AppHeaderProps) {
         )}
 
         <div className="flex items-center gap-2">
+          <Button variant="ghost" size="icon" className="w-9 h-9 rounded-xl" onClick={toggleTheme} aria-label="Toggle theme">
+            {theme === "light" ? <Moon className="w-4 h-4 text-muted-foreground" /> : <Sun className="w-4 h-4 text-muted-foreground" />}
+          </Button>
           <Button variant="ghost" size="icon" className="w-9 h-9 rounded-xl">
             <Bell className="w-4 h-4 text-muted-foreground" />
           </Button>
