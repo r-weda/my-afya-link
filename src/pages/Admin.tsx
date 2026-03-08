@@ -16,6 +16,7 @@ import {
   Trash2, CheckCircle, Users, Upload
 } from "lucide-react";
 import CsvClinicImport from "@/components/CsvClinicImport";
+import CsvArticleImport from "@/components/CsvArticleImport";
 
 export default function Admin() {
   const { isAdmin, loading: authLoading } = useAuth();
