@@ -5,12 +5,13 @@ import BottomNav from "@/components/BottomNav";
 import MedicalDisclaimer from "@/components/MedicalDisclaimer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { motion, AnimatePresence } from "framer-motion";
 import Footer from "@/components/Footer";
 import {
   Stethoscope, ChevronRight, RotateCcw, MapPin, CalendarPlus,
-  Loader2, ShieldAlert, History, Trash2, ChevronDown,
+  Loader2, ShieldAlert, History, Trash2, ChevronDown, Sparkles, Brain,
 } from "lucide-react";
 import { analyzeSymptoms, type MatchResult } from "@/services/symptomRules";
 import { supabase } from "@/integrations/supabase/client";
@@ -45,6 +46,8 @@ export default function SymptomChecker() {
   const [history, setHistory] = useState<SymptomCheck[]>([]);
   const [showHistory, setShowHistory] = useState(false);
   const [loadingHistory, setLoadingHistory] = useState(false);
+  const [useAI, setUseAI] = useState(false);
+  const [aiInsight, setAiInsight] = useState<string | null>(null);
 
   useEffect(() => {
     if (user) fetchHistory();
@@ -95,15 +98,49 @@ export default function SymptomChecker() {
     }
     setError("");
     setIsAnalyzing(true);
-    await new Promise((r) => setTimeout(r, 1200));
+    setAiInsight(null);
 
-    const analysis = analyzeSymptoms(selected);
-    setResults(analysis.results);
-    setIsUrgent(analysis.isUrgent);
-    setIsAnalyzing(false);
+    if (useAI) {
+      try {
+        const { data, error: fnError } = await supabase.functions.invoke("analyze-symptoms", {
+          body: { symptoms: selected, additionalNotes: additionalNotes || null },
+        });
 
-    // Save to database
-    await saveCheck(analysis.results, analysis.isUrgent);
+        if (fnError) throw fnError;
+        if (data?.error) throw new Error(data.error);
+
+        const aiResults: MatchResult[] = (data.conditions || []).map((c: any) => ({
+          condition: c.condition,
+          matchScore: c.matchScore,
+          matchedSymptoms: c.matchedSymptoms || [],
+          description: c.description,
+          advice: c.advice,
+          likelihood: c.likelihood || (c.matchScore >= 75 ? "High" : c.matchScore >= 50 ? "Moderate" : "Low"),
+        }));
+
+        setResults(aiResults);
+        setIsUrgent(data.isUrgent || false);
+        setAiInsight(data.aiInsight || null);
+        setIsAnalyzing(false);
+        await saveCheck(aiResults, data.isUrgent || false);
+      } catch (e: any) {
+        console.error("AI analysis failed, falling back to rules:", e);
+        toast({ title: "AI analysis unavailable", description: "Using rule-based analysis instead.", variant: "destructive" });
+        // Fallback to rule-based
+        const analysis = analyzeSymptoms(selected);
+        setResults(analysis.results);
+        setIsUrgent(analysis.isUrgent);
+        setIsAnalyzing(false);
+        await saveCheck(analysis.results, analysis.isUrgent);
+      }
+    } else {
+      await new Promise((r) => setTimeout(r, 1200));
+      const analysis = analyzeSymptoms(selected);
+      setResults(analysis.results);
+      setIsUrgent(analysis.isUrgent);
+      setIsAnalyzing(false);
+      await saveCheck(analysis.results, analysis.isUrgent);
+    }
   };
 
   const handleReset = () => {
@@ -112,6 +149,7 @@ export default function SymptomChecker() {
     setResults(null);
     setIsUrgent(false);
     setError("");
+    setAiInsight(null);
   };
 
   const loadFromHistory = (check: SymptomCheck) => {
@@ -184,6 +222,20 @@ export default function SymptomChecker() {
                   placeholder="Describe any other symptoms or how long you've been feeling this way..."
                   className="rounded-xl resize-none min-h-[80px] lg:text-base"
                 />
+              </div>
+
+              {/* AI Toggle */}
+              <div className="flex items-center justify-between p-3 rounded-xl bg-secondary/50 border border-border">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <Sparkles className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-foreground">AI-Enhanced Analysis</p>
+                    <p className="text-xs text-muted-foreground">Uses your additional details for deeper insights</p>
+                  </div>
+                </div>
+                <Switch checked={useAI} onCheckedChange={setUseAI} />
               </div>
 
               {/* Error message */}
@@ -309,6 +361,25 @@ export default function SymptomChecker() {
                   </div>
                   <p className="text-sm lg:text-base text-foreground leading-relaxed">
                     You've reported symptoms that may require immediate medical evaluation. Please seek emergency care or visit the nearest clinic right away.
+                  </p>
+                </motion.div>
+              )}
+
+              {/* AI Insight */}
+              {aiInsight && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="p-4 rounded-2xl border border-primary/20 bg-primary/5"
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <Brain className="w-5 h-5 text-primary" />
+                    <span className="font-display font-bold text-sm lg:text-base text-primary">
+                      AI Insight
+                    </span>
+                  </div>
+                  <p className="text-sm lg:text-base text-foreground leading-relaxed">
+                    {aiInsight}
                   </p>
                 </motion.div>
               )}

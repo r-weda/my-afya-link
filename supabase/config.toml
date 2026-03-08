@@ -2,3 +2,6 @@ project_id = "skdxbhlplpbzweilkfgc"
 
 [functions.send-appointment-reminder]
 verify_jwt = false
+
+[functions.analyze-symptoms]
+verify_jwt = false
