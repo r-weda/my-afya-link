@@ -13,8 +13,9 @@ import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import {
   ArrowLeft, FileText, MapPin, Calendar, Plus, Loader2,
-  Trash2, CheckCircle, Users
+  Trash2, CheckCircle, Users, Upload
 } from "lucide-react";
+import CsvClinicImport from "@/components/CsvClinicImport";
 
 export default function Admin() {
   const { isAdmin, loading: authLoading } = useAuth();
