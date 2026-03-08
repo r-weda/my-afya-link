@@ -120,7 +120,7 @@ export default function DashboardWidgets() {
       </div>
 
       {/* Recent Symptom Checks */}
-      <div className="elevated-card rounded-2xl p-4 space-y-3">
+      <div className="elevated-card rounded-2xl p-4 md:p-5 lg:p-6 space-y-3">
         <button
           onClick={() => navigate("/symptom-history")}
           className="flex items-center justify-between w-full"
