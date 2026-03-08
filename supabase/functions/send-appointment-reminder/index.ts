@@ -17,6 +17,7 @@ interface ReminderRequest {
   appointmentTime: string;
   notes?: string;
   type?: "appointment_reminder" | "booking_confirmation";
+  confirmationToken?: string;
 }
 
 async function sendSms(
