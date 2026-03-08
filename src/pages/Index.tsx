@@ -73,14 +73,6 @@ export default function Index() {
           </div>
         </motion.div>
 
-        {/* Dashboard Widgets */}
-        <motion.div variants={item}>
-          <h3 className="font-display font-semibold text-xs md:text-sm lg:text-base text-muted-foreground uppercase tracking-wider mb-4">
-            At a Glance
-          </h3>
-          <DashboardWidgets />
-        </motion.div>
-
         {/* Quick Actions */}
         <motion.div variants={item}>
           <h3 className="font-display font-semibold text-xs md:text-sm lg:text-base text-muted-foreground uppercase tracking-wider mb-4">
@@ -124,6 +116,14 @@ export default function Index() {
               onClick={() => navigate("/feedback")}
             />
           </div>
+        </motion.div>
+
+        {/* Dashboard Widgets */}
+        <motion.div variants={item}>
+          <h3 className="font-display font-semibold text-xs md:text-sm lg:text-base text-muted-foreground uppercase tracking-wider mb-4">
+            At a Glance
+          </h3>
+          <DashboardWidgets />
         </motion.div>
 
         {/* Medical Disclaimer */}
