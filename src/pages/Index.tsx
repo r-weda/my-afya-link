@@ -75,7 +75,7 @@ export default function Index() {
 
         {/* Quick Actions */}
         <motion.div variants={item}>
-          <h3 className="font-display font-semibold text-xs md:text-sm lg:text-base text-muted-foreground uppercase tracking-wider mb-4">
+          <h3 className="font-display font-semibold text-xs md:text-sm lg:text-sm text-muted-foreground uppercase tracking-wider mb-4">
             Quick Actions
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4 lg:gap-5">
