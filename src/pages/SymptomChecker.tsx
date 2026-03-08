@@ -275,7 +275,7 @@ export default function SymptomChecker() {
                   <h2 className="font-display font-semibold text-lg md:text-xl lg:text-2xl text-foreground">
                     What symptoms do you have?
                   </h2>
-                  <p className="text-xs text-muted-foreground">Select all that apply or search</p>
+                  <p className="text-xs lg:text-sm text-muted-foreground">Select all that apply or search</p>
                 </div>
               </div>
 
