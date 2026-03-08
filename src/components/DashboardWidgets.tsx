@@ -135,7 +135,7 @@ export default function DashboardWidgets() {
         </button>
 
         {checks.length === 0 ? (
-          <p className="text-xs md:text-sm text-muted-foreground py-2">No symptom checks yet</p>
+          <p className="text-xs text-muted-foreground py-2">No symptom checks yet</p>
         ) : (
           <div className="space-y-2">
             {checks.map((check) => (
