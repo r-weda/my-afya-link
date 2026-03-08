@@ -94,16 +94,30 @@ export default function DirectionsMap({ clinicName, clinicLat, clinicLng }: Dire
       navigator.geolocation.clearWatch(watchIdRef.current);
     }
 
+    let bestAccuracy = Infinity;
+    let routeFetched = false;
+
     watchIdRef.current = navigator.geolocation.watchPosition(
       (pos) => {
         const coords: [number, number] = [pos.coords.latitude, pos.coords.longitude];
-        setUserPos(coords);
-        setAccuracy(Math.round(pos.coords.accuracy));
-        setLocating(false);
-        fetchRoute(coords, [clinicLat, clinicLng]);
+        const acc = pos.coords.accuracy;
 
-        // Once we get a good fix (<100m), stop watching to save battery
-        if (pos.coords.accuracy < 100 && watchIdRef.current !== null) {
+        // Only update if this reading is more accurate than the previous best
+        if (acc < bestAccuracy) {
+          bestAccuracy = acc;
+          setUserPos(coords);
+          setAccuracy(Math.round(acc));
+          setLocating(false);
+
+          // Only fetch route when we haven't yet, or accuracy improved significantly
+          if (!routeFetched || acc < 50) {
+            fetchRoute(coords, [clinicLat, clinicLng]);
+            routeFetched = true;
+          }
+        }
+
+        // Stop watching once we get a precise fix (<30m)
+        if (acc < 30 && watchIdRef.current !== null) {
           navigator.geolocation.clearWatch(watchIdRef.current);
           watchIdRef.current = null;
         }
@@ -112,7 +126,7 @@ export default function DirectionsMap({ clinicName, clinicLat, clinicLng }: Dire
         setError("Unable to get your location. Please enable location access and try again.");
         setLocating(false);
       },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }
     );
   }, [clinicLat, clinicLng, fetchRoute]);
 
