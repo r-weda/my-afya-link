@@ -1,8 +1,9 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { Loader2, LocateFixed } from "lucide-react";
+import { Loader2, LocateFixed, RefreshCw } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 // Fix default marker icons
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -40,35 +41,15 @@ function FitBounds({ points }: { points: [number, number][] }) {
 
 export default function DirectionsMap({ clinicName, clinicLat, clinicLng }: DirectionsMapProps) {
   const [userPos, setUserPos] = useState<[number, number] | null>(null);
+  const [accuracy, setAccuracy] = useState<number | null>(null);
   const [route, setRoute] = useState<[number, number][]>([]);
   const [distance, setDistance] = useState<string>("");
   const [duration, setDuration] = useState<string>("");
   const [locating, setLocating] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const watchIdRef = useRef<number | null>(null);
 
-  useEffect(() => {
-    if (!navigator.geolocation) {
-      setError("Geolocation is not supported by your browser");
-      setLocating(false);
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const coords: [number, number] = [pos.coords.latitude, pos.coords.longitude];
-        setUserPos(coords);
-        setLocating(false);
-        fetchRoute(coords, [clinicLat, clinicLng]);
-      },
-      () => {
-        setError("Unable to get your location. Please enable location access.");
-        setLocating(false);
-      },
-      { enableHighAccuracy: true, timeout: 10000 }
-    );
-  }, [clinicLat, clinicLng]);
-
-  const fetchRoute = async (from: [number, number], to: [number, number]) => {
+  const fetchRoute = useCallback(async (from: [number, number], to: [number, number]) => {
     try {
       const url = `https://router.project-osrm.org/route/v1/driving/${from[1]},${from[0]};${to[1]},${to[0]}?overview=full&geometries=geojson`;
       const res = await fetch(url);
@@ -94,24 +75,78 @@ export default function DirectionsMap({ clinicName, clinicLat, clinicLng }: Dire
         }
       }
     } catch {
-      // Route fetch failed silently — map still shows markers
+      // Route fetch failed — map still shows markers
     }
+  }, []);
+
+  const startWatching = useCallback(() => {
+    if (!navigator.geolocation) {
+      setError("Geolocation is not supported by your browser");
+      setLocating(false);
+      return;
+    }
+
+    setLocating(true);
+    setError(null);
+
+    // Clear any existing watch
+    if (watchIdRef.current !== null) {
+      navigator.geolocation.clearWatch(watchIdRef.current);
+    }
+
+    watchIdRef.current = navigator.geolocation.watchPosition(
+      (pos) => {
+        const coords: [number, number] = [pos.coords.latitude, pos.coords.longitude];
+        setUserPos(coords);
+        setAccuracy(Math.round(pos.coords.accuracy));
+        setLocating(false);
+        fetchRoute(coords, [clinicLat, clinicLng]);
+
+        // Once we get a good fix (<100m), stop watching to save battery
+        if (pos.coords.accuracy < 100 && watchIdRef.current !== null) {
+          navigator.geolocation.clearWatch(watchIdRef.current);
+          watchIdRef.current = null;
+        }
+      },
+      () => {
+        setError("Unable to get your location. Please enable location access and try again.");
+        setLocating(false);
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+    );
+  }, [clinicLat, clinicLng, fetchRoute]);
+
+  useEffect(() => {
+    startWatching();
+    return () => {
+      if (watchIdRef.current !== null) {
+        navigator.geolocation.clearWatch(watchIdRef.current);
+      }
+    };
+  }, [startWatching]);
+
+  const handleRefreshLocation = () => {
+    startWatching();
   };
 
   if (locating) {
     return (
       <div className="h-full flex flex-col items-center justify-center gap-2 bg-secondary/30 rounded-2xl">
         <Loader2 className="w-5 h-5 animate-spin text-primary" />
-        <p className="text-xs text-muted-foreground">Getting your location…</p>
+        <p className="text-xs text-muted-foreground">Getting your precise location…</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="h-full flex flex-col items-center justify-center gap-2 bg-secondary/30 rounded-2xl px-4">
+      <div className="h-full flex flex-col items-center justify-center gap-3 bg-secondary/30 rounded-2xl px-4">
         <LocateFixed className="w-5 h-5 text-muted-foreground" />
         <p className="text-xs text-muted-foreground text-center">{error}</p>
+        <Button variant="outline" size="sm" className="rounded-lg text-xs" onClick={handleRefreshLocation}>
+          <RefreshCw className="w-3 h-3 mr-1.5" />
+          Retry
+        </Button>
       </div>
     );
   }
@@ -135,19 +170,16 @@ export default function DirectionsMap({ clinicName, clinicLat, clinicLng }: Dire
         />
         <FitBounds points={fitPoints} />
 
-        {/* User marker */}
         {userPos && (
           <Marker position={userPos} icon={userIcon}>
             <Popup><strong className="text-sm">Your Location</strong></Popup>
           </Marker>
         )}
 
-        {/* Clinic marker */}
         <Marker position={[clinicLat, clinicLng]}>
           <Popup><strong className="text-sm">{clinicName}</strong></Popup>
         </Marker>
 
-        {/* Route line */}
         {route.length > 0 && (
           <Polyline
             positions={route}
@@ -156,15 +188,33 @@ export default function DirectionsMap({ clinicName, clinicLat, clinicLng }: Dire
         )}
       </MapContainer>
 
-      {/* Distance/duration badge */}
-      {(distance || duration) && (
-        <div className="absolute bottom-3 left-3 z-[1000] bg-background/90 backdrop-blur-sm rounded-xl px-3 py-2 shadow-lg border border-border/50">
-          <div className="flex items-center gap-3 text-xs font-medium">
-            {distance && <span className="text-foreground">{distance}</span>}
-            {duration && <span className="text-primary">{duration}</span>}
+      {/* Info badges */}
+      <div className="absolute bottom-3 left-3 z-[1000] flex flex-col gap-1.5">
+        {(distance || duration) && (
+          <div className="bg-background/90 backdrop-blur-sm rounded-xl px-3 py-2 shadow-lg border border-border/50">
+            <div className="flex items-center gap-3 text-xs font-medium">
+              {distance && <span className="text-foreground">{distance}</span>}
+              {duration && <span className="text-primary">{duration}</span>}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+        {accuracy && accuracy > 100 && (
+          <div className="bg-warning/10 backdrop-blur-sm rounded-xl px-3 py-1.5 shadow-lg border border-warning/20">
+            <p className="text-[10px] text-warning">Location accuracy: ~{accuracy}m</p>
+          </div>
+        )}
+      </div>
+
+      {/* Refresh location button */}
+      <Button
+        variant="outline"
+        size="icon"
+        className="absolute top-3 right-3 z-[1000] h-8 w-8 rounded-lg bg-background/90 backdrop-blur-sm shadow-lg"
+        onClick={handleRefreshLocation}
+        title="Refresh my location"
+      >
+        <LocateFixed className="w-4 h-4" />
+      </Button>
     </div>
   );
 }
