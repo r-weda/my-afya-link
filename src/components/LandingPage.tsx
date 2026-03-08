@@ -28,12 +28,7 @@ const fadeUp = {
   }),
 };
 
-const stats = [
-  { value: "500+", label: "Health Facilities" },
-  { value: "31+", label: "Verified Articles" },
-  { value: "24/7", label: "Always Available" },
-  { value: "47", label: "Counties Covered" },
-];
+// stats are now dynamic, defined inside the component
 
 const features = [
   {
