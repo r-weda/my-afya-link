@@ -81,10 +81,10 @@ export default function Clinics() {
   ) as { id: string; name: string; address: string; latitude: number; longitude: number }[];
 
   return (
-    <div className="min-h-screen bg-background pb-20 md:pb-8 flex flex-col">
+    <div className="min-h-screen bg-background pb-20 md:pb-8 flex flex-col overflow-x-hidden">
       <AppHeader title="Find Clinics" />
 
-      <main className="px-4 pt-4 max-w-lg md:max-w-4xl lg:max-w-[1400px] mx-auto space-y-4">
+      <main className="px-4 pt-4 max-w-lg md:max-w-4xl lg:max-w-[1400px] mx-auto space-y-4 w-full overflow-hidden">
         {/* Desktop: side-by-side map + list. Mobile: stacked */}
         <div className="md:flex md:gap-6">
           {/* Map + search column */}

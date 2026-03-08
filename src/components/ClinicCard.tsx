@@ -30,7 +30,7 @@ export default function ClinicCard({
   return (
     <motion.button
       onClick={onClick}
-      className="w-full text-left elevated-card rounded-2xl p-4 transition-all hover:scale-[1.01] active:scale-[0.99]"
+      className="w-full text-left elevated-card rounded-2xl p-4 transition-all hover:scale-[1.01] active:scale-[0.99] overflow-hidden"
       whileTap={{ scale: 0.98 }}
     >
       <div className="flex items-start justify-between mb-2">
@@ -46,7 +46,7 @@ export default function ClinicCard({
               </Badge>
             )}
           </div>
-          <div className="flex items-center gap-1 text-sm lg:text-base text-muted-foreground">
+          <div className="flex items-center gap-1 text-sm lg:text-base text-muted-foreground min-w-0">
             <MapPin className="w-3.5 h-3.5 shrink-0" />
             <span className="truncate">{address}, {city}</span>
           </div>
@@ -54,17 +54,17 @@ export default function ClinicCard({
         <ChevronRight className="w-5 h-5 text-muted-foreground shrink-0 mt-1" />
       </div>
 
-      <div className="flex items-center gap-4 mt-3 text-xs lg:text-sm text-muted-foreground">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-xs lg:text-sm text-muted-foreground">
         {phone && (
-          <div className="flex items-center gap-1">
-            <Phone className="w-3 h-3" />
-            <span>{phone}</span>
+          <div className="flex items-center gap-1 min-w-0">
+            <Phone className="w-3 h-3 shrink-0" />
+            <span className="truncate">{phone}</span>
           </div>
         )}
         {operatingHours && (
-          <div className="flex items-center gap-1">
-            <Clock className="w-3 h-3" />
-            <span>{operatingHours}</span>
+          <div className="flex items-center gap-1 min-w-0">
+            <Clock className="w-3 h-3 shrink-0" />
+            <span className="truncate">{operatingHours}</span>
           </div>
         )}
       </div>
