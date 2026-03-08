@@ -16,6 +16,7 @@ interface ClinicCardProps {
 }
 
 export default function ClinicCard({
+  id,
   name,
   address,
   city,
@@ -24,6 +25,7 @@ export default function ClinicCard({
   services,
   isVerified,
   onClick,
+  onBook,
 }: ClinicCardProps) {
   return (
     <motion.button
