@@ -108,16 +108,6 @@ export default function LandingPage() {
 
       {/* ── Hero ── */}
       <section className="relative min-h-[92vh] md:min-h-[88vh] flex items-center">
-        {/* Background image with overlay */}
-        <div className="absolute inset-0">
-          <img
-            src={heroImage}
-            alt="Healthcare professionals helping patients"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
-        </div>
 
         <div className="relative z-10 max-w-6xl mx-auto px-5 py-20 md:py-0 w-full">
           <div className="max-w-xl lg:max-w-2xl">
