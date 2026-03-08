@@ -7,9 +7,10 @@ import BottomNav from "@/components/BottomNav";
 import ClinicCard from "@/components/ClinicCard";
 import ClinicMap from "@/components/ClinicMap";
 import ClinicDetailSheet from "@/components/ClinicDetailSheet";
-import { Search, Loader2, LogIn } from "lucide-react";
+import { Search, Loader2, LogIn, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 
@@ -36,6 +37,8 @@ export default function Clinics() {
   const [clinics, setClinics] = useState<Clinic[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [selectedCounty, setSelectedCounty] = useState<string>("all");
+  const [selectedCity, setSelectedCity] = useState<string>("all");
   const [selectedClinic, setSelectedClinic] = useState<Clinic | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
 
@@ -76,14 +79,23 @@ export default function Clinics() {
     );
   }
 
-  const filtered = clinics.filter(
-    (c) =>
+  const counties = [...new Set(clinics.map((c) => c.county).filter(Boolean) as string[])].sort();
+
+  const citiesForCounty = selectedCounty === "all"
+    ? [...new Set(clinics.map((c) => c.city))].sort()
+    : [...new Set(clinics.filter((c) => c.county === selectedCounty).map((c) => c.city))].sort();
+
+  const filtered = clinics.filter((c) => {
+    const matchesSearch =
       c.name.toLowerCase().includes(search.toLowerCase()) ||
       c.address.toLowerCase().includes(search.toLowerCase()) ||
-      c.city.toLowerCase().includes(search.toLowerCase())
-  );
+      c.city.toLowerCase().includes(search.toLowerCase());
+    const matchesCounty = selectedCounty === "all" || c.county === selectedCounty;
+    const matchesCity = selectedCity === "all" || c.city === selectedCity;
+    return matchesSearch && matchesCounty && matchesCity;
+  });
 
-  const mapClinics = clinics.filter(
+  const mapClinics = filtered.filter(
     (c) => c.latitude != null && c.longitude != null
   ) as { id: string; name: string; address: string; latitude: number; longitude: number }[];
 
@@ -118,6 +130,41 @@ export default function Clinics() {
                 className="pl-10 rounded-xl h-11 lg:h-12 lg:text-base bg-secondary/50 border-0"
               />
             </div>
+
+            <div className="flex gap-2">
+              <Select value={selectedCounty} onValueChange={(v) => { setSelectedCounty(v); setSelectedCity("all"); }}>
+                <SelectTrigger className="rounded-xl h-10 bg-secondary/50 border-0 text-sm flex-1">
+                  <SelectValue placeholder="All Counties" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Counties</SelectItem>
+                  {counties.map((county) => (
+                    <SelectItem key={county} value={county}>{county}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Select value={selectedCity} onValueChange={setSelectedCity}>
+                <SelectTrigger className="rounded-xl h-10 bg-secondary/50 border-0 text-sm flex-1">
+                  <SelectValue placeholder="All Cities" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Cities</SelectItem>
+                  {citiesForCounty.map((city) => (
+                    <SelectItem key={city} value={city}>{city}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {(selectedCounty !== "all" || selectedCity !== "all") && (
+              <button
+                onClick={() => { setSelectedCounty("all"); setSelectedCity("all"); }}
+                className="flex items-center gap-1 text-xs text-primary hover:text-primary/80 transition-colors"
+              >
+                <X className="w-3 h-3" /> Clear filters
+              </button>
+            )}
           </div>
 
           <div className="mt-4 md:mt-0 md:flex-1">
