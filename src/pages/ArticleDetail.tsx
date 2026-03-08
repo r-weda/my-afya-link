@@ -134,6 +134,11 @@ export default function ArticleDetail() {
             {article.title}
           </h1>
 
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3 text-sm lg:text-base text-muted-foreground">
+            {article.title}
+          </h1>
+
           <div className="flex items-center gap-3 text-sm lg:text-base text-muted-foreground">
             {article.source && (
               <span className="font-medium text-primary">{article.source}</span>
