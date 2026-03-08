@@ -181,7 +181,7 @@ export default function DashboardWidgets() {
                 </span>
               )}
             </div>
-            <h4 className="font-display font-semibold text-sm md:text-base lg:text-lg text-card-foreground">Notifications</h4>
+            <h4 className="font-display font-semibold text-sm md:text-sm lg:text-sm text-card-foreground">Notifications</h4>
           </div>
           <ChevronRight className="w-4 h-4 text-muted-foreground" />
         </button>
