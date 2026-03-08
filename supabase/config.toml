@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.analyze-symptoms]
 verify_jwt = false
+
+[functions.clinic-action]
+verify_jwt = false

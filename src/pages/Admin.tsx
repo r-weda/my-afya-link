@@ -13,7 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import {
   ArrowLeft, FileText, MapPin, Calendar, Plus, Loader2,
-  Trash2, CheckCircle, Users, Upload
+  Trash2, CheckCircle, Users, Upload, X
 } from "lucide-react";
 import CsvClinicImport from "@/components/CsvClinicImport";
 import CsvArticleImport from "@/components/CsvArticleImport";
@@ -316,38 +316,53 @@ function AdminClinics() {
 }
 
 function AdminAppointments() {
+  const { toast } = useToast();
   const [appointments, setAppointments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetch = async () => {
-      const { data } = await supabase
-        .from("appointments")
-        .select("id, appointment_date, appointment_time, status, notes, user_id, clinics(name)")
-        .order("appointment_date", { ascending: false });
-      
-      // Fetch profile names for each appointment
-      if (data && data.length > 0) {
-        const userIds = [...new Set(data.map((a: any) => a.user_id))];
-        const { data: profiles } = await supabase
-          .from("profiles")
-          .select("user_id, first_name, last_name")
-          .in("user_id", userIds);
-        
-        const profileMap = new Map((profiles || []).map((p: any) => [p.user_id, p]));
-        const enriched = data.map((a: any) => ({
-          ...a,
-          profile: profileMap.get(a.user_id) || null,
-        }));
-        setAppointments(enriched);
-      } else {
-        setAppointments(data || []);
-      }
-      
-      setLoading(false);
-    };
-    fetch();
-  }, []);
+  const fetchAppointments = async () => {
+    const { data } = await supabase
+      .from("appointments")
+      .select("id, appointment_date, appointment_time, status, notes, user_id, clinics(name)")
+      .order("appointment_date", { ascending: false });
+
+    if (data && data.length > 0) {
+      const userIds = [...new Set(data.map((a: any) => a.user_id))];
+      const { data: profiles } = await supabase
+        .from("profiles")
+        .select("user_id, first_name, last_name")
+        .in("user_id", userIds);
+
+      const profileMap = new Map((profiles || []).map((p: any) => [p.user_id, p]));
+      const enriched = data.map((a: any) => ({
+        ...a,
+        profile: profileMap.get(a.user_id) || null,
+      }));
+      setAppointments(enriched);
+    } else {
+      setAppointments(data || []);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => { fetchAppointments(); }, []);
+
+  const updateStatus = async (id: string, newStatus: string) => {
+    setUpdating(id);
+    const { error } = await supabase
+      .from("appointments")
+      .update({ status: newStatus })
+      .eq("id", id);
+
+    if (error) {
+      toast({ title: "Error", description: "Failed to update status", variant: "destructive" });
+    } else {
+      toast({ title: `Appointment ${newStatus}` });
+      fetchAppointments();
+    }
+    setUpdating(null);
+  };
 
   if (loading) return <div className="flex justify-center py-8"><Loader2 className="w-5 h-5 animate-spin text-primary" /></div>;
 
@@ -364,13 +379,37 @@ function AdminAppointments() {
             </div>
             <Badge variant="outline" className={`text-[10px] ${
               a.status === "confirmed" ? "bg-health-green/10 text-health-green" :
-              a.status === "cancelled" ? "bg-destructive/10 text-destructive" :
+              a.status === "cancelled" || a.status === "declined" ? "bg-destructive/10 text-destructive" :
               "bg-warning/10 text-warning"
             }`}>
               {a.status}
             </Badge>
           </div>
-          <p className="text-xs text-muted-foreground">{a.clinics?.name} • {new Date(a.appointment_date).toLocaleDateString("en-KE")} at {a.appointment_time}</p>
+          <p className="text-xs text-muted-foreground mb-2">{a.clinics?.name} • {new Date(a.appointment_date).toLocaleDateString("en-KE")} at {a.appointment_time}</p>
+          {a.notes && <p className="text-xs text-muted-foreground italic mb-2">"{a.notes}"</p>}
+
+          {a.status === "pending" && (
+            <div className="flex gap-2">
+              <Button
+                size="sm"
+                className="flex-1 h-8 rounded-lg text-xs bg-health-green hover:bg-health-green/90 text-white"
+                disabled={updating === a.id}
+                onClick={() => updateStatus(a.id, "confirmed")}
+              >
+                {updating === a.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <CheckCircle className="w-3 h-3 mr-1" />}
+                Confirm
+              </Button>
+              <Button
+                size="sm"
+                variant="destructive"
+                className="flex-1 h-8 rounded-lg text-xs"
+                disabled={updating === a.id}
+                onClick={() => updateStatus(a.id, "declined")}
+              >
+                <X className="w-3 h-3 mr-1" /> Decline
+              </Button>
+            </div>
+          )}
         </div>
       ))}
       {appointments.length === 0 && <p className="text-sm text-muted-foreground text-center py-8">No appointments</p>}
