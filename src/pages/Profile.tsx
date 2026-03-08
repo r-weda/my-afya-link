@@ -101,8 +101,15 @@ export default function ProfilePage() {
 
   if (authLoading || loadingProfile) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <Loader2 className="w-6 h-6 animate-spin text-primary" />
+      <div className="min-h-screen bg-background pb-20 md:pb-8">
+        <AppHeader title="Profile" />
+        <main className="px-4 pt-4 max-w-lg md:max-w-4xl mx-auto md:flex md:gap-6">
+          <div className="md:w-1/2"><ProfileSkeleton /></div>
+          <div className="mt-4 md:mt-0 md:flex-1 space-y-3">
+            {[1, 2, 3].map((i) => <AppointmentCardSkeleton key={i} />)}
+          </div>
+        </main>
+        <BottomNav />
       </div>
     );
   }
