@@ -27,6 +27,7 @@ interface AppHeaderProps {
 
 export default function AppHeader({ title }: AppHeaderProps) {
   const { user, isAdmin, signOut } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
 
