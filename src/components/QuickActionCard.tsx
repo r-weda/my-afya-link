@@ -46,7 +46,7 @@ export default function QuickActionCard({
       >
         {label}
       </h3>
-      <p className="text-xs md:text-sm lg:text-base text-muted-foreground leading-relaxed">{description}</p>
+      <p className="text-xs md:text-xs lg:text-xs text-muted-foreground leading-relaxed">{description}</p>
     </motion.button>
   );
 }
