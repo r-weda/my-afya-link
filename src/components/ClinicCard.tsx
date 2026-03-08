@@ -83,6 +83,20 @@ export default function ClinicCard({
           )}
         </div>
       )}
+
+      {onBook && id && (
+        <div className="mt-3 pt-3 border-t border-border/50">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onBook(id);
+            }}
+            className="text-xs lg:text-sm font-semibold text-primary hover:text-primary/80 transition-colors"
+          >
+            Book Appointment →
+          </button>
+        </div>
+      )}
     </motion.button>
   );
 }
