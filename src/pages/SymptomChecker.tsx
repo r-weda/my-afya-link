@@ -224,6 +224,20 @@ export default function SymptomChecker() {
                 />
               </div>
 
+              {/* AI Toggle */}
+              <div className="flex items-center justify-between p-3 rounded-xl bg-secondary/50 border border-border">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <Sparkles className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-foreground">AI-Enhanced Analysis</p>
+                    <p className="text-xs text-muted-foreground">Uses your additional details for deeper insights</p>
+                  </div>
+                </div>
+                <Switch checked={useAI} onCheckedChange={setUseAI} />
+              </div>
+
               {/* Error message */}
               <AnimatePresence>
                 {error && (
