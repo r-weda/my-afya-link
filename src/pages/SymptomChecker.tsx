@@ -98,15 +98,49 @@ export default function SymptomChecker() {
     }
     setError("");
     setIsAnalyzing(true);
-    await new Promise((r) => setTimeout(r, 1200));
+    setAiInsight(null);
 
-    const analysis = analyzeSymptoms(selected);
-    setResults(analysis.results);
-    setIsUrgent(analysis.isUrgent);
-    setIsAnalyzing(false);
+    if (useAI) {
+      try {
+        const { data, error: fnError } = await supabase.functions.invoke("analyze-symptoms", {
+          body: { symptoms: selected, additionalNotes: additionalNotes || null },
+        });
 
-    // Save to database
-    await saveCheck(analysis.results, analysis.isUrgent);
+        if (fnError) throw fnError;
+        if (data?.error) throw new Error(data.error);
+
+        const aiResults: MatchResult[] = (data.conditions || []).map((c: any) => ({
+          condition: c.condition,
+          matchScore: c.matchScore,
+          matchedSymptoms: c.matchedSymptoms || [],
+          description: c.description,
+          advice: c.advice,
+          likelihood: c.likelihood || (c.matchScore >= 75 ? "High" : c.matchScore >= 50 ? "Moderate" : "Low"),
+        }));
+
+        setResults(aiResults);
+        setIsUrgent(data.isUrgent || false);
+        setAiInsight(data.aiInsight || null);
+        setIsAnalyzing(false);
+        await saveCheck(aiResults, data.isUrgent || false);
+      } catch (e: any) {
+        console.error("AI analysis failed, falling back to rules:", e);
+        toast({ title: "AI analysis unavailable", description: "Using rule-based analysis instead.", variant: "destructive" });
+        // Fallback to rule-based
+        const analysis = analyzeSymptoms(selected);
+        setResults(analysis.results);
+        setIsUrgent(analysis.isUrgent);
+        setIsAnalyzing(false);
+        await saveCheck(analysis.results, analysis.isUrgent);
+      }
+    } else {
+      await new Promise((r) => setTimeout(r, 1200));
+      const analysis = analyzeSymptoms(selected);
+      setResults(analysis.results);
+      setIsUrgent(analysis.isUrgent);
+      setIsAnalyzing(false);
+      await saveCheck(analysis.results, analysis.isUrgent);
+    }
   };
 
   const handleReset = () => {
