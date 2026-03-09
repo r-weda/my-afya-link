@@ -678,7 +678,7 @@ export default function SymptomChecker() {
                             </Badge>
                           </div>
 
-                          <p className="text-sm text-muted-foreground leading-relaxed">{r.description}</p>
+                          <p className="text-sm lg:text-base text-muted-foreground leading-relaxed">{r.description}</p>
 
                           <div className="flex flex-wrap gap-1.5">
                             {r.matchedSymptoms.map((s) => (
