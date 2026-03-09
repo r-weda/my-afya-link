@@ -539,7 +539,7 @@ export default function SymptomChecker() {
 
               <div className="space-y-4">
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-foreground">Age (optional)</label>
+                  <label className="text-sm lg:text-base font-medium text-foreground">Age (optional)</label>
                   <Input
                     type="number"
                     min={0}
