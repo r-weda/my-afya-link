@@ -490,7 +490,7 @@ export default function SymptomChecker() {
                             }))
                           }
                         >
-                          <SelectTrigger className="rounded-xl h-9 text-sm">
+                          <SelectTrigger className="rounded-xl h-9 lg:h-12 text-sm lg:text-base">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
