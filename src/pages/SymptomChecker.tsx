@@ -453,7 +453,7 @@ export default function SymptomChecker() {
                     <div key={symptom} className="elevated-card rounded-2xl p-4 space-y-3">
                       <div className="flex items-center justify-between">
                         <h3 className="font-semibold text-sm lg:text-base text-foreground">{symptom}</h3>
-                        <Badge variant="outline" className="rounded-lg text-xs">
+                        <Badge variant="outline" className="rounded-lg text-xs lg:text-sm">
                           {detail.severity}/5
                         </Badge>
                       </div>
