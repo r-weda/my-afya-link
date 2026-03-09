@@ -475,7 +475,7 @@ export default function SymptomChecker() {
                             }
                             className="flex-1"
                           />
-                          <span className="text-xs text-muted-foreground">Severe</span>
+                          <span className="text-xs lg:text-sm text-muted-foreground">Severe</span>
                         </div>
                       </div>
 
