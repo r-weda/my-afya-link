@@ -549,7 +549,7 @@ export default function SymptomChecker() {
                     placeholder="Enter your age"
                     className="rounded-xl"
                   />
-                  <p className="text-xs text-muted-foreground">
+                   <p className="text-xs lg:text-sm text-muted-foreground">
                     Age helps tailor recommendations (e.g., pediatric vs. adult conditions)
                   </p>
                 </div>
