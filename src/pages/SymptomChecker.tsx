@@ -692,7 +692,7 @@ export default function SymptomChecker() {
                                <p className="text-xs lg:text-sm text-muted-foreground leading-relaxed">{r.advice}</p>
                             </div>
                             {r.facilityLevel && facilityLabels[r.facilityLevel] && (
-                              <div className="flex items-center gap-1.5 text-xs">
+                              <div className="flex items-center gap-1.5 text-xs lg:text-sm">
                                 <Building2 className="w-3.5 h-3.5 text-primary" />
                                 <span className="font-medium text-primary">
                                   Recommended: {facilityLabels[r.facilityLevel]}
