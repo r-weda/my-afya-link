@@ -353,7 +353,7 @@ export default function SymptomChecker() {
 
               <AnimatePresence>
                 {error && (
-                  <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-sm text-destructive font-medium">
+                  <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-sm lg:text-base text-destructive font-medium">
                     {error}
                   </motion.p>
                 )}
