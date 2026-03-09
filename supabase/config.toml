@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.clinic-action]
 verify_jwt = false
+
+[functions.send-health-tips]
+verify_jwt = false
