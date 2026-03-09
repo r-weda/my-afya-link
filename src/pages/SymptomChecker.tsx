@@ -682,7 +682,7 @@ export default function SymptomChecker() {
 
                           <div className="flex flex-wrap gap-1.5">
                             {r.matchedSymptoms.map((s) => (
-                              <Badge key={s} variant="secondary" className="rounded-lg text-xs capitalize">{s}</Badge>
+                              <Badge key={s} variant="secondary" className="rounded-lg text-xs lg:text-sm capitalize">{s}</Badge>
                             ))}
                           </div>
 
