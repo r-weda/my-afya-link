@@ -322,7 +322,7 @@ export default function SymptomChecker() {
                         <Badge
                           key={symptom}
                           variant={selected.includes(symptom) ? "default" : "outline"}
-                          className={`cursor-pointer rounded-xl py-1.5 px-3 text-xs transition-all ${
+                          className={`cursor-pointer rounded-xl py-1.5 px-3 text-xs lg:text-sm transition-all ${
                             selected.includes(symptom)
                               ? "bg-primary text-primary-foreground border-primary"
                               : "hover:bg-secondary"
