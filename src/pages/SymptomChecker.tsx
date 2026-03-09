@@ -344,7 +344,7 @@ export default function SymptomChecker() {
                   onChange={(e) => setCustomSymptom(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && addCustomSymptom()}
                   placeholder="Add a symptom not listed..."
-                  className="rounded-xl text-sm"
+                  className="rounded-xl text-sm lg:text-base"
                 />
                 <Button variant="outline" onClick={addCustomSymptom} className="rounded-xl shrink-0" disabled={!customSymptom.trim()}>
                   Add
