@@ -704,7 +704,7 @@ export default function SymptomChecker() {
                       ))
                     ) : (
                       <div className="elevated-card rounded-2xl p-5 text-center">
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm lg:text-base text-muted-foreground">
                           No strong condition matches found. If you feel unwell, please consult a healthcare provider.
                         </p>
                       </div>
