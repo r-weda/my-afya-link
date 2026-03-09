@@ -272,10 +272,10 @@ export default function SymptomChecker() {
                   <Stethoscope className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <h2 className="font-display font-semibold text-lg md:text-xl text-foreground">
+                  <h2 className="font-display font-semibold text-lg lg:text-2xl text-foreground">
                     What symptoms do you have?
                   </h2>
-                  <p className="text-xs text-muted-foreground">Select all that apply or search</p>
+                  <p className="text-xs lg:text-sm text-muted-foreground">Select all that apply or search</p>
                 </div>
               </div>
 
