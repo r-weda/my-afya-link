@@ -459,9 +459,9 @@ export default function SymptomChecker() {
                       </div>
 
                       <div className="space-y-1.5">
-                        <label className="text-xs text-muted-foreground">Severity</label>
+                         <label className="text-xs lg:text-sm text-muted-foreground">Severity</label>
                         <div className="flex items-center gap-3">
-                          <span className="text-xs text-muted-foreground">Mild</span>
+                          <span className="text-xs lg:text-sm text-muted-foreground">Mild</span>
                           <Slider
                             value={[detail.severity]}
                             min={1}
