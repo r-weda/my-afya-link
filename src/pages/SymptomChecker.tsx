@@ -301,7 +301,7 @@ export default function SymptomChecker() {
                   {selected.map((s) => (
                     <Badge
                       key={s}
-                      className="bg-primary text-primary-foreground rounded-lg py-1 px-2.5 text-xs cursor-pointer gap-1"
+                      className="bg-primary text-primary-foreground rounded-lg py-1 px-2.5 text-xs lg:text-sm cursor-pointer gap-1"
                       onClick={() => toggleSymptom(s)}
                     >
                       {s} <X className="w-3 h-3" />
