@@ -378,7 +378,7 @@ export default function SymptomChecker() {
                 <div className="space-y-3 pt-2">
                   <button
                     onClick={() => setShowHistory(!showHistory)}
-                    className="flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
+                    className="flex items-center gap-2 text-sm lg:text-base font-semibold text-muted-foreground hover:text-foreground transition-colors"
                   >
                     <History className="w-4 h-4" />
                     Past Checks ({history.length})
