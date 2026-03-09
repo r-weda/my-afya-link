@@ -314,7 +314,7 @@ export default function SymptomChecker() {
               <div className="space-y-4 max-h-[45vh] overflow-y-auto pr-1">
                 {Object.entries(filteredCategories).map(([category, symptoms]) => (
                   <div key={category}>
-                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                    <p className="text-xs lg:text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
                       {category}
                     </p>
                     <div className="flex flex-wrap gap-1.5">
