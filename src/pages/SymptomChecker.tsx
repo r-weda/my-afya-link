@@ -555,7 +555,7 @@ export default function SymptomChecker() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-foreground">Additional details (optional)</label>
+                  <label className="text-sm lg:text-base font-medium text-foreground">Additional details (optional)</label>
                   <Textarea
                     value={additionalNotes}
                     onChange={(e) => setAdditionalNotes(e.target.value)}
