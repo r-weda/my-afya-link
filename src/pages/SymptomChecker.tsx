@@ -251,7 +251,7 @@ export default function SymptomChecker() {
                 />
               </div>
             ))}
-            <span className="text-xs text-muted-foreground ml-2 shrink-0">
+            <span className="text-xs lg:text-sm text-muted-foreground ml-2 shrink-0">
               Step {step}/3
             </span>
           </div>
