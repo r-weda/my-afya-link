@@ -617,7 +617,7 @@ export default function SymptomChecker() {
                           ⚠ Urgent Medical Attention Recommended
                         </span>
                       </div>
-                      <p className="text-sm text-foreground leading-relaxed">
+                       <p className="text-sm lg:text-base text-foreground leading-relaxed">
                         {emergencyWarning || "You've reported symptoms that may require immediate medical evaluation. Please seek emergency care or visit the nearest clinic right away."}
                       </p>
                       <Button
