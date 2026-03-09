@@ -641,7 +641,7 @@ export default function SymptomChecker() {
                         <Brain className="w-5 h-5 text-primary" />
                         <span className="font-display font-bold text-sm lg:text-base text-primary">AI Insight</span>
                       </div>
-                      <p className="text-sm text-foreground leading-relaxed">{aiInsight}</p>
+                      <p className="text-sm lg:text-base text-foreground leading-relaxed">{aiInsight}</p>
                     </motion.div>
                   )}
 
