@@ -480,7 +480,7 @@ export default function SymptomChecker() {
                       </div>
 
                       <div className="space-y-1.5">
-                        <label className="text-xs text-muted-foreground">Duration</label>
+                        <label className="text-xs lg:text-sm text-muted-foreground">Duration</label>
                         <Select
                           value={detail.duration}
                           onValueChange={(v) =>
