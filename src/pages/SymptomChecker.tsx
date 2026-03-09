@@ -651,12 +651,12 @@ export default function SymptomChecker() {
                       <Stethoscope className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <h2 className="font-display font-semibold text-lg md:text-xl text-foreground">
-                        Possible Conditions
-                      </h2>
-                      <p className="text-xs text-muted-foreground">
-                        Based on {selected.length} symptom{selected.length > 1 ? "s" : ""}{age ? `, age ${age}` : ""}
-                      </p>
+                       <h2 className="font-display font-semibold text-lg lg:text-2xl text-foreground">
+                         Possible Conditions
+                       </h2>
+                       <p className="text-xs lg:text-sm text-muted-foreground">
+                         Based on {selected.length} symptom{selected.length > 1 ? "s" : ""}{age ? `, age ${age}` : ""}
+                       </p>
                     </div>
                   </div>
 
