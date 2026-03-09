@@ -713,7 +713,7 @@ export default function SymptomChecker() {
 
                   {/* Quick Actions */}
                   <div className="elevated-card rounded-2xl p-4 space-y-3">
-                    <h3 className="font-display font-semibold text-sm text-foreground">What to do next</h3>
+                    <h3 className="font-display font-semibold text-sm lg:text-base text-foreground">What to do next</h3>
                     <div className="flex flex-col sm:flex-row gap-2">
                       <Button onClick={() => navigate("/clinics")} className="flex-1 h-11 rounded-xl font-semibold">
                         <MapPin className="w-4 h-4 mr-2" /> Find Nearby Clinics
