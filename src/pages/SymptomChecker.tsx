@@ -596,8 +596,8 @@ export default function SymptomChecker() {
                     <Loader2 className="w-8 h-8 text-primary animate-spin" />
                   </div>
                   <div className="text-center">
-                    <p className="font-display font-semibold text-foreground">Analyzing your symptoms...</p>
-                    <p className="text-sm text-muted-foreground mt-1">AI is reviewing {selected.length} symptoms</p>
+                     <p className="font-display font-semibold text-foreground lg:text-lg">Analyzing your symptoms...</p>
+                     <p className="text-sm lg:text-base text-muted-foreground mt-1">AI is reviewing {selected.length} symptoms</p>
                   </div>
                 </div>
               )}
