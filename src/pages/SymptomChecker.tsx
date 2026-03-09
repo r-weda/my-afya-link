@@ -672,7 +672,7 @@ export default function SymptomChecker() {
                           className="elevated-card rounded-2xl p-4 space-y-3"
                         >
                           <div className="flex items-start justify-between gap-2">
-                            <h3 className="font-display font-bold text-base text-foreground">{r.condition}</h3>
+                            <h3 className="font-display font-bold text-base lg:text-lg text-foreground">{r.condition}</h3>
                             <Badge className={`rounded-lg text-xs shrink-0 ${likelihoodColors[r.likelihood]}`}>
                               {r.likelihood} ({r.matchScore}%)
                             </Badge>
