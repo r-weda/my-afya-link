@@ -639,7 +639,7 @@ export default function SymptomChecker() {
                     >
                       <div className="flex items-center gap-2 mb-2">
                         <Brain className="w-5 h-5 text-primary" />
-                        <span className="font-display font-bold text-sm text-primary">AI Insight</span>
+                        <span className="font-display font-bold text-sm lg:text-base text-primary">AI Insight</span>
                       </div>
                       <p className="text-sm text-foreground leading-relaxed">{aiInsight}</p>
                     </motion.div>
