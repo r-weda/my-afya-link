@@ -688,8 +688,8 @@ export default function SymptomChecker() {
 
                           <div className="pt-2 border-t border-border space-y-2">
                             <div>
-                              <p className="text-xs font-semibold text-foreground mb-1">Recommended Action:</p>
-                              <p className="text-xs text-muted-foreground leading-relaxed">{r.advice}</p>
+                               <p className="text-xs lg:text-sm font-semibold text-foreground mb-1">Recommended Action:</p>
+                               <p className="text-xs lg:text-sm text-muted-foreground leading-relaxed">{r.advice}</p>
                             </div>
                             {r.facilityLevel && facilityLabels[r.facilityLevel] && (
                               <div className="flex items-center gap-1.5 text-xs">
