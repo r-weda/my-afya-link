@@ -396,7 +396,7 @@ export default function SymptomChecker() {
                           <div key={check.id} className="elevated-card rounded-xl p-3 flex items-center justify-between gap-3">
                             <button onClick={() => loadFromHistory(check)} className="flex-1 text-left space-y-1 min-w-0">
                               <div className="flex items-center gap-2">
-                                <p className="text-xs text-muted-foreground">
+                                 <p className="text-xs lg:text-sm text-muted-foreground">
                                   {format(new Date(check.created_at), "MMM d, yyyy · h:mm a")}
                                 </p>
                                 {check.is_urgent && (
