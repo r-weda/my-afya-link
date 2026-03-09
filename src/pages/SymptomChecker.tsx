@@ -613,7 +613,7 @@ export default function SymptomChecker() {
                     >
                       <div className="flex items-center gap-2 mb-2">
                         <ShieldAlert className="w-5 h-5 text-destructive" />
-                        <span className="font-display font-bold text-sm text-destructive uppercase tracking-wider">
+                        <span className="font-display font-bold text-sm lg:text-base text-destructive uppercase tracking-wider">
                           ⚠ Urgent Medical Attention Recommended
                         </span>
                       </div>
