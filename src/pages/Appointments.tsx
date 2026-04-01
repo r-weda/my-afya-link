@@ -61,6 +61,7 @@ export default function Appointments() {
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [confirmation, setConfirmation] = useState<BookingConfirmation | null>(null);
+  const [clinicOpen, setClinicOpen] = useState(false);
 
   // Form state
   const preselectedClinic = searchParams.get("clinic") || "";
