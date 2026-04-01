@@ -327,21 +327,44 @@ export default function Appointments() {
                 >
                   <div className="space-y-1.5">
                     <Label className="text-xs lg:text-sm font-medium">Clinic</Label>
-                    <Select value={clinicId} onValueChange={setClinicId}>
-                      <SelectTrigger className="rounded-xl h-11 lg:h-12 lg:text-base">
-                        <SelectValue placeholder="Select a clinic" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {clinics.map((c) => (
-                          <SelectItem key={c.id} value={c.id}>
-                            {c.name} — {c.city}
-                          </SelectItem>
-                        ))}
-                        {clinics.length === 0 && (
-                          <div className="px-3 py-2 text-sm text-muted-foreground">No verified clinics available</div>
-                        )}
-                      </SelectContent>
-                    </Select>
+                    <Popover open={clinicOpen} onOpenChange={setClinicOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={clinicOpen}
+                          className="w-full justify-between rounded-xl h-11 lg:h-12 lg:text-base font-normal"
+                        >
+                          {clinicId
+                            ? (() => { const c = clinics.find((c) => c.id === clinicId); return c ? `${c.name} — ${c.city}` : "Select a clinic"; })()
+                            : "Select a clinic"}
+                          <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
+                        <Command>
+                          <CommandInput placeholder="Search clinic..." />
+                          <CommandList>
+                            <CommandEmpty>No clinic found.</CommandEmpty>
+                            <CommandGroup>
+                              {clinics.map((c) => (
+                                <CommandItem
+                                  key={c.id}
+                                  value={`${c.name} ${c.city}`}
+                                  onSelect={() => {
+                                    setClinicId(c.id);
+                                    setClinicOpen(false);
+                                  }}
+                                >
+                                  <CheckCircle2 className={cn("mr-2 h-4 w-4", clinicId === c.id ? "opacity-100" : "opacity-0")} />
+                                  {c.name} — {c.city}
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
