@@ -29,7 +29,7 @@ export default defineConfig(({ mode }) => ({
         description: "Your trusted health companion. Access verified health information, find nearby clinics, and book appointments.",
         theme_color: "#3B82F6",
         background_color: "#0f1724",
-        display: "standalone",
+        display: "fullscreen",
         orientation: "portrait",
         scope: "/",
         start_url: "/",
