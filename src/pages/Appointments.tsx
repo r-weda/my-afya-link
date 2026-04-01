@@ -14,7 +14,8 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import Footer from "@/components/Footer";
-import { Calendar, Clock, MapPin, Plus, Loader2, X, CheckCircle2, Copy, Phone } from "lucide-react";
+import { Calendar, Clock, MapPin, Plus, Loader2, X, CheckCircle2, Copy, Phone, ChevronDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { AppointmentCardSkeleton } from "@/components/SkeletonCards";
 
 interface Clinic {
