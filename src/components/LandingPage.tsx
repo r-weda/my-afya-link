@@ -291,6 +291,35 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
+      {/* ── Download App ── */}
+      <section className="py-16 md:py-20 px-5">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="max-w-3xl mx-auto text-center"
+        >
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 mb-6">
+            <Smartphone className="w-8 h-8 text-primary" />
+          </div>
+          <h2 className="font-display font-bold text-2xl md:text-3xl lg:text-4xl text-foreground mb-3">
+            Get the App
+          </h2>
+          <p className="text-muted-foreground text-base md:text-lg mb-8 max-w-md mx-auto">
+            Download AfyaConnect directly to your Android device for the best experience — no app store needed.
+          </p>
+          <button
+            disabled
+            className="group inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-primary/50 text-primary-foreground font-semibold text-base cursor-not-allowed opacity-70 shadow-md"
+          >
+            <Download className="w-5 h-5" />
+            Download APK — Coming Soon
+          </button>
+          <p className="text-xs text-muted-foreground mt-4">Android 8.0+ required · ~15 MB</p>
+        </motion.div>
+      </section>
+
       {/* ── CTA ── */}
       <section className="py-20 md:py-28 px-5">
         <motion.div
