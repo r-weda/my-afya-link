@@ -59,6 +59,7 @@ export default function Feedback() {
         email: values.email,
         subject: values.subject,
         message: values.message,
+        user_id: user?.id ?? null,
       } as any);
 
       if (error) throw error;
