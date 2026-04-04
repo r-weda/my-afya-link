@@ -19,6 +19,7 @@ import Notifications from "./pages/Notifications";
 import ClinicAction from "./pages/ClinicAction";
 import SymptomHistory from "./pages/SymptomHistory";
 import NotFound from "./pages/NotFound";
+import ResetPassword from "./pages/ResetPassword";
 
 const queryClient = new QueryClient();
 
