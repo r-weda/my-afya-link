@@ -35,6 +35,7 @@ const categories = [
 ];
 
 export default function Feedback() {
+  const { user } = useAuth();
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
