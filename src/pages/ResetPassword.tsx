@@ -18,13 +18,23 @@ export default function ResetPassword() {
   const { toast } = useToast();
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+    // Check URL hash for recovery type (handles case where event fires before mount)
+    const hash = window.location.hash;
+    if (hash && hash.includes("type=recovery")) {
+      setIsValidSession(true);
+    }
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "PASSWORD_RECOVERY") {
+        setIsValidSession(true);
+      }
+      // Also accept SIGNED_IN if we came from a recovery link
+      if (event === "SIGNED_IN" && session) {
         setIsValidSession(true);
       }
     });
 
-    // Also check if already in a recovery session
+    // Check if already in a valid session (recovery link already processed)
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) setIsValidSession(true);
     });
