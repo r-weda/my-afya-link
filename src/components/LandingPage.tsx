@@ -16,6 +16,8 @@ import {
   Sun,
   Moon,
   ChevronRight,
+  Download,
+  Smartphone,
 } from "lucide-react";
 import { motion } from "framer-motion";
 
