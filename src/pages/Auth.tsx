@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, ArrowLeft, Eye, EyeOff, Loader2 } from "lucide-react";
 import { lovable } from "@/integrations/lovable/index";
+import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
 
 const loginSchema = z.object({
@@ -34,6 +35,8 @@ export default function Auth() {
   const [lastName, setLastName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
   const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -203,6 +206,16 @@ export default function Auth() {
               ) : null}
               {isLogin ? "Sign In" : "Create Account"}
             </Button>
+
+            {isLogin && (
+              <button
+                type="button"
+                onClick={() => setShowForgotPassword(true)}
+                className="w-full text-center text-sm text-primary hover:underline mt-2"
+              >
+                Forgot Password?
+              </button>
+            )}
           </motion.form>
         </AnimatePresence>
 
@@ -249,6 +262,74 @@ export default function Auth() {
           </button>
         </p>
       </div>
+
+      {/* Forgot Password Overlay */}
+      <AnimatePresence>
+        {showForgotPassword && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center px-6"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-card border border-border rounded-2xl p-6 max-w-md w-full shadow-lg"
+            >
+              <h2 className="font-display font-bold text-xl text-foreground mb-1">Reset your password</h2>
+              <p className="text-sm text-muted-foreground mb-4">
+                Enter your email and we'll send you a link to reset your password.
+              </p>
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  setIsLoading(true);
+                  const { error } = await supabase.auth.resetPasswordForEmail(forgotEmail, {
+                    redirectTo: `${window.location.origin}/reset-password`,
+                  });
+                  setIsLoading(false);
+                  if (error) {
+                    toast({ title: "Error", description: error.message, variant: "destructive" });
+                  } else {
+                    toast({ title: "Email sent", description: "Check your inbox for a password reset link." });
+                    setShowForgotPassword(false);
+                  }
+                }}
+                className="space-y-4"
+              >
+                <div className="space-y-1.5">
+                  <Label htmlFor="forgotEmail" className="text-xs font-medium">Email</Label>
+                  <Input
+                    id="forgotEmail"
+                    type="email"
+                    value={forgotEmail}
+                    onChange={(e) => setForgotEmail(e.target.value)}
+                    placeholder="you@example.com"
+                    className="rounded-xl h-11"
+                    required
+                  />
+                </div>
+                <div className="flex gap-3">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="flex-1 rounded-xl"
+                    onClick={() => setShowForgotPassword(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit" className="flex-1 rounded-xl" disabled={isLoading}>
+                    {isLoading && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
+                    Send Link
+                  </Button>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

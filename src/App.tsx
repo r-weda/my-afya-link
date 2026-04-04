@@ -19,6 +19,7 @@ import Notifications from "./pages/Notifications";
 import ClinicAction from "./pages/ClinicAction";
 import SymptomHistory from "./pages/SymptomHistory";
 import NotFound from "./pages/NotFound";
+import ResetPassword from "./pages/ResetPassword";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +45,7 @@ const App = () => (
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/clinic-action" element={<ClinicAction />} />
             <Route path="/symptom-history" element={<SymptomHistory />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           </AuthProvider>
