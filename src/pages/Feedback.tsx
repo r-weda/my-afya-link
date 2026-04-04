@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,6 +35,7 @@ const categories = [
 ];
 
 export default function Feedback() {
+  const { user } = useAuth();
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -57,6 +59,7 @@ export default function Feedback() {
         email: values.email,
         subject: values.subject,
         message: values.message,
+        user_id: user?.id ?? null,
       } as any);
 
       if (error) throw error;
