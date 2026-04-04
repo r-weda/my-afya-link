@@ -203,6 +203,16 @@ export default function Auth() {
               ) : null}
               {isLogin ? "Sign In" : "Create Account"}
             </Button>
+
+            {isLogin && (
+              <button
+                type="button"
+                onClick={() => setShowForgotPassword(true)}
+                className="w-full text-center text-sm text-primary hover:underline mt-2"
+              >
+                Forgot Password?
+              </button>
+            )}
           </motion.form>
         </AnimatePresence>
 
