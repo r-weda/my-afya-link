@@ -45,6 +45,7 @@ const App = () => (
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/clinic-action" element={<ClinicAction />} />
             <Route path="/symptom-history" element={<SymptomHistory />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           </AuthProvider>
